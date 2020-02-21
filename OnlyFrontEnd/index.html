@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Ohys-Schedule</title>
+        <meta name="viewport" content="width=device-width, minimum-scale=1">
+        <meta name="title" content="Ohys-Schedule">
+        <meta name="description" content="The Schedule of the animes that Ohys releases.">
+        <link rel="shortcut icon" href="images/ohys.png">
+        <meta name="og:title" content="Ohys-Schedule">
+        <meta name="og:description" content="The Schedule of the animes that Ohys releases.">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+        
+    </head>
+    <body>
+        <div class="bg"></div>
+        <div class="templete">
+            <a class="item" target="_blank">
+                <div class="time"></div>
+                <div class="title"></div>
+            </a>
+        </div>
+        <div class="wrapper">
+            <div class="section left">
+                    <div class="main-title">
+                        <h1>Ohys-Raws Schedule</h1>
+                        <p>The Schedule of the animes that Ohys releases</p>
+                    </div>
+                    <div class="other-links">
+                        <h2>Links:</h2>
+                        <ul>
+                            <li><p><a href="http://ohys.seia.io/" target="_blank">Ohys-Fanmade</a></p></li>
+                            <li><p><a href="https://cryental.dev/services/anime/" target="_blank">Ohys-Raws Mirror</a></p></li>     
+                            <li><p><a href="http://torrents.ohys.net/t/rss.php?dir=disk" target="_blank">RSS</a></p></li>                    
+                        </ul>
+                    </div>
+                    <div class="other-links">
+                        <h2>Contact us:</h2>
+                        <ul>
+                        <li><p><a href="https://discord.gg/EUvzwzx">Ohys-Raws Discord</a></p></li>
+                        <li><p><a style="cursor: pointer;" title="Discord">Gokoro#0001</a></p></li>
+                        </ul>
+                    </div>
+                    <div class="copyright">
+                        Copyright 2020 Gokoro. All rights reserved.
+                    </div>
+            </div>
+            <div class="section right">
+                <div class="calendar">
+                    <span class="explain">
+                        <i class="fas fa-arrow-right"></i>
+                        This page will be redirected to the <a href="https://nyaa.si/" target="_blank">Nyaa.si</a> when you click these links.
+                    </span>
+                    <div class="c-day-wrapper">
+                        <button onclick="dayClicked('sun');" class="c-day" id="sun" style="color: #ff5858;">Sun</button>
+                        <button onclick="dayClicked('mon')" class="c-day" id="mon">Mon</button>
+                        <button onclick="dayClicked('tue')" class="c-day" id="tue">Tue</button>
+                        <button onclick="dayClicked('wed')" class="c-day" id="wed">Wed</button>
+                        <button onclick="dayClicked('thu')" class="c-day" id="thu">Thu</button>
+                        <button onclick="dayClicked('fri')" class="c-day" id="fri">Fri</button>
+                        <button onclick="dayClicked('sat')" class="c-day" id="sat" style="color: #5863ff;">Sat</button>
+                        <button onclick="dayClicked('non')" class="c-day" id="non" style="color: #808080;"><i class="fas fa-ban"></i></button>
+                    </div>
+                    <div class="c-animes">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/cal.js"></script>
+    </body>
+</html>
