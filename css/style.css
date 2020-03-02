@@ -1,0 +1,277 @@
+body,html {
+    font-family: Lato,'Noto Sans KR',sans-serif;
+    font-size: 16px;
+    color: #000;
+    letter-spacing: -.15px
+}
+body,html {
+    overflow-x: hidden
+}
+::selection {
+    background-color: rgba(205,225,255,.4)
+}
+a {
+    text-decoration: none;
+    color: #000
+}
+a:hover {
+    color: #666
+}
+.wrapper {
+    min-height: fit-content;
+    background-color: #fafafa
+}
+.wrapper>.section.left {
+    margin: 0 3em 0 0;
+    position: fixed;
+    width: 450px;
+    height: 100vh;
+    background-color: transparent;
+    box-shadow: 0 0 10px 5px rgba(0,0,0,.205);
+    z-index: 1;
+    background: #fff
+}
+.wrapper>.section.left header {
+    margin-bottom: 3em;
+}
+.wrapper>.section.left header .container {
+    display: flex;
+    align-items: center;
+}
+.wrapper>.section.left header .name {
+    font-size: 13px;
+    margin-top: 2px;
+}
+.wrapper>.section.left header .container img {
+    width: 40px;
+    margin-right: 16px;
+    border-radius: 5px
+}
+.wrapper>.section.left>.article {
+    margin: 0 4em;
+    padding: 5em 0;
+    height: 100vh
+}
+footer {
+    letter-spacing: -.2px;
+    cursor: pointer;
+    margin-top: 8em;
+    padding: 3em;
+    height: 80px;
+    background-color: #1B1C1D;
+    letter-spacing: 0;
+}
+footer a {
+    margin: 16px 0;
+    display: block;
+    color: #FFF;
+    text-align: center;
+    font-size: 15px;
+}
+footer *:hover {
+    color: rgb(220, 220, 220);
+}
+.contact {
+    margin-top: 64px;
+}
+.contact .menutitle {
+    font-size: 1.4rem;
+}
+.wrapper .section.right {
+    margin-left: 450px;
+    background-color: #fafafa
+}
+.section.left>div.other-links {
+    margin-bottom: 1.8em
+}
+.section.left>.other-links {
+    margin-bottom: 3em
+}
+.section .calendar {
+    margin: 0 7em;
+    padding: 8em 0 0 0;
+}
+.section .calendar .explain {
+    font-size: 15px;
+    font-weight: 700;
+    color: #b4b4b4;
+    margin: 20px 0
+}
+.c-day-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1em 0
+}
+.c-day-wrapper .c-day {
+    position: relative;
+    flex: 1;
+    height: 35px;
+    text-align: center;
+    letter-spacing: -.2px;
+    border: .3px solid rgba(34,36,38,.15);
+    border-radius: 10px;
+    margin: 0 8px 0 0;
+    background-color: #fdfdfd;
+    outline: 0;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,.05);
+    z-index: 1;
+    bottom: 0;
+    transition: bottom 75ms ease-in
+}
+.c-day-wrapper .c-day.active {
+    font-family: "Noto Sans KR";
+    font-weight: 500;
+    color: #FFF!important;
+    background-color: #86D8C9!important;
+}
+.c-day-wrapper .c-day:hover {
+    bottom: 5px
+}
+.c-day-wrapper .c-day:first-child {
+    margin-left: 0
+}
+.c-day-wrapper .c-day:last-child {
+    margin-right: 0
+}
+.c-animes a.item {
+    position: relative;
+    display: block;
+    border-left: 8px solid #86d8c9;
+    border-bottom: 1px solid rgba(34,36,38,.15);
+    border-radius: 3px;
+    margin-bottom: 14px;
+    padding: 15px;
+    height: fit-content;
+    background-color: #fff;
+    box-shadow: 0 6px 12px rgba(0,0,0,.05);
+    transition: border-left 80ms ease-in, background-color 80ms ease-in, box-shadow 80ms ease-in;
+}
+.c-animes a.item:hover {
+    border-left: 8px solid #75b8ab;
+    background-color: rgb(250, 250, 250);
+    box-shadow: 4px 8px 14px 4px rgba(0,0,0,.05);
+}
+.c-animes a.item:last-child {
+    border-bottom: 1px solid rgba(255,255,255,.5)
+}
+.c-animes .title {
+    font-family: Noto Sans KR;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -.75px;
+    margin: 0 120px 6px 0
+}
+.c-animes .schedule {
+    position: absolute;
+    display: flex;
+    top: 28%;
+    right: 30px;
+    transform-origin: right;
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #86d8c9;
+    transition: background-color 80ms ease-in
+}
+.c-animes .schedule>.time {
+    display: inline;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    white-space: nowrap;
+    color: #fff
+}
+.c-animes .link {
+    font-size: 12px
+}
+.c-animes a.item:hover .schedule {
+    background-color: #75b8ab
+}
+.ui.selection.dropdown {
+    min-height: 0!important
+}
+.dropdowns {
+    display: flex;
+    flex-flow: column nowrap
+}
+.dropdowns>.item {
+    flex: 1
+}
+.menutitle {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin: 1.2em 0
+}
+.plzwait {
+    text-align: center;
+    margin: 12em 0
+}
+.plzwait .waittitle {
+    font-size: 1.2rem;
+    font-weight: 700
+}
+.plzwait .waitdes {
+    color: #858585
+}
+@media screen and (max-width : 1080px) {
+    .wrapper {
+        flex-flow:row nowrap
+    }
+    .section .calendar {
+        padding: 3em 0
+    }
+    .wrapper>.section.left {
+        margin: 0;
+        padding: 0;
+        position: initial;
+        width: 100vw;
+        height: fit-content;
+        background-color: transparent;
+        box-shadow: 0 0 10px 5px rgba(0,0,0,.205);
+        z-index: 1;
+        background: #fff
+    }
+    .wrapper>.section.left>.article {
+        margin: 0 5em;
+        padding: 5em 0;
+        height: fit-content;
+    }
+    .wrapper>.section.left .dropdowns {
+        flex-flow: row nowrap
+    }
+    .wrapper>.section.right {
+        margin-left: 0;
+        padding: 0
+    }
+}
+@media screen and (max-width : 768px) {
+    .wrapper>.section.left header {
+        margin-bottom: 1em;
+    }
+    .section.left {
+        margin-bottom:0
+    }
+    .wrapper>.section.left>.article {
+        margin: 0 2em;
+        padding: 3em 0;
+    }
+    .wrapper>.section.left>.article .copyright {
+        margin: 3em 0 0 0;
+    }
+    .wrapper>.section.left .dropdowns {
+        flex-flow: column nowrap
+    }
+    .ui.selection.dropdown {
+        min-width: 80%!important
+    }
+    .section.right .calendar {
+        margin: 0 3em
+    }
+    .c-day-wrapper .c-day {
+        margin: 1.5px;
+        padding: 0 7.5px;
+    }
+    .copyright {
+        display: none;
+    }
+}
