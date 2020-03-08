@@ -53,9 +53,9 @@ a:hover {
     height: 100vh
 }
 footer {
+    width: calc(100% - 546px);
     letter-spacing: -.2px;
-    cursor: pointer;
-    margin-top: 8em;
+    margin: 4em 0 0 450px;
     padding: 3em;
     height: 80px;
     background-color: #1B1C1D;
@@ -78,6 +78,7 @@ footer *:hover {
     font-size: 1.4rem;
 }
 .wrapper .section.right {
+    min-height: calc(100vh - 80px);
     margin-left: 450px;
     background-color: #fafafa
 }
@@ -133,6 +134,9 @@ footer *:hover {
 }
 .c-day-wrapper .c-day:last-child {
     margin-right: 0
+}
+.c-animes {
+    min-height: 235px;
 }
 .c-animes a.item {
     position: relative;
@@ -242,6 +246,10 @@ footer *:hover {
     .wrapper>.section.right {
         margin-left: 0;
         padding: 0
+    }
+    footer {
+        margin-left: 0;
+        width: calc(100% - 96px);
     }
 }
 @media screen and (max-width : 768px) {

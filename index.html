@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80175291-6"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'UA-80175291-6');
-        </script>
         <meta charset="utf-8">
         <title>Ohys-Schedule</title>
         <meta name="viewport" content="width=device-width, minimum-scale=1">
@@ -18,7 +10,7 @@
         <meta name="og:title" content="Ohys-Schedule">
         <meta name="og:description" content="The Schedule of the animes that Ohys releases.">
         <meta name="og:url" content="https://ohys.gokoro.me">
-        <link rel="canonical" href="https://ohys.gokoro.me"     />
+        <link rel="canonical" href="https://ohys.gokoro.me"/>
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap&subset=korean" rel="stylesheet">
@@ -33,15 +25,6 @@
         <script src="libraries/semantic-ui/transition.min.js"></script>
     </head>
     <body>
-        <div class="templete">
-            <a class="item" target="_blank">
-                <div class="title"></div>
-                <div class="link"></div>
-                <div class="schedule">
-                    <div class="time"></div>
-                </div>
-            </a>
-        </div>
         <div class="wrapper">
             <div class="section left">
                 <div class="article">
@@ -83,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
             <div class="section right">
                 <div class="calendar">
@@ -106,11 +88,20 @@
                         
                     </div>
                 </div>
-                <footer>
-                    <a href="https://gokoro.me">Copyright 2020 Gokoro. All rights reserved.</a>
-                    <a href="https://cryental.dev/">Timetable API is provided by Cryental.</a>
-                </footer>
             </div>
+            <footer>
+                <a href="https://gokoro.me">Copyright 2020 Gokoro. All rights reserved.</a>
+                <a href="https://cryental.dev/">Timetable API is provided by Cryental.</a>
+            </footer>
+        </div>
+        <div class="templete">
+            <a class="item" target="_blank">
+                <div class="title"></div>
+                <div class="link"></div>
+                <div class="schedule">
+                    <div class="time"></div>
+                </div>
+            </a>
         </div>
         <script src="js/cal.js"></script>
     </body>

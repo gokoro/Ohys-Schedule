@@ -9,15 +9,19 @@ let currentCountry = ''
 // Setup baseURL
 let baseURL = seiaURL
 
+// Setup API Location or URL
+let timetableAPI = 'api/listAPI.php'
+
 window.onload = function() {
     requestAPI()
 
     // Set Default Language
     let lang = String(navigator.language).toLowerCase()
-
-    if (lang == 'ko_kr' || lang == 'en_us' || lang == 'ko-kr' || lang == 'en-us') {
-        lang = lang.substr(0,2)
-        currentCountry = lang
+    
+    if (lang.includes('ko')) {
+        currentCountry = 'ko'
+    } else if (lang.includes('en')) {
+        currentCountry = 'en'
     } else {
         currentCountry = lang
     }
@@ -28,17 +32,17 @@ window.onload = function() {
     let today = date.tz('Asia/Tokyo').day()
     const dayWord = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const dayButton = document.querySelectorAll('.c-day')
+    dayButton[today].classList.add('active')
     dayStatus = dayWord[today]
-    dayButton[today].setAttribute('class', 'c-day active')
 }
 function requestAPI() {
     $.ajax({
-        url: "api/listAPI.php",
+        url: timetableAPI,
         type: "GET",
         dataType: "json",
         async: true
     }).done(function(data) {
-        animeJSON = Object.entries(data.database)
+        animeJSON = data.database
         animeList.create(dayStatus, currentCountry)
         document.querySelector('.plzwait').remove()
     });
@@ -88,20 +92,17 @@ let dropdown = {
     }
 }
 let animeList = {
-    animeLinkTemplete: document.querySelector('.templete>.item'),
+    template: document.querySelector('.templete>.item'),
     create(day, lang) {
-        let dayNumber = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Non-Specify']
         const animeLinksWrapper = document.querySelector('.c-animes')
-        const animeJSONList = animeJSON[dayNumber.indexOf(day)][1]
-
-        for (let i = 0; i < animeJSONList.length; i++) {
-            animeLinksWrapper.appendChild(this.animeLinkTemplete.cloneNode(true))
+        for (let i = 0; i < animeJSON[day].length; i++) {
+            animeLinksWrapper.appendChild(this.template.cloneNode(true))
             if (lang == 'en') {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSONList[i]['eng_title']
+                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i]['eng_title']
             } else if (lang == 'ko') {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSONList[i]['kor_title']
+                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i]['kor_title']
             } else {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSONList[i]['title']
+                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i]['title']
             }
             if (baseURL == seiaURL) {
                 document.querySelector('.c-animes a.item:last-child div.link').innerHTML = 'Ohys Fanmade'
@@ -110,8 +111,8 @@ let animeList = {
             } else {
                 document.querySelector('.c-animes a.item:last-child div.link').innerHTML = 'Nyaa.si'
             }
-            document.querySelector('.c-animes a.item:last-child div.time').innerHTML = animeJSONList[i]['time']
-            document.querySelector('.c-animes a.item:last-child').setAttribute('href', baseURL+animeJSONList[i]['title'])
+            document.querySelector('.c-animes a.item:last-child div.time').innerHTML = animeJSON[day][i]['time']
+            document.querySelector('.c-animes a.item:last-child').setAttribute('href', baseURL+animeJSON[day][i]['title'])
         }
     },
     remove() {
@@ -127,7 +128,7 @@ let animeList = {
     }
 }
 function dayClicked(clickedDay) {
-    const clickedDayButton = document.querySelector('#'+clickedDay)
+    const clickedDayButton = document.getElementById(clickedDay)
     const activedDayButton = document.querySelector('.c-day.active')
     dayStatus = clickedDay
 
