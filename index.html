@@ -1,108 +1,204 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Ohys-Schedule</title>
-        <meta name="viewport" content="width=device-width, minimum-scale=1">
-        <meta name="title" content="Ohys-Schedule">
-        <meta name="description" content="The Schedule of the animes that Ohys releases.">
-        <link rel="shortcut icon" href="images/ohys.png">
-        <meta name="og:title" content="Ohys-Schedule">
-        <meta name="og:description" content="The Schedule of the animes that Ohys releases.">
-        <meta name="og:url" content="https://ohys.gokoro.me">
-        <link rel="canonical" href="https://ohys.gokoro.me"/>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap">
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap&subset=korean" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-        <link rel="stylesheet" href="libraries/semantic-ui/dropdown.min.css">
-        <link rel="stylesheet" href="libraries/semantic-ui/transition.min.css">
-        <link rel="stylesheet" href="libraries/normalize.css/normalize.min.css">
-        <script src="libraries/jquery/jquery-3.4.1.min.js"></script>
-        <script src="libraries/moment.js/moment.min.js"></script>
-        <script src="libraries/moment.js/moment-timezone-with-data.min.js"></script>
-        <script src="libraries/semantic-ui/dropdown.min.js"></script>
-        <script src="libraries/semantic-ui/transition.min.js"></script>
-    </head>
-    <body>
-        <div class="wrapper">
-            <div class="section left">
-                <div class="article">
-                    <header>
-                        <div class="container">
-                            <img src="./images/ohys.png" alt="Ohys-Raws">
-                            <div>
-                                <b>Ohys-Raws Schedule</b>    
-                                <div class="name">Made by Gokoro</div>
-                            </div>
-                        </div>
-                    </header>
-                    <div class="dropdowns">
-                        <div class="item">
-                            <div class="menutitle">Search</div>
-                            <div class="ui selection dropdown" id="search" onchange="dropdown.change('search')">
-                                <input type="hidden" name="search">
-                                <i class="dropdown icon"></i>
-                                <div class="text">Ohys-Fanmade</div>
-                                <div class="menu">
-                                    <div class="item" data-value="0">Ohys-Fanmade</div>
-                                    <div class="item" data-value="1">Ohys-Mirror</div>
-                                    <div class="item" data-value="2">Nyaa.si</div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="item">
-                            <div class="menutitle">Language</div>
-                            <div class="ui selection dropdown" id="lang" onchange="dropdown.change('lang')">
-                              <input type="hidden" name="lang">
-                              <i class="dropdown icon"></i>
-                              <div class="text">Language</div>
-                              <div class="menu">
-                                  <div class="item" data-value="0">English</div>
-                                  <div class="item" data-value="1">English (Romaji)</div>
-                                  <div class="item" data-value="2">한국어</div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
+
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80175291-6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-80175291-6');
+    </script>
+    <meta charset="utf-8">
+    <title>Ohys-Schedule</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1">
+    <meta name="title" content="Ohys-Schedule">
+    <meta name="description" content="The Schedule of the animes that Ohys releases.">
+    <link rel="shortcut icon" href="images/ohys.png">
+    <meta name="og:title" content="Ohys-Schedule">
+    <meta name="og:description" content="The Schedule of the animes that Ohys releases.">
+    <meta name="og:url" content="https://ohys.gokoro.me">
+    <link rel="canonical" href="https://ohys.gokoro.me" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:500,700&display=swap" rel="stylesheet">
+    <script src="libraries/jquery/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <script src="libraries/moment.js/moment.min.js"></script>
+    <script src="libraries/moment.js/moment-timezone-with-data.min.js"></script>
+    <link rel="stylesheet" href="css/forsemantic.css">
+</head>
+
+<body>
+    <div class="ui sidebar vertical menu">
+        <div class="pusher">
+            <div class="item">
+                <a class="ui mini image" href="">
+                    <img src="./images/ohys.png" alt="Ohys-Raws">
+                </a>
+                <b>Ohys-Raws Schedule</b>
+            </div>
+            <div class="item">
+                <div class="header">Download Links</div>
+                <div class="menu">
+                    <a class="item" href="https://ohys.seia.io" target="_blank">Ohys-Fanmade</a>
+                    <a class="item" href="https://cryental.dev/services/anime/" target="_blank">Ohys Mirror</a>
+                    <a class="item" href="https://nyaa.si" target="_blank">Nyaa.si</a>
+                    <a class="item" href="http://torrents.ohys.net/t/rss.php?dir=disk" target="_blank">RSS</a>
                 </div>
             </div>
-            <div class="section right">
-                <div class="calendar">
-                    <div class="c-day-wrapper">
-                        <button onclick="dayClicked('Sunday')" class="c-day" id="Sunday">Sun</button>
-                        <button onclick="dayClicked('Monday')" class="c-day" id="Monday">Mon</button>
-                        <button onclick="dayClicked('Tuesday')" class="c-day" id="Tuesday">Tue</button>
-                        <button onclick="dayClicked('Wednesday')" class="c-day" id="Wednesday">Wed</button>
-                        <button onclick="dayClicked('Thursday')" class="c-day" id="Thursday">Thu</button>
-                        <button onclick="dayClicked('Friday')" class="c-day" id="Friday">Fri</button>
-                        <button onclick="dayClicked('Saturday')" class="c-day" id="Saturday">Sat</button>
-                        <button onclick="dayClicked('Non-Specify')" class="c-day" id="Non-Specify" style="color: #808080;"><i class="fas fa-ban"></i></button>
-                    </div>
-                    <div class="explain">Upcoming Animes</div>
-                    <div class="plzwait">
-                        <div class="waittitle">Waiting For API...</div>
-                        <div class="waitdes">It takes several seconds to load all the lists.<br>If the lists aren't appeared, Please contact to the developer.</div>
-                    </div>
-                    <div class="c-animes">
-                        
-                    </div>
+            <div class="item">
+                <div class="header">Contact</div>
+                <div class="menu">
+                    <a class="item" href="https://discord.gg/EUvzwzx" target="_blank">Ohys-Raws Discord</a>
+                    <a class="item" href="https://github.com/Gokoro" target="_blank">Gokoro</a>
+                    <a class="item" href="https://github.com/Cryental/" target="_blank">Cryental</a>
                 </div>
             </div>
-            <footer>
-                <a href="https://gokoro.me">Copyright 2020 Gokoro. All rights reserved.</a>
-                <a href="https://cryental.dev/">Timetable API is provided by Cryental.</a>
-            </footer>
         </div>
-        <div class="templete">
-            <a class="item" target="_blank">
-                <div class="title"></div>
-                <div class="link"></div>
+    </div>
+    <div class="ui modal">
+        <div class="header">Download Animes from Ohys-Raws</div>
+        <div class="image scrolling content">
+            <div class="ui medium rounded image">
+                <img class="image">
+                <div class="ui small header">View on...</div>
+
+                <div class="ui container">
+                    <a target="_blank" class="ui button fanmade">Ohys-Fanmade</a>
+                    <a target="_blank" class="ui button mirror">Ohys-Mirror</a>
+                    <a target="_blank" class="ui button nyaa">Nyaa.si</a>
+                </div>
+            </div>
+            <div class="description">
+                <div class="ui large header"></div>
+                <div class="ui relaxed list">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <div class="template">
+        <a class="item" target="_blank" onclick="clickedItem(this)">
+            <div class="title"></div>
+            <div class="link">See details</div>
+            <div class="right">
+                <div class="info">
+                    <div class="release"></div>
+                </div>
                 <div class="schedule">
                     <div class="time"></div>
                 </div>
-            </a>
+            </div>
+        </a>
+        <div class="item torrent">
+            <i class="file icon"></i>
+            <div class="content">
+                <a class="title header"></a>
+                <div class="ui format"></div>
+            </div>
         </div>
-        <script src="js/cal.js"></script>
-    </body>
+    </div>
+    <div class="ui fluid container">
+        <div class="ui large left fixed vertical menu">
+            <div class="item">
+                <a class="ui mini image" href="">
+                    <img src="./images/ohys.png" alt="Ohys-Raws">
+                </a>
+                <b>Ohys-Raws Schedule</b>
+            </div>
+            <div class="item">
+                <div class="header">Download Links</div>
+                <div class="menu">
+                    <a class="item" href="https://ohys.seia.io" target="_blank">Ohys-Fanmade</a>
+                    <a class="item" href="https://cryental.dev/services/anime/" target="_blank">Ohys Mirror</a>
+                    <a class="item" href="https://nyaa.si" target="_blank">Nyaa.si</a>
+                    <a class="item" href="http://torrents.ohys.net/t/rss.php?dir=disk" target="_blank">RSS</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">Contact</div>
+                <div class="menu">
+                    <a class="item" href="https://discord.gg/EUvzwzx" target="_blank">Ohys-Raws Discord</a>
+                    <a class="item" href="https://github.com/Gokoro" target="_blank">Gokoro</a>
+                    <a class="item" href="https://github.com/Cryental/" target="_blank">Cryental</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui icon menu main-header">
+            <a class="item" onclick="$('.ui.sidebar').sidebar('toggle')">
+                <i class="bars icon"></i>
+            </a>
+            <div class="item">
+                <b>Ohys-Raws Schedule</b>
+            </div>
+        </div>
+        <div class="article">
+            <div class="ui container">
+                <div class="item">
+                    <div class="header">Language</div>
+                    <div class="ui selection dropdown" id="lang" onchange="dropdown.change('lang')">
+                        <input type="hidden" name="lang">
+                        <i class="dropdown icon"></i>
+                        <div class="text">Language</div>
+                        <div class="menu">
+                            <div class="item" data-value="0">English</div>
+                            <div class="item" data-value="1">English (Romaji)</div>
+                            <div class="item" data-value="2">한국어</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="c-day-wrapper">
+                    <button class="c-day" id="Sunday">Sun</button>
+                    <button class="c-day" id="Monday">Mon</button>
+                    <button class="c-day" id="Tuesday">Tue</button>
+                    <button class="c-day" id="Wednesday">Wed</button>
+                    <button class="c-day" id="Thursday">Thu</button>
+                    <button class="c-day" id="Friday">Fri</button>
+                    <button class="c-day" id="Saturday">Sat</button>
+                </div>
+                <div class="explain">Upcoming Animes</div>
+                <div class="plzwait ui center segment">
+                    <div class="ui medium header">Waiting For API...</div>
+                    <div>It takes several seconds to load all the lists.<br>If the lists aren't
+                        appeared, Please contact to the developer.</div>
+                </div>
+                <div class="c-animes">
+
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical footer inverted segment">
+            <div class="ui stackable center aligned grid">
+                <div class="six wide column">
+                    <h4 class="ui inverted header">Copyright</h4>
+                    <div class="ui inverted link list">
+                        <a href="https://gokoro.me" class="item">Copyright 2020 Gokoro. All rights reserved.</a>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <h4 class="ui inverted header">Contact</h4>
+                    <div class="ui inverted link list">
+                        <a href="https://discord.gg/EUvzwzx" class="item">Ohys-Raws Discord</a>
+                        <a class="item">Discord: Gokoro#0001</a>
+                    </div>
+                </div>
+                <div class="five wide column">
+                    <h4 class="ui inverted header">Thanks For</h4>
+                    <div class="ui inverted link list">
+                        <div class="header">Provided backend</div>
+                        <a href="https://github.com/Cryental/" class="item">Cryental</a>
+                        <a href="https://seia.io" class="item">Seia-Soto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <script src="js/cal.js"></script>
+</body>
+
 </html>
