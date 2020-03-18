@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <script src="libraries/moment.js/moment.min.js"></script>
     <script src="libraries/moment.js/moment-timezone-with-data.min.js"></script>
-    <link rel="stylesheet" href="css/forsemantic.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -81,7 +81,7 @@
     </div>
     </div>
     <div class="template">
-        <a class="item" target="_blank" onclick="clickedItem(this)">
+        <a class="item">
             <div class="title"></div>
             <div class="link">See details</div>
             <div class="right">
@@ -128,7 +128,7 @@
             </div>
         </div>
         <div class="ui icon menu main-header">
-            <a class="item" onclick="$('.ui.sidebar').sidebar('toggle')">
+            <a class="item sidebar-button">
                 <i class="bars icon"></i>
             </a>
             <div class="item">
@@ -139,7 +139,7 @@
             <div class="ui container">
                 <div class="item">
                     <div class="header">Language</div>
-                    <div class="ui selection dropdown" id="lang" onchange="dropdown.change('lang')">
+                    <div class="ui selection dropdown" id="lang">
                         <input type="hidden" name="lang">
                         <i class="dropdown icon"></i>
                         <div class="text">Language</div>

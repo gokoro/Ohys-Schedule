@@ -1,37 +1,23 @@
 // Setup AnimeJSONList
+let animeJSON = {}
 let dayStatus = ''
-let animeJSON = ''
 let currentCountry = ''
-
-let fanmadeURL = 'https://ohys.seia.io/series/'
-let mirrorURL = 'https://cryental.dev/services/anime/?search='
-let nyaaURL = 'https://nyaa.si/user/ohys?f=0&c=0_0&q='
 
 let timetableAPI = 'api/listAPI.php'
 let ohysAPI = 'https://ohys-api.gokoro.me'
 let ohysAPISearch = '/search'
 let ohysAPISeries = '/series'
 
-const animeTemplate = document.querySelector('.template>a.item')
-
 window.onload = function() {
     requestAPI()
 
-    let dayButtonSun = document.querySelector('.c-day#Sunday')
-    let dayButtonMon = document.querySelector('.c-day#Monday')
-    let dayButtonTue = document.querySelector('.c-day#Tuesday')
-    let dayButtonWed = document.querySelector('.c-day#Wednesday')
-    let dayButtonThu = document.querySelector('.c-day#Thursday')
-    let dayButtonFri = document.querySelector('.c-day#Friday')
-    let dayButtonSat = document.querySelector('.c-day#Saturday')
-
-    dayButtonSun.addEventListener('click', dayClicked)
-    dayButtonMon.addEventListener('click', dayClicked)
-    dayButtonTue.addEventListener('click', dayClicked)
-    dayButtonWed.addEventListener('click', dayClicked)
-    dayButtonThu.addEventListener('click', dayClicked)
-    dayButtonFri.addEventListener('click', dayClicked)
-    dayButtonSat.addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Sunday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Monday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Tuesday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Wednesday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Thursday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Friday').addEventListener('click', dayClicked)
+    document.querySelector('.c-day#Saturday').addEventListener('click', dayClicked)
 
 
     // Set Default Language
@@ -53,54 +39,46 @@ window.onload = function() {
     dayStatus = dayWord[today]
     dayButton[today].setAttribute('class', 'c-day active')
 }
-var a = 'Sunday'
+document.querySelector('.sidebar-button').onclick = function() {
+    $('.ui.sidebar').sidebar('toggle')
+}
+document.querySelector('.dropdown#lang').onchange = function() {
+    dropdown.change('lang')
+}
 function requestAPI() {
-    $.ajax({
-        url: timetableAPI,
-        type: "GET",
-        dataType: "json",
-        async: true,
-    }).done(function(data) {
+    let reqTimetableForm = new RequestForm(timetableAPI, 'get', true)
+
+    $.ajax(reqTimetableForm.form).done(function(data) {
         animeJSON = data.database
-        for (let i = 0; i < animeJSON[dayStatus].length; i++) {
+        for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
             let form = new FormData()
+            let reqForm = new RequestForm(ohysAPI+ohysAPISearch, 'post', false, form)
+
             form.append('scope', 'series')
             form.append('keyword', animeJSON[dayStatus][i].title)
-            $.ajax({
-                url: ohysAPI+ohysAPISearch,
-                type: "post",
-                data: form,
-                dataType: "json",
-                async: false,
-                processData: false,
-                contentType: false,
-                crossDomain : true,
-            }).done(function(data) {
+
+            $.ajax(reqForm.form).done(function(data) {
                 animeJSON[dayStatus][i].episode = data[0].episode
             })
         }
         animeList.create(dayStatus, currentCountry)
         document.querySelector('.plzwait').remove()
         for (let dayProperty in animeJSON) {
-            for (let i = 0; i < animeJSON[dayProperty].length; i++) {
+            for (let i = 0, aj = animeJSON[dayProperty].length; i < aj; i++) {
                 let form = new FormData()
+                let reqForm = new RequestForm(ohysAPI+ohysAPISearch, 'post', true, form)
+                
                 form.append('scope', 'series')
                 form.append('keyword', animeJSON[dayProperty][i].title)
-                $.ajax({
-                    url: ohysAPI+ohysAPISearch,
-                    type: "post",
-                    data: form,
-                    dataType: "json",
-                    async: true,
-                    processData: false,
-                    contentType: false,
-                    crossDomain : true,
-                }).done(function(data) {
-                    if (dayProperty !== 'Non-Specify') {
-                        animeJSON[dayProperty][i].episode = data[0].episode
-                    } else {
-                        animeJSON[dayProperty][i].episode = '0'
-                    }
+                
+                $.ajax(reqForm.form)
+                    .done(function(data) {
+                        try {
+                            animeJSON[dayProperty][i].episode = data[0].episode
+                            animeJSON[dayProperty][i].info = {}
+                            animeJSON[dayProperty][i].info.search = data
+                            animeJSON[dayProperty][i].seriesCrawled = false
+                        } catch (err) {}
                 })
             }
         }    
@@ -109,45 +87,62 @@ function requestAPI() {
 let dropdown = {
     active() {
         $('.ui.selection.dropdown').dropdown()
-        if (currentCountry == 'en') {
-            document.querySelector('#lang .text').innerText = 'English'
-        } else if (currentCountry == 'ko') {
-            document.querySelector('#lang .text').innerText = '한국어'
-        } else {
-            document.querySelector('#lang .text').innerText = 'English (Romaji)'
+        switch (currentCountry) {
+            case 'en':
+                document.querySelector('#lang .text').innerText = 'English'
+                break;
+            case 'ko':
+                document.querySelector('#lang .text').innerText = '한국어'
+                break
+            default:
+                document.querySelector('#lang .text').innerText = 'English (Romaji)'
+                break;
         }
     },
     change() {
         const dropdownValueLang = $('input[name=lang]').val()
-            if (dropdownValueLang == 0) {
+        switch (dropdownValueLang) {
+            case '0':
                 currentCountry = 'en'
                 animeList.resetList(dayStatus, currentCountry)
-            }
-            if (dropdownValueLang == 1) {
+                break
+            case '1':
                 currentCountry = 'rom'
                 animeList.resetList(dayStatus, currentCountry)
-            }
-            if (dropdownValueLang == 2) {
+                break
+            case '2':
                 currentCountry = 'ko'
                 animeList.resetList(dayStatus, currentCountry)
-            }
+                break
+        }
     }
 }
 let animeList = {
-    create(day, lang) {
+    create(day, lang) {    
         const animeLinksWrapper = document.querySelector('.c-animes')
         for (let i = 0; i < animeJSON[day].length; i++) {
             animeLinksWrapper.appendChild(document.querySelector('.template>a.item').cloneNode(true))
-            if (lang == 'en') {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i].eng_title
-            } else if (lang == 'ko') {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i].kor_title
-            } else {
-                document.querySelector('.c-animes a.item:last-child div.title').innerHTML = animeJSON[day][i].title
+            const tableItem = document.querySelector('.c-animes a.item:last-child')
+            const tableItemRight = document.querySelector('.c-animes a.item:last-child .right')
+            switch (lang) {
+                case 'ko':
+                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].kor_title
+                    break;
+                case 'en':
+                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].eng_title
+                    break;
+                default:
+                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].title
+                    break;
             }
-            document.querySelector('.c-animes a.item:last-child div.time').innerHTML = animeJSON[day][i].time
-            document.querySelector('.c-animes a.item:last-child div.release').innerHTML = 'Ep. '+animeJSON[day][i].episode
-            document.querySelector('.c-animes a.item:last-child').setAttribute('id', i)
+            if (animeJSON[day][i].episode != '-1') {
+                tableItemRight.childNodes[1].innerHTML = 'Ep. '+animeJSON[day][i].episode
+            } else {
+                tableItemRight.childNodes[1].innerHTML = 'Finished'
+            }
+            tableItemRight.childNodes[3].innerHTML = animeJSON[day][i].time
+            tableItem.setAttribute('id', i)
+            tableItem.addEventListener('click', clickedItem)
         }
     },
     remove() {
@@ -161,20 +156,43 @@ let animeList = {
         this.remove()
         this.create(day, lang)
     },
-    createTorrent(info) {
-        console.log(info)
+    createTorrent(animeItem) {
+        let fanmadeURL = 'https://ohys.seia.io/series/'
+        let mirrorURL = 'https://cryental.dev/services/anime/?search='
+        let nyaaURL = 'https://nyaa.si/user/ohys?f=0&c=0_0&q='
+
         const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
-        document.querySelector('.modal img').setAttribute('src', info.info.series[0].coverImageURL)
-        for (let i = 0; i < info.info.search.length; i++) {
-            animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
-            document.querySelector('.ui.modal .description .header').innerText = info.title
-            document.querySelector('.ui.modal .torrent:last-child .title').innerText = `${info.title} - ${info.info.search[i].episode}`
-            document.querySelector('.ui.modal .torrent:last-child .format').innerText = `${info.info.search[i].resolution} ${info.info.search[i].audioFormat} ${info.info.search[i].videoFormat} ${info.info.search[i].broadcaster}`
-            document.querySelector('.ui.modal .torrent:last-child .title').setAttribute('href', info.info.search[i].link)
+        let itemQuery = {
+            header: document.querySelector('.ui.modal .description .header'),
+            title: '',
+            format: '',
+            button: {
+                fanmade: document.querySelector('.ui.modal a.button.fanmade'),
+                mirror: document.querySelector('.ui.modal a.button.mirror'),
+                nyaa: document.querySelector('.ui.modal a.button.nyaa')
+            }
         }
-        document.querySelector('.ui.modal a.button.fanmade').setAttribute('href', fanmadeURL+info.torrentTitle)
-        document.querySelector('.ui.modal a.button.mirror').setAttribute('href', mirrorURL+info.torrentTitle)
-        document.querySelector('.ui.modal a.button.nyaa').setAttribute('href', nyaaURL+info.torrentTitle)
+        document.querySelector('.modal img').setAttribute('src', animeItem.info.series.coverImageURL)
+        for (let i = 0; i < animeItem.info.search.length; i++) {
+            animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
+
+            itemQuery.title = document.querySelector('.ui.modal .torrent:last-child .title')
+            itemQuery.format = document.querySelector('.ui.modal .torrent:last-child .format')
+
+            itemQuery.header.innerText = animeItem.title
+            if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
+            } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
+            } else {
+                itemQuery.title.innerText = `${animeItem.title} - All the episode`
+            }
+            itemQuery.format.innerText = `${animeItem.info.search[i].resolution} ${animeItem.info.search[i].audioFormat} ${animeItem.info.search[i].videoFormat} ${animeItem.info.search[i].broadcaster}`
+            itemQuery.title.setAttribute('href', animeItem.info.search[i].link)
+        }
+        itemQuery.button.fanmade.setAttribute('href', fanmadeURL+animeItem.torrentName)
+        itemQuery.button.mirror.setAttribute('href', mirrorURL+animeItem.torrentName)
+        itemQuery.button.nyaa.setAttribute('href', nyaaURL+animeItem.torrentName)
     }
 }
 
@@ -187,50 +205,64 @@ function dayClicked(event) {
     activedDayButton.classList.remove('active')
     clickedDayButton.classList.add('active')
 }
-function clickedItem(id) {
+function clickedItem(event) {
+    document.querySelector('.modal img').setAttribute('src', '')
     document.querySelector('.ui.modal .description .ui.list').innerHTML = null
-    let clickedTitle = document.getElementById(id.getAttribute('id')).getAttribute('id')
-    let animeInfo = {
-        info: {}
-    }
-    if (currentCountry == 'ko') {
-        animeInfo.title = animeJSON[dayStatus][clickedTitle].kor_title
-    } else if (currentCountry == 'en') {
-        animeInfo.title = animeJSON[dayStatus][clickedTitle].eng_title
-    } else {
-        animeInfo.title = animeJSON[dayStatus][clickedTitle].title
-    }
-    animeInfo.torrentTitle = animeJSON[dayStatus][clickedTitle].title
     $('.ui.modal').modal('show')
+    let clickedName = event.currentTarget.id
+    let JSONTarget = animeJSON[dayStatus][clickedName]
+    let animeInfo = {
+        title: '',
+        torrentName: '',
+        id: clickedName,
+        info: JSONTarget.info
+    }
 
-    let seriesForm = new FormData()
-    seriesForm.append('series', animeJSON[dayStatus][clickedTitle].title)
-    $.ajax({
-        url: ohysAPI+ohysAPISeries,
-        type: "post",
-        data: seriesForm,
-        dataType: "json",
-        async: false,
-        processData: false,
-        contentType: false,
-        crossDomain : true,
-    }).done(function(data) {
-        animeInfo.info.series = data
-    })
-    let searchForm = new FormData()
-    searchForm.append('scope', 'series')
-    searchForm.append('keyword', animeJSON[dayStatus][clickedTitle].title)
-    $.ajax({
-        url: ohysAPI+ohysAPISearch,
-        type: "post",
-        data: searchForm,
-        dataType: "json",
-        async: false,
-        processData: false,
-        contentType: false,
-        crossDomain : true,
-    }).done(function(data) {
-        animeInfo.info.search = data
-        animeList.createTorrent(animeInfo)
-    })
+    animeInfo.torrentName = JSONTarget.title
+
+    switch (currentCountry) {
+        case 'ko':
+            animeInfo.title = JSONTarget.kor_title
+            break;
+        case 'en':
+            animeInfo.title = JSONTarget.eng_title
+            break;
+        default:
+            animeInfo.title = JSONTarget.title
+            break;
+    }
+
+    if (!JSONTarget.seriesCrawled) {
+        let form = new FormData()
+        form.append('series', JSONTarget.title)
+    
+        let reqForm = new RequestForm(ohysAPI+ohysAPISeries, 'post', false, form)
+    
+        $.ajax(reqForm.form)
+            .done(function(data) {
+                JSONTarget.info.series = data[0]
+                JSONTarget.seriesCrawled = true
+            })
+    }
+    animeList.createTorrent(animeInfo)
+}
+let RequestForm = class {
+    constructor(reqURL, reqType, reqAsync, reqData = {} ) {
+        this.form = {}
+
+        this.form.url = reqURL
+        this.form.type = reqType
+        this.form.dataType = 'json'
+        this.form.async = reqAsync
+        switch (reqType) {
+            case 'get':
+                break
+            case 'post':
+                this.form.data = reqData
+                this.form.processData = false
+                this.form.contentType = false
+                this.form.crossDomain = true
+
+        }
+    }
 }

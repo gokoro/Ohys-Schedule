@@ -1,6 +1,4 @@
 <?php
-// Code By Cryental (https://github.com/Cryental)
-
 //Define Header
 header('Content-Type: application/json');
 
@@ -14,7 +12,7 @@ $apiKey = '';
 if (file_exists($cache_file) && (filemtime($cache_file) > (time() - 60 * 30 ))) {
    $file = file_get_contents($cache_file);
 } else {
-   $file = file_get_contents('https://api-modern.cryental.dev/ohys/timetable.so?api=' . $apiKey);
+   $file = file_get_contents('https://cryental.dev/api/ohys/timetable?api=' . $apiKey);
    file_put_contents($cache_file, $file, LOCK_EX);
 }
 
