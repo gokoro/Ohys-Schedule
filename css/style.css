@@ -1,21 +1,30 @@
 html, body {
-    font-family: Lato, Noto Sans KR, sans-serif;
+    font-family: 'Lato', 'Noto Sans KR', Icon, sans-serif!important;
     background-color: #fafafa
+}
+.gray-color {
+    color: gray!important;
+    font-weight: 500;
 }
 .template * {
     display: none;
 }
-.ui.modal, .ui.modal * {
-    font-family: Lato, Noto Sans KR, sans-serif!important;
+.ui.modal .header {
+    margin-bottom: 2px;
+    font-family: 'Lato', 'Noto Sans KR', Icon, sans-serif!important;
 }
-.ui.modal i {
-    font-family: Icons!important;
+.ui.modal img.image {
+    max-width: initial;
+    width: 300px;
 }
-.ui.modal .ui.container .button {
-    margin-bottom: 0.8em;
+.ui.modal .button {
+    margin-top: 0.8em;
 }
-.ui.relaxed.list {
+.ui.modal .ui.relaxed.list {
     margin-bottom: 1em;
+}
+.ui.modal .button-wrapper {
+    margin: 0!important;
 }
 .pusher > .ui.container {
     margin: 0!important;
@@ -42,7 +51,8 @@ html, body {
     margin-right: 1em;
 }
 .article .explain {
-    margin: 2em 0;
+    margin-top: 2em;
+    margin-bottom: 1em;
 }
 .c-day-wrapper {
     display: flex;
@@ -194,5 +204,12 @@ html, body {
         margin-bottom: 4px;
         padding: 5px;
         text-align: center;
+    }
+    .ui.modal {
+        width: 90%;
+    }
+    .ui.modal img.image {
+        max-width: 230px;
+        margin: 0 auto;
     }
 }

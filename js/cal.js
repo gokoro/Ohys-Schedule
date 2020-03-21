@@ -11,6 +11,11 @@ let ohysAPISeries = '/series'
 window.onload = function() {
     requestAPI()
 
+    // Fix not scrolling modal problem on mobile (https://github.com/Semantic-Org/Semantic-UI/issues/6656)
+    $('.ui.modal').on('touchmove', function(event) {
+        event.stopImmediatePropagation()
+    })
+
     document.querySelector('.c-day#Sunday').addEventListener('click', dayClicked)
     document.querySelector('.c-day#Monday').addEventListener('click', dayClicked)
     document.querySelector('.c-day#Tuesday').addEventListener('click', dayClicked)
@@ -19,7 +24,13 @@ window.onload = function() {
     document.querySelector('.c-day#Friday').addEventListener('click', dayClicked)
     document.querySelector('.c-day#Saturday').addEventListener('click', dayClicked)
 
-
+    document.querySelector('.sidebar-button').onclick = function() {
+        $('.ui.sidebar').sidebar('toggle')
+    }
+    document.querySelector('.dropdown#lang').onchange = function() {
+        dropdown.change('lang')
+    }
+    
     // Set Default Language
     let lang = String(navigator.language).toLowerCase()
 
@@ -38,12 +49,6 @@ window.onload = function() {
     const dayButton = document.querySelectorAll('.c-day')
     dayStatus = dayWord[today]
     dayButton[today].setAttribute('class', 'c-day active')
-}
-document.querySelector('.sidebar-button').onclick = function() {
-    $('.ui.sidebar').sidebar('toggle')
-}
-document.querySelector('.dropdown#lang').onchange = function() {
-    dropdown.change('lang')
 }
 function requestAPI() {
     let reqTimetableForm = new RequestForm(timetableAPI, 'get', true)
@@ -165,6 +170,8 @@ let animeList = {
         let itemQuery = {
             header: document.querySelector('.ui.modal .description .header'),
             title: '',
+            broadcastInfo: document.querySelector('.ui.modal .cast-info'),
+            image: document.querySelector('.modal img'),
             format: '',
             button: {
                 fanmade: document.querySelector('.ui.modal a.button.fanmade'),
@@ -172,27 +179,31 @@ let animeList = {
                 nyaa: document.querySelector('.ui.modal a.button.nyaa')
             }
         }
-        document.querySelector('.modal img').setAttribute('src', animeItem.info.series.coverImageURL)
+        itemQuery.image.setAttribute('src', animeItem.info.series.coverImageURL)
+        
+        itemQuery.broadcastInfo.innerText = animeItem.time
         for (let i = 0; i < animeItem.info.search.length; i++) {
-            animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
-
-            itemQuery.title = document.querySelector('.ui.modal .torrent:last-child .title')
-            itemQuery.format = document.querySelector('.ui.modal .torrent:last-child .format')
-
-            itemQuery.header.innerText = animeItem.title
-            if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
-            } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
-            } else {
-                itemQuery.title.innerText = `${animeItem.title} - All the episode`
+            if (animeItem.info.search[i].series == animeItem.torrentName) {
+                animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
+    
+                itemQuery.title = document.querySelector('.ui.modal .torrent:last-child .title')
+                itemQuery.format = document.querySelector('.ui.modal .torrent:last-child .format')
+    
+                itemQuery.header.innerText = animeItem.title
+                if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                    itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
+                } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                    itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
+                } else {
+                    itemQuery.title.innerText = `${animeItem.title} - All the episode`
+                }
+                itemQuery.format.innerText = `${animeItem.info.search[i].resolution} ${animeItem.info.search[i].audioFormat} ${animeItem.info.search[i].videoFormat} ${animeItem.info.search[i].broadcaster}`
+                itemQuery.title.setAttribute('href', animeItem.info.search[i].link)
             }
-            itemQuery.format.innerText = `${animeItem.info.search[i].resolution} ${animeItem.info.search[i].audioFormat} ${animeItem.info.search[i].videoFormat} ${animeItem.info.search[i].broadcaster}`
-            itemQuery.title.setAttribute('href', animeItem.info.search[i].link)
-        }
-        itemQuery.button.fanmade.setAttribute('href', fanmadeURL+animeItem.torrentName)
-        itemQuery.button.mirror.setAttribute('href', mirrorURL+animeItem.torrentName)
-        itemQuery.button.nyaa.setAttribute('href', nyaaURL+animeItem.torrentName)
+            itemQuery.button.fanmade.setAttribute('href', fanmadeURL+animeItem.torrentName)
+            itemQuery.button.mirror.setAttribute('href', mirrorURL+animeItem.torrentName)
+            itemQuery.button.nyaa.setAttribute('href', nyaaURL+animeItem.torrentName)
+            }
     }
 }
 
@@ -215,7 +226,8 @@ function clickedItem(event) {
         title: '',
         torrentName: '',
         id: clickedName,
-        info: JSONTarget.info
+        info: JSONTarget.info,
+        time: `${dayStatus} ${JSONTarget.time}`
     }
 
     animeInfo.torrentName = JSONTarget.title
