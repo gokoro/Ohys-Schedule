@@ -34,11 +34,15 @@ window.onload = function() {
     // Set Default Language
     let lang = String(navigator.language).toLowerCase()
 
-    if (lang == 'ko_kr' || lang == 'en_us' || lang == 'ko-kr' || lang == 'en-us') {
-        lang = lang.substr(0,2)
-        currentCountry = lang
+    if (lang.includes('ko') || lang.includes('en')) {
+        if (lang.length > 2 && lang.includes('-')) {
+            lang = lang.substr(0,2)
+            currentCountry = lang
+        } else {
+            currentCountry = lang    
+        }
     } else {
-        currentCountry = lang
+        currentCountry = 'rom'
     }
     dropdown.active()
 
