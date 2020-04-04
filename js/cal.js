@@ -3,10 +3,12 @@ let animeJSON = {}
 let dayStatus = ''
 let currentCountry = ''
 
-let timetableAPI = 'api/listAPI.php'
-let ohysAPI = 'https://ohys-api.gokoro.me'
-let ohysAPISearch = '/search'
-let ohysAPISeries = '/series'
+let apiURL = {
+    timetable: './api/listAPI.php',
+    ohys: 'https://ohys-api.gokoro.me',
+    ohysSearch: '/search',
+    ohysSeries: '/series'
+}
 
 window.onload = function() {
     requestAPI()
@@ -24,23 +26,22 @@ window.onload = function() {
     document.querySelector('.c-day#Friday').addEventListener('click', dayClicked)
     document.querySelector('.c-day#Saturday').addEventListener('click', dayClicked)
 
+    document.getElementById('asoriginal').addEventListener('change', function() {
+        replaceOriginalFileName(animeList.clickedAnimeID)
+    })
+
     document.querySelector('.sidebar-button').onclick = function() {
         $('.ui.sidebar').sidebar('toggle')
     }
     document.querySelector('.dropdown#lang').onchange = function() {
-        dropdown.change('lang')
+        dropdown.change()
     }
     
     // Set Default Language
     let lang = String(navigator.language).toLowerCase()
-
     if (lang.includes('ko') || lang.includes('en')) {
-        if (lang.length > 2 && lang.includes('-')) {
-            lang = lang.substr(0,2)
-            currentCountry = lang
-        } else {
-            currentCountry = lang    
-        }
+        lang = lang.substr(0,2)
+        currentCountry = lang
     } else {
         currentCountry = 'rom'
     }
@@ -55,27 +56,36 @@ window.onload = function() {
     dayButton[today].setAttribute('class', 'c-day active')
 }
 function requestAPI() {
-    let reqTimetableForm = new RequestForm(timetableAPI, 'get', true)
+    let reqTimetableForm = new RequestForm(apiURL.timetable, 'get', true)
 
     $.ajax(reqTimetableForm.form).done(function(data) {
         animeJSON = data.database
+        
+        animeList.create(dayStatus, currentCountry)
+        document.querySelector('.plzwait').remove()
+
         for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
             let form = new FormData()
-            let reqForm = new RequestForm(ohysAPI+ohysAPISearch, 'post', false, form)
+            let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, form)
 
             form.append('scope', 'series')
             form.append('keyword', animeJSON[dayStatus][i].title)
 
             $.ajax(reqForm.form).done(function(data) {
-                animeJSON[dayStatus][i].episode = data[0].episode
+                try {
+                    animeJSON[dayStatus][i].episode = data[0].episode
+                } catch (err) {
+                    animeJSON[dayStatus][i].episode = '0'
+                } finally {
+                    document.querySelector('.c-animes').children[i].children[2].children[0].innerText = 'Ep. '+ animeJSON[dayStatus][i].episode
+                }
             })
         }
-        animeList.create(dayStatus, currentCountry)
-        document.querySelector('.plzwait').remove()
+
         for (let dayProperty in animeJSON) {
             for (let i = 0, aj = animeJSON[dayProperty].length; i < aj; i++) {
                 let form = new FormData()
-                let reqForm = new RequestForm(ohysAPI+ohysAPISearch, 'post', true, form)
+                let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', true, form)
                 
                 form.append('scope', 'series')
                 form.append('keyword', animeJSON[dayProperty][i].title)
@@ -87,12 +97,16 @@ function requestAPI() {
                             animeJSON[dayProperty][i].info = {}
                             animeJSON[dayProperty][i].info.search = data
                             animeJSON[dayProperty][i].seriesCrawled = false
-                        } catch (err) {}
+                        } catch (err) {
+                            animeJSON[dayProperty][i].episode = '0'
+                            animeJSON[dayProperty][i].seriesCrawled = true
+                        }
                 })
             }
         }    
     })
 }
+  
 let dropdown = {
     active() {
         $('.ui.selection.dropdown').dropdown()
@@ -127,23 +141,27 @@ let dropdown = {
     }
 }
 let animeList = {
+    clickedAnimeID: 0,
+
     create(day, lang) {    
         const animeLinksWrapper = document.querySelector('.c-animes')
-        for (let i = 0; i < animeJSON[day].length; i++) {
+        let currentTitleLang = ''
+        switch (lang) {
+            case 'ko':
+                currentTitleLang = 'kor_title'
+                break;
+            case 'en':
+                currentTitleLang = 'eng_title'
+                break;
+            default:
+                currentTitleLang = 'title'
+                break;
+        }
+        for (let i = 0, l = animeJSON[day].length; i < l; i++) {
             animeLinksWrapper.appendChild(document.querySelector('.template>a.item').cloneNode(true))
-            const tableItem = document.querySelector('.c-animes a.item:last-child')
-            const tableItemRight = document.querySelector('.c-animes a.item:last-child .right')
-            switch (lang) {
-                case 'ko':
-                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].kor_title
-                    break;
-                case 'en':
-                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].eng_title
-                    break;
-                default:
-                    tableItem.childNodes[1].innerHTML = animeJSON[day][i].title
-                    break;
-            }
+            const tableItem = animeLinksWrapper.querySelector('a.item:last-child')
+            const tableItemRight = animeLinksWrapper.querySelector('a.item:last-child .right')
+            tableItem.childNodes[1].innerHTML = animeJSON[day][i][currentTitleLang]
             if (animeJSON[day][i].episode != '-1') {
                 tableItemRight.childNodes[1].innerHTML = 'Ep. '+animeJSON[day][i].episode
             } else {
@@ -155,11 +173,7 @@ let animeList = {
         }
     },
     remove() {
-        const animeListLength = document.querySelectorAll('.c-animes a.item').length
-
-        for (let i = 0; i < animeListLength; i++) {
-            document.querySelector('.c-animes a.item').remove()
-        }
+        document.querySelector('.c-animes').innerHTML = null
     },
     resetList(day, lang) {
         this.remove()
@@ -171,6 +185,8 @@ let animeList = {
         let nyaaURL = 'https://nyaa.si/user/ohys?f=0&c=0_0&q='
 
         const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
+        let asOriginalInputValue = document.querySelector('.ui.modal input#asoriginal').getAttribute('value')
+
         let itemQuery = {
             header: document.querySelector('.ui.modal .description .header'),
             title: '',
@@ -183,31 +199,35 @@ let animeList = {
                 nyaa: document.querySelector('.ui.modal a.button.nyaa')
             }
         }
-        itemQuery.image.setAttribute('src', animeItem.info.series.coverImageURL)
-        
+        itemQuery.header.innerText = animeItem.title
         itemQuery.broadcastInfo.innerText = animeItem.time
-        for (let i = 0; i < animeItem.info.search.length; i++) {
+        for (let i = 0, l = animeItem.info.search.length; i < l; i++) {
             if (animeItem.info.search[i].series == animeItem.torrentName) {
                 animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
-    
-                itemQuery.title = document.querySelector('.ui.modal .torrent:last-child .title')
-                itemQuery.format = document.querySelector('.ui.modal .torrent:last-child .format')
-    
-                itemQuery.header.innerText = animeItem.title
-                if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                    itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
-                } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                    itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
+                
+                itemQuery.title = animeLinksWrapper.querySelector('.torrent:last-child .title')
+                itemQuery.format = animeLinksWrapper.querySelector('.torrent:last-child .format')
+                if (asOriginalInputValue === 'false') {
+                    if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                        itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
+                    } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
+                        itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
+                    } else {
+                        itemQuery.title.innerText = `${animeItem.title} - All the episode`
+                    }
                 } else {
-                    itemQuery.title.innerText = `${animeItem.title} - All the episode`
+                    itemQuery.title.innerText = animeItem.info.search[i].original
                 }
                 itemQuery.format.innerText = `${animeItem.info.search[i].resolution} ${animeItem.info.search[i].audioFormat} ${animeItem.info.search[i].videoFormat} ${animeItem.info.search[i].broadcaster}`
                 itemQuery.title.setAttribute('href', animeItem.info.search[i].link)
             }
-            itemQuery.button.fanmade.setAttribute('href', fanmadeURL+animeItem.torrentName)
-            itemQuery.button.mirror.setAttribute('href', mirrorURL+animeItem.torrentName)
-            itemQuery.button.nyaa.setAttribute('href', nyaaURL+animeItem.torrentName)
-            }
+        }
+
+        itemQuery.button.fanmade.setAttribute('href', fanmadeURL+animeItem.torrentName)
+        itemQuery.button.mirror.setAttribute('href', mirrorURL+animeItem.torrentName)
+        itemQuery.button.nyaa.setAttribute('href', nyaaURL+animeItem.torrentName)
+
+        itemQuery.image.setAttribute('src', animeItem.info.series.coverImageURL)
     }
 }
 
@@ -252,7 +272,7 @@ function clickedItem(event) {
         let form = new FormData()
         form.append('series', JSONTarget.title)
     
-        let reqForm = new RequestForm(ohysAPI+ohysAPISeries, 'post', false, form)
+        let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSeries, 'post', false, form)
     
         $.ajax(reqForm.form)
             .done(function(data) {
@@ -261,6 +281,41 @@ function clickedItem(event) {
             })
     }
     animeList.createTorrent(animeInfo)
+    animeList.clickedAnimeID = animeInfo.id
+}
+function replaceOriginalFileName(clickedAnimeName) {
+    const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
+    let asOriginalInputValue = document.querySelector('.ui.modal input#asoriginal').getAttribute('value')
+    let JSONSearchTarget = animeJSON[dayStatus][clickedAnimeName].info.search
+    let currentCountryTitle = ''
+    switch (currentCountry) {
+        case 'ko':
+            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].kor_title
+            break;
+        case 'en':
+            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].eng_title
+            break;
+        default:
+            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].title
+            break;
+    }
+    if (asOriginalInputValue === 'true') {
+        document.querySelector('.ui.modal input#asoriginal').setAttribute('value', 'false')
+        for (let i = 0, l = JSONSearchTarget.length; i < l; i++) {
+            if (JSONSearchTarget[i].episode != '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
+                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - ${JSONSearchTarget[i].episode}`
+            } else if (JSONSearchTarget[i].episode == '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
+                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - ${JSONSearchTarget[i].series} (Single Episode)`
+            } else {
+                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - All the episode`
+            }
+        }
+    } else {
+        document.querySelector('.ui.modal input#asoriginal').setAttribute('value', 'true')
+        for (let i = 0, l = JSONSearchTarget.length; i < l; i++) {
+            animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = JSONSearchTarget[i].original
+        }    
+    }
 }
 let RequestForm = class {
     constructor(reqURL, reqType, reqAsync, reqData = {} ) {
@@ -278,7 +333,6 @@ let RequestForm = class {
                 this.form.processData = false
                 this.form.contentType = false
                 this.form.crossDomain = true
-
         }
     }
 }
