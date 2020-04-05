@@ -70,18 +70,14 @@ function requestAPI() {
         
             for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
                 let episodeElement = document.querySelector('.c-animes').children[i].children[2].children[0]
-                if (episodeJSON[dayStatus][i].result != '-1') {
-                    episodeElement.innerText = 'Ep. '+ episodeJSON[dayStatus][i].result
-                } else {
-                    episodeElement.innerText = 'Finished'
-                }
+                episodeElement.innerText = 'Ep. '+ episodeJSON[dayStatus][i].result
             }
             for (dayProperty in animeJSON) {
                 for (let i = 0, l = animeJSON[dayProperty].length; i < l; i++) {
                     animeJSON[dayProperty][i].episode = episodeJSON[dayProperty][i].result
                 }
             }
-            document.querySelector('.explain').innerText = `Episode info was updated ${minAgo}`
+            document.querySelector('.explain span.ago').innerHTML = minAgo
         })
     })
 }

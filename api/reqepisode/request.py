@@ -7,8 +7,8 @@ import threading
 def main():
     nowTime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
     # Set API urls
-    timetableURL = 'your_timetable_api_url'
-    searchURL = 'your_ohys-api_url'
+    timetableURL = ''
+    searchURL = ''
 
     # It'll be main JSON file.
     timetableJSON = {'created_at':nowTime, 'Sunday': [], 'Monday':[], 'Tuesday':[], 'Wednesday':[], 'Thursday':[], 'Friday':[], 'Saturday':[] }
@@ -31,11 +31,24 @@ def main():
 
             # Get Episode Number
             try:
-                epNum = {'title': item['title'], 'result': response[0]['episode']}
-                pass
+                # If not finished episode, and not single episode
+                if response[0]['videoFormat'] != 'torrent' and response[0]['episode'] != '-1':
+                    epNum = {'title': item['title'], 'result': response[0]['episode']}
+
+                # If finished episode
+                elif response[0]['videoFormat'] == 'torrent' and response[0]['episode'] == '-1':
+                    epNum = {'title': item['title'], 'result': 'Finished'}
+
+                # If single episode
+                elif response[0]['videoFormat'] != 'torrent' and response[0]['episode'] == '-1':
+                    epNum = {'title': item['title'], 'result': 'Single'}
+
+                # others
+                else:
+                    epNum = {'title': item['title'], 'result': 'N/A'}
+                    
             except:
                 epNum = {'title': item['title'], 'result': '0'}
-                pass
 
             # Append to Main JSON Object
             timetableJSON[dayProperty].append(epNum)
