@@ -1,6 +1,6 @@
 html, body {
     font-family: 'Lato', 'Noto Sans KR', Icon, sans-serif!important;
-    background-color: #fafafa
+    background-color: #fafafa;
 }
 .gray-color {
     color: gray!important;
@@ -53,6 +53,7 @@ html, body {
 .article .explain {
     margin-top: 2em;
     margin-bottom: 1em;
+    text-align: right;
 }
 .c-day-wrapper {
     display: flex;
@@ -78,8 +79,7 @@ html, body {
     transition: bottom 75ms ease-in
 }
 .c-day-wrapper .c-day.active {
-    font-family: Noto Sans KR;
-    font-weight: 500;
+    font-weight: 700;
     color: #FFF!important;
     background-color: #86D8C9!important;
 }

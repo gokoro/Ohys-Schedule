@@ -57,53 +57,32 @@ window.onload = function() {
 }
 function requestAPI() {
     let reqTimetableForm = new RequestForm(apiURL.timetable, 'get', true)
-
     $.ajax(reqTimetableForm.form).done(function(data) {
         animeJSON = data.database
-        
+
         animeList.create(dayStatus, currentCountry)
         document.querySelector('.plzwait').remove()
 
-        for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
-            let form = new FormData()
-            let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, form)
-
-            form.append('scope', 'series')
-            form.append('keyword', animeJSON[dayStatus][i].title)
-
-            $.ajax(reqForm.form).done(function(data) {
-                try {
-                    animeJSON[dayStatus][i].episode = data[0].episode
-                } catch (err) {
-                    animeJSON[dayStatus][i].episode = '0'
-                } finally {
-                    document.querySelector('.c-animes').children[i].children[2].children[0].innerText = 'Ep. '+ animeJSON[dayStatus][i].episode
+        let reqEpisodeJSON = new RequestForm('api/episode.json', 'get', true)
+        $.ajax(reqEpisodeJSON.form).done(function(data) {
+            let episodeJSON = data
+            let minAgo = moment(data.created_at, 'YYYY-MM-DD HH:mm:ss').tz('Asia/Tokyo').fromNow()
+        
+            for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
+                let episodeElement = document.querySelector('.c-animes').children[i].children[2].children[0]
+                if (episodeJSON[dayStatus][i].result != '-1') {
+                    episodeElement.innerText = 'Ep. '+ episodeJSON[dayStatus][i].result
+                } else {
+                    episodeElement.innerText = 'Finished'
                 }
-            })
-        }
-
-        for (let dayProperty in animeJSON) {
-            for (let i = 0, aj = animeJSON[dayProperty].length; i < aj; i++) {
-                let form = new FormData()
-                let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', true, form)
-                
-                form.append('scope', 'series')
-                form.append('keyword', animeJSON[dayProperty][i].title)
-                
-                $.ajax(reqForm.form)
-                    .done(function(data) {
-                        try {
-                            animeJSON[dayProperty][i].episode = data[0].episode
-                            animeJSON[dayProperty][i].info = {}
-                            animeJSON[dayProperty][i].info.search = data
-                            animeJSON[dayProperty][i].seriesCrawled = false
-                        } catch (err) {
-                            animeJSON[dayProperty][i].episode = '0'
-                            animeJSON[dayProperty][i].seriesCrawled = true
-                        }
-                })
             }
-        }    
+            for (dayProperty in animeJSON) {
+                for (let i = 0, l = animeJSON[dayProperty].length; i < l; i++) {
+                    animeJSON[dayProperty][i].episode = episodeJSON[dayProperty][i].result
+                }
+            }
+            document.querySelector('.explain').innerText = `Episode info was updated ${minAgo}`
+        })
     })
 }
   
@@ -202,7 +181,7 @@ let animeList = {
         itemQuery.header.innerText = animeItem.title
         itemQuery.broadcastInfo.innerText = animeItem.time
         for (let i = 0, l = animeItem.info.search.length; i < l; i++) {
-            if (animeItem.info.search[i].series == animeItem.torrentName) {
+            if (animeItem.info.search[i].series.includes(animeItem.torrentName)) {
                 animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
                 
                 itemQuery.title = animeLinksWrapper.querySelector('.torrent:last-child .title')
@@ -211,7 +190,7 @@ let animeList = {
                     if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
                         itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
                     } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                        itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].series} (Single Episode)`
+                        itemQuery.title.innerText = `${animeItem.title} - (Single Episode)`
                     } else {
                         itemQuery.title.innerText = `${animeItem.title} - All the episode`
                     }
@@ -241,20 +220,51 @@ function dayClicked(event) {
     clickedDayButton.classList.add('active')
 }
 function clickedItem(event) {
+    $('.ui.modal').modal('show')
     document.querySelector('.modal img').setAttribute('src', '')
     document.querySelector('.ui.modal .description .ui.list').innerHTML = null
-    $('.ui.modal').modal('show')
+
     let clickedName = event.currentTarget.id
     let JSONTarget = animeJSON[dayStatus][clickedName]
     let animeInfo = {
         title: '',
-        torrentName: '',
+        torrentName: JSONTarget.title,
         id: clickedName,
-        info: JSONTarget.info,
+        info: '',
         time: `${dayStatus} ${JSONTarget.time}`
     }
 
-    animeInfo.torrentName = JSONTarget.title
+    animeList.clickedAnimeID = animeInfo.id
+    
+    if (!JSONTarget.seriesCrawled) {
+        JSONTarget.info = {}
+
+        let srform = new FormData()
+    
+        srform.append('scope', 'series')
+        srform.append('keyword', animeInfo.torrentName)
+    
+        let reqSearchForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, srform)
+    
+        $.ajax(reqSearchForm.form)
+            .done(function(data) {
+                try {
+                    JSONTarget.info.search = data
+                } catch (err) {}
+        })
+
+        let seform = new FormData()
+        seform.append('series', JSONTarget.title)
+    
+        let reqSeriesForm = new RequestForm(apiURL.ohys+apiURL.ohysSeries, 'post', false, seform)
+    
+        $.ajax(reqSeriesForm.form)
+            .done(function(data) {
+                JSONTarget.info.series = data[0]
+            })
+        }
+    animeInfo.info = JSONTarget.info
+    JSONTarget.seriesCrawled = true
 
     switch (currentCountry) {
         case 'ko':
@@ -267,21 +277,7 @@ function clickedItem(event) {
             animeInfo.title = JSONTarget.title
             break;
     }
-
-    if (!JSONTarget.seriesCrawled) {
-        let form = new FormData()
-        form.append('series', JSONTarget.title)
-    
-        let reqForm = new RequestForm(apiURL.ohys+apiURL.ohysSeries, 'post', false, form)
-    
-        $.ajax(reqForm.form)
-            .done(function(data) {
-                JSONTarget.info.series = data[0]
-                JSONTarget.seriesCrawled = true
-            })
-    }
     animeList.createTorrent(animeInfo)
-    animeList.clickedAnimeID = animeInfo.id
 }
 function replaceOriginalFileName(clickedAnimeName) {
     const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
@@ -305,7 +301,7 @@ function replaceOriginalFileName(clickedAnimeName) {
             if (JSONSearchTarget[i].episode != '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
                 animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - ${JSONSearchTarget[i].episode}`
             } else if (JSONSearchTarget[i].episode == '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
-                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - ${JSONSearchTarget[i].series} (Single Episode)`
+                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - (Single Episode)`
             } else {
                 animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - All the episode`
             }
