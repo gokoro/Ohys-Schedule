@@ -1,6 +1,9 @@
 html, body {
-    font-family: 'Lato', 'Noto Sans KR', Icon, sans-serif!important;
-    background-color: #fafafa;
+    font-family: 'Lato', 'Noto Sans KR', 'Noto Sans JP', Icon, sans-serif!important;
+    background: #fafafa!important;
+}
+body.pushable>.pusher {
+    background: #fafafa!important;
 }
 .gray-color {
     color: gray!important;
@@ -11,7 +14,7 @@ html, body {
 }
 .ui.modal .header {
     margin-bottom: 2px;
-    font-family: 'Lato', 'Noto Sans KR', Icon, sans-serif!important;
+    font-family: 'Lato', 'Noto Sans KR', 'Noto Sans JP', Icon, sans-serif!important;
 }
 .ui.modal img.image {
     max-width: initial;
@@ -54,6 +57,9 @@ html, body {
     margin-top: 2em;
     margin-bottom: 1em;
     text-align: right;
+}
+.article .explain > span.ago {
+    color: #000;
 }
 .c-day-wrapper {
     display: flex;
@@ -119,7 +125,7 @@ html, body {
     border-bottom: 1px solid rgba(255,255,255,.5)
 }
 .c-animes .title {
-    font-family: Noto Sans KR;
+    font-family: 'Noto Sans KR', 'Noto Sans JP', sans-serif;
     font-size: 16px;
     font-weight: 500;
     letter-spacing: -.75px;

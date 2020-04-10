@@ -4,7 +4,7 @@ let dayStatus = ''
 let currentCountry = ''
 
 let apiURL = {
-    timetable: './api/listAPI.php',
+    timetable: 'https://ohys-cacheapi.gokoro.me',
     ohys: 'https://ohys-api.gokoro.me',
     ohysSearch: '/search',
     ohysSeries: '/series'
@@ -39,12 +39,21 @@ window.onload = function() {
     
     // Set Default Language
     let lang = String(navigator.language).toLowerCase()
-    if (lang.includes('ko') || lang.includes('en')) {
         lang = lang.substr(0,2)
-        currentCountry = lang
-    } else {
-        currentCountry = 'rom'
-    }
+        switch (lang) {
+            case 'ko':
+                currentCountry = 'kor_'
+                break
+            case 'en':
+                currentCountry = 'eng_'
+                break
+            case 'ja':
+                currentCountry = 'ja_'
+                break
+            default:
+                currentCountry = ''
+                break
+        }
     dropdown.active()
 
     // Set Default Day
@@ -56,29 +65,13 @@ window.onload = function() {
     dayButton[today].setAttribute('class', 'c-day active')
 }
 function requestAPI() {
-    let reqTimetableForm = new RequestForm(apiURL.timetable, 'get', true)
-    $.ajax(reqTimetableForm.form).done(function(data) {
-        animeJSON = data.database
-
+    let reqEpisodeJSON = requestForm(apiURL.timetable, 'get', true)
+    $.ajax(reqEpisodeJSON).done(function(data) {
+        animeJSON = data
         animeList.create(dayStatus, currentCountry)
-        document.querySelector('.plzwait').remove()
-
-        let reqEpisodeJSON = new RequestForm('api/episode.json', 'get', true)
-        $.ajax(reqEpisodeJSON.form).done(function(data) {
-            let episodeJSON = data
-            let minAgo = moment(data.created_at, 'YYYY-MM-DD HH:mm:ss').tz('Asia/Tokyo').fromNow()
-        
-            for (let i = 0, aj = animeJSON[dayStatus].length; i < aj; i++) {
-                let episodeElement = document.querySelector('.c-animes').children[i].children[2].children[0]
-                episodeElement.innerText = 'Ep. '+ episodeJSON[dayStatus][i].result
-            }
-            for (dayProperty in animeJSON) {
-                for (let i = 0, l = animeJSON[dayProperty].length; i < l; i++) {
-                    animeJSON[dayProperty][i].episode = episodeJSON[dayProperty][i].result
-                }
-            }
-            document.querySelector('.explain span.ago').innerHTML = minAgo
-        })
+        $('#plzwait').remove()
+        let minAgo = moment(data.created_at, 'YYYY-MM-DD HH:mm:ss').tz('Asia/Tokyo').fromNow()
+        document.querySelector('.explain span.ago').innerHTML = minAgo
     })
 }
   
@@ -86,12 +79,15 @@ let dropdown = {
     active() {
         $('.ui.selection.dropdown').dropdown()
         switch (currentCountry) {
-            case 'en':
+            case 'eng_':
                 document.querySelector('#lang .text').innerText = 'English'
                 break;
-            case 'ko':
+            case 'kor_':
                 document.querySelector('#lang .text').innerText = '한국어'
                 break
+            case 'ja_':
+                document.querySelector('#lang .text').innerText = '日本語'
+                break    
             default:
                 document.querySelector('#lang .text').innerText = 'English (Romaji)'
                 break;
@@ -101,17 +97,21 @@ let dropdown = {
         const dropdownValueLang = $('input[name=lang]').val()
         switch (dropdownValueLang) {
             case '0':
-                currentCountry = 'en'
+                currentCountry = 'eng_'
                 animeList.resetList(dayStatus, currentCountry)
                 break
             case '1':
-                currentCountry = 'rom'
+                currentCountry = ''
                 animeList.resetList(dayStatus, currentCountry)
                 break
             case '2':
-                currentCountry = 'ko'
+                currentCountry = 'kor_'
                 animeList.resetList(dayStatus, currentCountry)
                 break
+            case '3':
+                currentCountry = 'ja_'
+                animeList.resetList(dayStatus, currentCountry)
+                break    
         }
     }
 }
@@ -120,23 +120,11 @@ let animeList = {
 
     create(day, lang) {    
         const animeLinksWrapper = document.querySelector('.c-animes')
-        let currentTitleLang = ''
-        switch (lang) {
-            case 'ko':
-                currentTitleLang = 'kor_title'
-                break;
-            case 'en':
-                currentTitleLang = 'eng_title'
-                break;
-            default:
-                currentTitleLang = 'title'
-                break;
-        }
         for (let i = 0, l = animeJSON[day].length; i < l; i++) {
             animeLinksWrapper.appendChild(document.querySelector('.template>a.item').cloneNode(true))
             const tableItem = animeLinksWrapper.querySelector('a.item:last-child')
             const tableItemRight = animeLinksWrapper.querySelector('a.item:last-child .right')
-            tableItem.childNodes[1].innerHTML = animeJSON[day][i][currentTitleLang]
+            tableItem.childNodes[1].innerHTML = animeJSON[day][i][lang+'title']
             if (animeJSON[day][i].episode != '-1') {
                 tableItemRight.childNodes[1].innerHTML = 'Ep. '+animeJSON[day][i].episode
             } else {
@@ -233,64 +221,31 @@ function clickedItem(event) {
     animeList.clickedAnimeID = animeInfo.id
     
     if (!JSONTarget.seriesCrawled) {
-        JSONTarget.info = {}
-
         let srform = new FormData()
-    
         srform.append('scope', 'series')
         srform.append('keyword', animeInfo.torrentName)
     
-        let reqSearchForm = new RequestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, srform)
-    
-        $.ajax(reqSearchForm.form)
+        let reqSearchForm = requestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, srform)
+
+        $.ajax(reqSearchForm)
             .done(function(data) {
                 try {
                     JSONTarget.info.search = data
                 } catch (err) {}
         })
-
-        let seform = new FormData()
-        seform.append('series', JSONTarget.title)
-    
-        let reqSeriesForm = new RequestForm(apiURL.ohys+apiURL.ohysSeries, 'post', false, seform)
-    
-        $.ajax(reqSeriesForm.form)
-            .done(function(data) {
-                JSONTarget.info.series = data[0]
-            })
-        }
+    }
     animeInfo.info = JSONTarget.info
     JSONTarget.seriesCrawled = true
+    animeInfo.title = JSONTarget[currentCountry+'title']
 
-    switch (currentCountry) {
-        case 'ko':
-            animeInfo.title = JSONTarget.kor_title
-            break;
-        case 'en':
-            animeInfo.title = JSONTarget.eng_title
-            break;
-        default:
-            animeInfo.title = JSONTarget.title
-            break;
-    }
     animeList.createTorrent(animeInfo)
 }
 function replaceOriginalFileName(clickedAnimeName) {
     const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
     let asOriginalInputValue = document.querySelector('.ui.modal input#asoriginal').getAttribute('value')
     let JSONSearchTarget = animeJSON[dayStatus][clickedAnimeName].info.search
-    let currentCountryTitle = ''
-    switch (currentCountry) {
-        case 'ko':
-            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].kor_title
-            break;
-        case 'en':
-            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].eng_title
-            break;
-        default:
-            currentCountryTitle = animeJSON[dayStatus][clickedAnimeName].title
-            break;
-    }
+    let currentCountryTitle = animeJSON[dayStatus][clickedAnimeName][currentCountry+'title']
+
     if (asOriginalInputValue === 'true') {
         document.querySelector('.ui.modal input#asoriginal').setAttribute('value', 'false')
         for (let i = 0, l = JSONSearchTarget.length; i < l; i++) {
@@ -309,22 +264,20 @@ function replaceOriginalFileName(clickedAnimeName) {
         }    
     }
 }
-let RequestForm = class {
-    constructor(reqURL, reqType, reqAsync, reqData = {} ) {
-        this.form = {}
-
-        this.form.url = reqURL
-        this.form.type = reqType
-        this.form.dataType = 'json'
-        this.form.async = reqAsync
-        switch (reqType) {
-            case 'get':
-                break
-            case 'post':
-                this.form.data = reqData
-                this.form.processData = false
-                this.form.contentType = false
-                this.form.crossDomain = true
-        }
+let requestForm = function (reqURL, reqType, reqAsync, reqData = {}) {
+    let form = {}
+    form.url = reqURL
+    form.type = reqType
+    form.dataType = 'json'
+    form.async = reqAsync
+    switch (reqType) {
+        case 'get':
+            break
+        case 'post':
+            form.data = reqData
+            form.processData = false
+            form.contentType = false
+            form.crossDomain = true
     }
+    return form
 }
