@@ -3,13 +3,6 @@ let animeJSON = {}
 let dayStatus = ''
 let currentCountry = ''
 
-let apiURL = {
-    timetable: 'https://ohys-cacheapi.gokoro.me',
-    ohys: 'https://ohys-api.gokoro.me',
-    ohysSearch: '/search',
-    ohysSeries: '/series'
-}
-
 window.onload = function() {
     requestAPI()
 
@@ -57,15 +50,15 @@ window.onload = function() {
     dropdown.active()
 
     // Set Default Day
-    let date = moment()
-    let today = date.tz('Asia/Tokyo').day()
+    let today = moment().tz('Asia/Tokyo').day()
     const dayWord = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const dayButton = document.querySelectorAll('.c-day')
     dayStatus = dayWord[today]
     dayButton[today].setAttribute('class', 'c-day active')
 }
 function requestAPI() {
-    let reqEpisodeJSON = requestForm(apiURL.timetable, 'get', true)
+    const timetable = 'https://ohys-cacheapi.gokoro.me'
+    let reqEpisodeJSON = requestForm(timetable, 'get', true)
     $.ajax(reqEpisodeJSON).done(function(data) {
         animeJSON = data
         animeList.create(dayStatus, currentCountry)
@@ -136,16 +129,16 @@ let animeList = {
         }
     },
     remove() {
-        document.querySelector('.c-animes').innerHTML = null
+        document.querySelector('.c-animes').innerHTML = ''
     },
     resetList(day, lang) {
         this.remove()
         this.create(day, lang)
     },
     createTorrent(animeItem) {
-        let fanmadeURL = 'https://ohys.seia.io/series/'
-        let mirrorURL = 'https://cryental.dev/services/anime/?search='
-        let nyaaURL = 'https://nyaa.si/user/ohys?f=0&c=0_0&q='
+        const fanmadeURL = 'https://ohys.seia.io/series/'
+        const mirrorURL = 'https://cryental.dev/services/anime/?search='
+        const nyaaURL = 'https://nyaa.si/user/ohys?f=0&c=0_0&q='
 
         const animeLinksWrapper = document.querySelector('.ui.modal .description .ui.list')
         let asOriginalInputValue = document.querySelector('.ui.modal input#asoriginal').getAttribute('value')
@@ -174,7 +167,7 @@ let animeList = {
                     if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
                         itemQuery.title.innerText = `${animeItem.title} - ${animeItem.info.search[i].episode}`
                     } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-                        itemQuery.title.innerText = `${animeItem.title} - (Single Episode)`
+                        itemQuery.title.innerText = `${animeItem.title} - Single Episode`
                     } else {
                         itemQuery.title.innerText = `${animeItem.title} - All the episode`
                     }
@@ -208,6 +201,7 @@ function clickedItem(event) {
     document.querySelector('.modal img').setAttribute('src', '')
     document.querySelector('.ui.modal .description .ui.list').innerHTML = null
 
+    const ohys = 'https://ohys-api.gokoro.me'
     let clickedName = event.currentTarget.id
     let JSONTarget = animeJSON[dayStatus][clickedName]
     let animeInfo = {
@@ -225,7 +219,7 @@ function clickedItem(event) {
         srform.append('scope', 'series')
         srform.append('keyword', animeInfo.torrentName)
     
-        let reqSearchForm = requestForm(apiURL.ohys+apiURL.ohysSearch, 'post', false, srform)
+        let reqSearchForm = requestForm(ohys+'/search', 'post', false, srform)
 
         $.ajax(reqSearchForm)
             .done(function(data) {
@@ -234,9 +228,9 @@ function clickedItem(event) {
                 } catch (err) {}
         })
     }
+    animeInfo.title = JSONTarget[currentCountry+'title']
     animeInfo.info = JSONTarget.info
     JSONTarget.seriesCrawled = true
-    animeInfo.title = JSONTarget[currentCountry+'title']
 
     animeList.createTorrent(animeInfo)
 }
@@ -252,7 +246,7 @@ function replaceOriginalFileName(clickedAnimeName) {
             if (JSONSearchTarget[i].episode != '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
                 animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - ${JSONSearchTarget[i].episode}`
             } else if (JSONSearchTarget[i].episode == '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
-                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - (Single Episode)`
+                animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - Single Episode`
             } else {
                 animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = `${currentCountryTitle} - All the episode`
             }

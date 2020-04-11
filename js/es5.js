@@ -4,12 +4,6 @@
 var animeJSON = {};
 var dayStatus = '';
 var currentCountry = '';
-var apiURL = {
-  timetable: 'https://ohys-cacheapi.gokoro.me',
-  ohys: 'https://ohys-api.gokoro.me',
-  ohysSearch: '/search',
-  ohysSeries: '/series'
-};
 
 window.onload = function () {
   requestAPI(); // Fix not scrolling modal problem on mobile (https://github.com/Semantic-Org/Semantic-UI/issues/6656)
@@ -60,8 +54,7 @@ window.onload = function () {
 
   dropdown.active(); // Set Default Day
 
-  var date = moment();
-  var today = date.tz('Asia/Tokyo').day();
+  var today = moment().tz('Asia/Tokyo').day();
   var dayWord = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var dayButton = document.querySelectorAll('.c-day');
   dayStatus = dayWord[today];
@@ -69,7 +62,8 @@ window.onload = function () {
 };
 
 function requestAPI() {
-  var reqEpisodeJSON = requestForm(apiURL.timetable, 'get', true);
+  var timetable = 'https://ohys-cacheapi.gokoro.me';
+  var reqEpisodeJSON = requestForm(timetable, 'get', true);
   $.ajax(reqEpisodeJSON).done(function (data) {
     animeJSON = data;
     animeList.create(dayStatus, currentCountry);
@@ -150,7 +144,7 @@ var animeList = {
     }
   },
   remove: function remove() {
-    document.querySelector('.c-animes').innerHTML = null;
+    document.querySelector('.c-animes').innerHTML = '';
   },
   resetList: function resetList(day, lang) {
     this.remove();
@@ -187,7 +181,7 @@ var animeList = {
           if (animeItem.info.search[i].episode != '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
             itemQuery.title.innerText = "".concat(animeItem.title, " - ").concat(animeItem.info.search[i].episode);
           } else if (animeItem.info.search[i].episode == '-1' && animeItem.info.search[i].videoFormat != 'torrent') {
-            itemQuery.title.innerText = "".concat(animeItem.title, " - (Single Episode)");
+            itemQuery.title.innerText = "".concat(animeItem.title, " - Single Episode");
           } else {
             itemQuery.title.innerText = "".concat(animeItem.title, " - All the episode");
           }
@@ -220,6 +214,7 @@ function clickedItem(event) {
   $('.ui.modal').modal('show');
   document.querySelector('.modal img').setAttribute('src', '');
   document.querySelector('.ui.modal .description .ui.list').innerHTML = null;
+  var ohys = 'https://ohys-api.gokoro.me';
   var clickedName = event.currentTarget.id;
   var JSONTarget = animeJSON[dayStatus][clickedName];
   var animeInfo = {
@@ -235,7 +230,7 @@ function clickedItem(event) {
     var srform = new FormData();
     srform.append('scope', 'series');
     srform.append('keyword', animeInfo.torrentName);
-    var reqSearchForm = requestForm(apiURL.ohys + apiURL.ohysSearch, 'post', false, srform);
+    var reqSearchForm = requestForm(ohys + '/search', 'post', false, srform);
     $.ajax(reqSearchForm).done(function (data) {
       try {
         JSONTarget.info.search = data;
@@ -243,9 +238,9 @@ function clickedItem(event) {
     });
   }
 
+  animeInfo.title = JSONTarget[currentCountry + 'title'];
   animeInfo.info = JSONTarget.info;
   JSONTarget.seriesCrawled = true;
-  animeInfo.title = JSONTarget[currentCountry + 'title'];
   animeList.createTorrent(animeInfo);
 }
 
@@ -262,7 +257,7 @@ function replaceOriginalFileName(clickedAnimeName) {
       if (JSONSearchTarget[i].episode != '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
         animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = "".concat(currentCountryTitle, " - ").concat(JSONSearchTarget[i].episode);
       } else if (JSONSearchTarget[i].episode == '-1' && JSONSearchTarget[i].videoFormat != 'torrent') {
-        animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = "".concat(currentCountryTitle, " - (Single Episode)");
+        animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = "".concat(currentCountryTitle, " - Single Episode");
       } else {
         animeLinksWrapper.childNodes[i].childNodes[3].childNodes[1].text = "".concat(currentCountryTitle, " - All the episode");
       }
