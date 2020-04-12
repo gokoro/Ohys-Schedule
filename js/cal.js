@@ -158,7 +158,7 @@ let animeList = {
         itemQuery.header.innerText = animeItem.title
         itemQuery.broadcastInfo.innerText = animeItem.time
         for (let i = 0, l = animeItem.info.search.length; i < l; i++) {
-            if (animeItem.info.search[i].series.includes(animeItem.torrentName)) {
+            if (animeItem.info.search[i].series.indexOf(animeItem.torrentName) != -1) {
                 animeLinksWrapper.appendChild(document.querySelector('.template div.torrent').cloneNode(true))
                 
                 itemQuery.title = animeLinksWrapper.querySelector('.torrent:last-child .title')
@@ -199,7 +199,7 @@ function dayClicked(event) {
 function clickedItem(event) {
     $('.ui.modal').modal('show')
     document.querySelector('.modal img').setAttribute('src', '')
-    document.querySelector('.ui.modal .description .ui.list').innerHTML = null
+    document.querySelector('.ui.modal .description .ui.list').innerHTML = ''
 
     const ohys = 'https://ohys-api.gokoro.me'
     let clickedName = event.currentTarget.id
