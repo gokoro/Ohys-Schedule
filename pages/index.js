@@ -1,65 +1,96 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import moment from 'moment-timezone'
 
-export default function Home() {
+import { useSchedule } from '../hooks/useSchedule'
+
+import Section from "../components/Section"
+import SectionTitle from '../components/SectionTitle'
+import NextUpBox from '../components/NextUpBox'
+import PlaceholderBox from '../components/PlaceholderBox'
+import AnimeList from '../components/AnimeList'
+
+export default function Main() {
+  const { day, jpMoment } = getToday()
+
+  const schedule = useSchedule(day)
+  
+  let onAirAnime = null
+
+  if (!schedule.isLoading) {
+    const res = schedule.data
+    const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
+    
+    onAirAnime = res.data[res.data.length - 1]
+
+    for (let i = 0; i < res.data.length; i++) {
+      const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
+
+      if (jstTime <= releaseTime) {
+          onAirAnime = res.data[i]
+          break
+      }
+    }
+  }
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <>
+        <Section>
+          <div className="top-container">
+            <div className="item nextupBox">
+              <Section>
+                <SectionTitle size="1.8rem" >Next Up</SectionTitle>
+                <PlaceholderBox
+                  isLoading={schedule.isLoading}
+                  className="link"
+                  placeholderLineCount={9}>
+                    <NextUpBox
+                      dayOfWeek={day}
+                      nextUpAnime={onAirAnime}
+                    />
+                </PlaceholderBox>
+              </Section>
+            </div>
+          </div>
+        </Section>
+        <Section>
+          <SectionTitle
+            size="1.8rem"
+            isDisplayLink
+            href="/[day]"
+            as={`/${day}`}
+            linkText="> See Details"
+          >Today's Up</SectionTitle>
+          <AnimeList 
+            day={day}
+          />
+        </Section>
+        <style jsx>{`
+          .top-container {
+            display: flex;
+          }
+          .top-container > .item.nextupBox {
+            flex: 1 0 0;
+          }
+          .nextupBox :global(.section) {
+            padding-top: 0;
+          }
+          @media screen and (max-width: 1080px) {
+            .top-container {
+              flex-direction: column-reverse;
+            }
+            .nextupBox {
+              margin-left: 0;
+            }
+          }
+        `}</style>
+      </>
   )
+}
+function getToday() {
+  const jpMoment = moment().tz('Asia/Tokyo')
+  const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]
+  
+  return {
+    jpMoment,
+    day
+  }
 }
