@@ -99,7 +99,7 @@ const NextUpBox = props => {
                     .container .left.item {
                         padding: 0;
                     }
-                    .container .left.item :global(img) {
+                    .container .left.item img {
                         width: 100%;
                     }
                     .container .right.item {

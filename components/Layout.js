@@ -10,7 +10,7 @@ const Layout = (props) => {
                 <title>Ohys-Schedule</title>
                 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
                 <meta name="description" content="The Schedule of the animes that Ohys releases." />
-                <link rel="shortcut icon" href="images/logo.png" />
+                <link rel="shortcut icon" href="/images/logo.png" />
                 <meta name="og:title" content="Ohys-Schedule" />
                 <meta name="og:description" content="The Schedule of the animes that Ohys releases." />
                 <meta name="og:url" content="https://ohys.gokoro.me"/>

@@ -122,7 +122,7 @@ const AnimeCardPlaceholder = () => {
                 <style jsx>{`
                     .image {
                         width: 180px;
-                        min-height: 258px;
+                        min-height: 230px;
                     }
                     @media screen and (max-width: 568px) {
                         .image {

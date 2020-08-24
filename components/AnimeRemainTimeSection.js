@@ -6,7 +6,7 @@ const AnimeRemainTimeSection = props => {
         <div className="AnimeRemainTimeSection">
             <AnimeTimeInfo 
                 iconSrc="/svg/timer-icon.svg"
-                text={props.isOnAir ? 'On Air' : 'Will Start After'}
+                text={props.isOnAir ? 'On Air' : 'Will air in'}
             />
             <CalcTimeForBroadcast
                 isOnAir={props.isOnAir}
