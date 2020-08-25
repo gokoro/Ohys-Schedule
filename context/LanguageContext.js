@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
+import locale from '../public/locale'
 
 const Context = createContext()
 
@@ -36,7 +37,8 @@ const LanguageProvider = props => {
     return (
         <Context.Provider value={{
             lang,
-            setLang: setupLang
+            setLang: setupLang,
+            locale: locale[lang || 'romaji']
         }}>
             {props.children}
         </Context.Provider>
