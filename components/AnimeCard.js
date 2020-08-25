@@ -3,6 +3,10 @@ import { motion, useAnimation } from 'framer-motion'
 
 import Placeholder from './Placeholder'
 
+import { useContext } from 'react'
+
+import LanguageContext from '../context/LanguageContext'
+
 const animated = {
     hidden: {
         opacity: 0.2,
@@ -54,7 +58,9 @@ const AnimeCardForm = props => {
     )
 }
 const AnimeCard = props => {
+    console.log("props", props.day)
     const isImgLoaded = useAnimation()
+    const { locale } = useContext(LanguageContext.Original)
     return (
         <AnimeCardForm
             id={props.id}
@@ -85,7 +91,7 @@ const AnimeCard = props => {
                     `}</style>
             </>}
             bottom={<>
-                <div className="sub bold">{props.day} {props.time}</div>
+                <div className="sub bold">{locale.common.day[props.day]} {props.time}</div>
                 <div className="title bold">{props.name}</div>
                 <style jsx>{`
                     .title {
@@ -96,7 +102,6 @@ const AnimeCard = props => {
                         color: var(--sub-text-color);
                         font-size: 12px;
                         letter-spacing: 0;
-                        text-transform: capitalize;
                         line-height: 16px;
                     }
                     @media screen and (max-width: 568px) {

@@ -1,15 +1,20 @@
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
+import LanguageContext from '../context/LanguageContext'
+
 import { useAnime } from '../hooks/useAnime'
+import { useContext } from 'react'
 
 const AnimeTorrentOtherLink = props => {
+    const { locale } = useContext(LanguageContext.Original)
+
     const res = useAnime(props.animeId)
     const data = res.data
 
     return (
         <ShadowWhiteBox className="anime-torrent-other-link">
-            <div className="header bold size-18">External Links</div>
+            <div className="header bold size-18">{locale.components.animeTorrentOtherLink.externalLinks}</div>
             <div className="content">
                 {res.isLoading ? <Placeholder lineCountFor={2}/> : 
                 <div className="links">

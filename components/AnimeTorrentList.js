@@ -9,7 +9,8 @@ import { useContext } from 'react'
 const AnimeTorrentList = props => {
     const res = useAnime(props.animeId)
     const lang = useContext(LanguageContext.Original)
-    
+    const { locale } = lang
+
     let data = null
 
     if (!res.isLoading) {
@@ -18,7 +19,7 @@ const AnimeTorrentList = props => {
 
     return (
         <ShadowWhiteBox className="animetorrentlist">
-            <div className="header bold size-18">Torrent List</div>
+            <div className="header bold size-18">{locale.components.animeTorrentList.torrentList}</div>
             <div className="container">
                 {res.isLoading ? 
                     <Placeholder lineCountFor={18}/> : <>

@@ -1,10 +1,19 @@
 import LanguageSelector from './LanguageSelector'
+import LanguageContext from '../context/LanguageContext'
+
+import { useContext } from 'react'
 
 const Sidebar = props => {
+    const { locale: {
+        components: {
+            sidebar
+        }
+    } } = useContext(LanguageContext.Original)
+
     return (
         <div className="sidebar">
             <div className="ctx">
-                <div className="head bold size-18">Ohys Family</div>
+                <div className="head bold size-18">{sidebar.ohysFamily}</div>
                 <div className="box">
                     <a href="https://ohys.seia.io/" className="item">Fanmade</a>
                     <a href="https://cryental.dev/services/anime/" className="item">Mirror</a>
@@ -13,7 +22,7 @@ const Sidebar = props => {
                 </div>
             </div>
             <div className="ctx">
-                <div className="head bold size-18">Contact</div>
+                <div className="head bold size-18">{sidebar.contact}</div>
                 <div className="box">
                     <a style={{display: 'inline'}} href="https://discord.gg/EUvzwzx" title="Ohys-Raws Discord" className="item">
                         <img style={{
@@ -23,7 +32,7 @@ const Sidebar = props => {
                 </div>
             </div>
             <div className="ctx">
-                <div className="head bold size-18">Language</div>
+                <div className="head bold size-18">{sidebar.language}</div>
                 <div className="box">
                     <LanguageSelector />
                 </div>

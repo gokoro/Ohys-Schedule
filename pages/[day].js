@@ -10,10 +10,12 @@ import AnimeList from '../components/AnimeList'
 import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
+import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
 
 export default function Day() {
     const { listType } = useContext(ListTypeContext.Original)
+    const { locale } = useContext(LanguageContext.Original)
 
     const router = useRouter()
     const { day } = router.query
@@ -28,11 +30,11 @@ export default function Day() {
     return (
       <>
         <Head>
-          <title>{`${day || ''} `}| Ohys-Schedule</title>
+          <title>{`${locale.common.day[day] || ''} `}| Ohys-Schedule</title>
         </Head>
         <Section>
           <SectionTitle size="1.5rem">
-            <span style={{textTransform: 'capitalize'}}>{day}{day === toDay && ' (Today)'}</span>'s Animes
+            {day === toDay && `${locale.day.headers.today}, `}{locale.day.headers[day]}
           </SectionTitle>
           <div className="buttonSection">
             <ListTypeSwitcher />

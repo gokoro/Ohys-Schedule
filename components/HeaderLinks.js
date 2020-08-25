@@ -2,19 +2,29 @@ import moment from 'moment-timezone'
 
 import ClassNameAsPathLink from './ClassNameAsPathLink'
 
+import LanguageContext from '../context/LanguageContext'
+
+import { useContext } from 'react'
+
 const HeaderLinks = () => {
+    const { locale: { 
+        common: {
+            day: dayLocaleSet
+        }
+    } } = useContext(LanguageContext.Original)
+
     const jpMoment = moment().tz('Asia/Tokyo')
     const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]  
 
     return (
         <div className="wrapper">
-            <DayLink day={day} text="Sun" value="sun" />
-            <DayLink day={day} text="Mon" value="mon" />
-            <DayLink day={day} text="Tue" value="tue" />
-            <DayLink day={day} text="Wed" value="wed" />
-            <DayLink day={day} text="Thu" value="thu" />
-            <DayLink day={day} text="Fri" value="fri" />
-            <DayLink day={day} text="Sat" value="sat" />
+            <DayLink day={day} text={dayLocaleSet.sun} value="sun" />
+            <DayLink day={day} text={dayLocaleSet.mon} value="mon" />
+            <DayLink day={day} text={dayLocaleSet.tue} value="tue" />
+            <DayLink day={day} text={dayLocaleSet.wed} value="wed" />
+            <DayLink day={day} text={dayLocaleSet.thu} value="thu" />
+            <DayLink day={day} text={dayLocaleSet.fri} value="fri" />
+            <DayLink day={day} text={dayLocaleSet.sat} value="sat" />
             <style jsx>{`
                 .wrapper {
                     width: 100%;
@@ -25,11 +35,13 @@ const HeaderLinks = () => {
     )
 }
 const DayLink = props => {
+    const { locale } = useContext(LanguageContext.Original)
+
     return (<>
         <ClassNameAsPathLink activeClassName='active' href="/[day]" as={`/${props.value}`}>
             <a>
                 {props.day === props.value &&
-                    <div className="day">Now</div>
+                    <div className="day">{locale.components.header.now}</div>
                 }
                 <div>{props.text}</div>
             </a>
