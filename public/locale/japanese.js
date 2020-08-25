@@ -1,68 +1,68 @@
 export default {
     // Page Section
     main: {
-        nextUp: "",
-        todayUp: "",
-        seeDetails: ""
+        nextUp: "次に放送する予定のアニメ",
+        todayUp: "今日のアニメ",
+        seeDetails: "詳細はこちら"
     },
     day: {
         headers: {
-            sun: "",
-            mon: "",
-            tue: "",
-            wed: "",
-            thu: "",
-            fri: "",
-            sat: "",
-            today: ''
+            sun: "日曜日のアニメ",
+            mon: "月曜日のアニメ",
+            tue: "火曜日のアニメ",
+            wed: "水曜日のアニメ",
+            thu: "木曜日のアニメ",
+            fri: "金曜日のアニメ",
+            sat: "土曜日のアニメ",
+            today: '今日'
         }
     },
     about: {
-        repository: '',
-        contact: '',
-        contactDiscord: '',
-        copyright: '',
-        copyArticle: ''
+        repository: 'リポジトリ',
+        contact: 'お問い合わせ',
+        contactDiscord: 'Ohys-Rawsディスコード',
+        copyright: 'Copyright ©',
+        copyArticle: 'ファイルはOhys-Rawsによって提供される'
     },
     // Component Section
     components: {
         header: {
-            now: ''
+            now: '今日'
         },
         sidebar: {
-            ohysFamily: '',
-            contact: '',
-            language: ''
+            ohysFamily: 'Ohys家族',
+            contact: '雑談・質問',
+            language: '言語'
         },
 
         // At the main page commonly
         animeRemainTimeSection: {
-            isAir: "",
-            soonAir: "",
+            isAir: "現在放送中",
+            soonAir: "放送まで",
         },
 
         // At the details page
         animeTorrentList: {
-            torrentList: ''
+            torrentList: 'トレント一覧'
         },
         animeDescriptionSection: {
-            story: '',
-            more: ''
+            story: 'あらすじ',
+            more: 'もっと'
         },
         animeTorrentOtherLink: {
-            externalLinks: ''
+            externalLinks: '外部リンク'
         }
     },
     // Common Section
     common: {
         day: {
-            sun: '',
-            mon: '',
-            tue: '',
-            wed: '',
-            thu: '',
-            fri: '',
-            sat: ''
+            sun: '日',
+            mon: '月',
+            tue: '火',
+            wed: '水',
+            thu: '木',
+            fri: '金',
+            sat: '土'
         }
     }
 }
