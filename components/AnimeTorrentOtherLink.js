@@ -28,6 +28,12 @@ const AnimeTorrentOtherLink = props => {
                 .header {
                     margin-bottom: 24px;
                 }
+                @media screen and (max-width: 568px) {
+                    .links {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
             `}</style>
         </ShadowWhiteBox>
     )
@@ -47,6 +53,11 @@ const ExternalLinkItem = props => {
                 }
                 .item:hover {
                     background-color: #cacbcd;
+                }
+                @media screen and (max-width: 568px) {
+                    .item {
+                        margin-right: 0;
+                    }
                 }
             `}</style>
         </a>

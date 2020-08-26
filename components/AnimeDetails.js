@@ -112,7 +112,7 @@ const AnimeDetails = props => {
                 }
                 .container > .img.item .wrapper img {
                     width: 200px;
-                    min-height: 282px;
+                    height: 282px;
                     box-shadow: var(--shadow-medium);
                     border: 1px solid #ecf0f1;
                 }
@@ -168,13 +168,40 @@ const AnimeDetails = props => {
                     .animedetails {
                         margin: ${props.mobileMargin || '0'};
                     }
-                    .container {
-                        flex-direction: column;
+                    .container .item {
+                        flex: 1;
+                    }
+                    .container > .img.item {
+                        margin: 0 0 0 14px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .container > .img.item .placeholder .image {
+                        min-width: 100px;
+                        height: 150px;
+                    }
+                    .container > .img.item .placeholder {
+                        margin: 0;
                     }
                     .container > .img.item .wrapper {
-                        margin: -90px auto 18px;
+                        width: 100%;
+                        margin: 0;
+                    }
+                    .container > .img.item .wrapper img {
+                        width: 100px;
+                        height: 100%;
                     }
                     .container > .divider {
+                        display: none;
+                    }
+                    .container > .main.item .info-section > .title {
+                        font-size: 16px;
+                    }
+                    .container > .main.item .info-section > .subtitle {
+                        font-size: 12px;
+                        margin: 0;
+                    }
+                    .container > .main.item .addition-section {
                         display: none;
                     }
                 }
