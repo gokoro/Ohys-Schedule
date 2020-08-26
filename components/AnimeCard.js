@@ -58,7 +58,6 @@ const AnimeCardForm = props => {
     )
 }
 const AnimeCard = props => {
-    console.log("props", props.day)
     const isImgLoaded = useAnimation()
     const { locale } = useContext(LanguageContext.Original)
     return (
