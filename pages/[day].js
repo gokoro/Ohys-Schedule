@@ -9,6 +9,7 @@ import SectionTitle from '../components/SectionTitle'
 import AnimeList from '../components/AnimeList'
 import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
+import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
 
 import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
@@ -25,7 +26,12 @@ export default function Day() {
     }
 
     const jpMoment = moment().tz('Asia/Tokyo')
-    const toDay = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]  
+    const dayList = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    const currentDayNum = dayList.indexOf(day)
+
+    const toDay = dayList[jpMoment.day()]
+    const prevDay = dayList[currentDayNum - 1] || 'sat'
+    const nextDay = dayList[currentDayNum + 1] || 'sun'
 
     return (
       <>
@@ -50,6 +56,14 @@ export default function Day() {
             />
           }
         </Section>
+        <Section>
+          <div className="dayButtonContainer">
+            <ChangeDayButtonContainer 
+              prevDay={prevDay}
+              nextDay={nextDay}
+            />
+          </div>
+        </Section>
         <style jsx>{`
           .buttonSection {
             margin-bottom: 16px;
@@ -59,6 +73,9 @@ export default function Day() {
           }
           .buttonSection :global(.switch button) {
             margin-left: 4px;
+          }
+          .dayButtonContainer {
+            margin-top: 20px;
           }
         `}</style>
       </>
