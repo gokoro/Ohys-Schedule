@@ -39,12 +39,6 @@ const Sidebar = props => {
                     </a>
                 </div>
             </div>
-            <div className="ctx">
-                <div className="head bold size-18">{sidebar.language}</div>
-                <div className="box">
-                    <LanguageSelector />
-                </div>
-            </div>
             <style jsx>{`
                 .sidebar {
                     position: fixed;

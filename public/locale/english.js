@@ -22,7 +22,8 @@ export default {
         contact: 'Contact',
         contactDiscord: 'Ohys-Raws Discord',
         copyright: 'Copyright',
-        copyArticle: 'Files are provided by Ohys-Raws.'
+        copyArticle: 'Files are provided by Ohys-Raws.',
+        language: 'Language'
     },
     // Component Section
     components: {
@@ -32,7 +33,6 @@ export default {
         sidebar: {
             ohysFamily: 'Ohys Family',
             contact: 'Contact',
-            language: 'Language'
         },
 
         // At the main page commonly

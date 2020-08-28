@@ -22,7 +22,8 @@ export default {
         contact: '연락',
         contactDiscord: 'Ohys-Raws 디스코드',
         copyright: '저작권',
-        copyArticle: 'Ohys-Raws에서 파일을 제공하였습니다.'
+        copyArticle: 'Ohys-Raws에서 파일을 제공하였습니다.',
+        language: '언어 설정'
     },
     // Component Section
     components: {
@@ -32,7 +33,6 @@ export default {
         sidebar: {
             ohysFamily: 'Ohys 패밀리',
             contact: '연락',
-            language: '언어 설정'
         },
 
         // At the main page commonly

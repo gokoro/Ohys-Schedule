@@ -22,7 +22,8 @@ export default {
         contact: 'お問い合わせ',
         contactDiscord: 'Ohys-Rawsディスコード',
         copyright: 'Copyright ©',
-        copyArticle: 'ファイルはOhys-Rawsによって提供される'
+        copyArticle: 'ファイルはOhys-Rawsによって提供される',
+        language: '言語'
     },
     // Component Section
     components: {
@@ -32,7 +33,6 @@ export default {
         sidebar: {
             ohysFamily: 'Ohys家族',
             contact: '雑談・質問',
-            language: '言語'
         },
 
         // At the main page commonly

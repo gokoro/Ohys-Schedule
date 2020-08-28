@@ -1,5 +1,6 @@
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
+import LanguageSelector from '../components/LanguageSelector'
 
 import { useContext } from 'react'
 
@@ -10,6 +11,12 @@ export default function about() {
 
     return (
         <>
+            <Section>
+                <SectionTitle size="1.5rem">{locale.about.language}</SectionTitle>
+                <div className="content lang">
+                    <LanguageSelector />
+                </div>
+            </Section>
             <Section>
                 <SectionTitle size="1.5rem">{locale.about.repository}</SectionTitle>
                 <div className="content">
@@ -32,6 +39,12 @@ export default function about() {
                     <p>{locale.about.copyArticle}</p>
                 </div>
             </Section>
+            <style jsx>{`
+                .lang {
+                    width: fit-content;
+                    min-width: 120px;
+                }
+            `}</style>
         </>
     )
 }
