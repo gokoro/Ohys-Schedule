@@ -43,7 +43,7 @@ const DayLink = props => {
                 {props.day === props.value &&
                     <div className="day">{locale.components.header.now}</div>
                 }
-                <div>{props.text}</div>
+                <div className={props.day === props.value && 'todayActive'}>{props.text}</div>
             </a>
         </ClassNameAsPathLink>
         <style jsx>{`
@@ -60,16 +60,26 @@ const DayLink = props => {
                 letter-spacing: 0;
                 color: var(--sub-text-color);
             }
-            a.active {
-                border-bottom: 2px solid #000000;
-                color: #000000;
-            }
-            a .day {
+            .day {
                 position: relative;
                 bottom: 4px;
                 font-size: 10px;
                 line-height: 0%;
                 letter-spacing: 0.5px;
+                color: #000000;
+                font-weight: bold;
+            }
+            .todayActive {
+                color: #000000;
+                font-weight: bold;
+            }
+            .active {
+                border-bottom: 2px solid #6c5ce7;
+                color: #6c5ce7;
+                font-weight: bold;
+            }
+            .active .day, .active .todayActive {
+                color: #6c5ce7;
             }
         `}</style></>
     )

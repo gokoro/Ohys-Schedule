@@ -68,7 +68,7 @@ const NextUpBox = props => {
                     filter: contrast(90%);
                     transition: filter 0.3s;
                 }
-                .container:hover .left.item :global(img) {
+                .container:hover .left.item img {
                     filter: contrast(110%);
                 }
                 .container .right.item {

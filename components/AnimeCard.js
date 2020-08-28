@@ -77,7 +77,7 @@ const AnimeCard = props => {
                     <style jsx>{`
                         .img {
                             max-width: 100%;
-                            max-height: 100%;
+                            max-height: 250px;
                             width: 100%;
                             box-shadow: var(--shadow-small);
                             filter: contrast(98%) brightness(98%);

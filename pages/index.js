@@ -1,5 +1,7 @@
 import moment from 'moment-timezone'
 
+import Link from 'next/link'
+
 import { useSchedule } from '../hooks/useSchedule'
 
 import { useContext } from 'react'
@@ -62,7 +64,11 @@ export default function Main() {
             href="/[day]"
             as={`/${day}`}
             linkText={`> ${locale.main.seeDetails}`}
-          >{locale.main.todayUp}</SectionTitle>
+          >
+            <Link href="/[day]" as={`/${day}`}>
+              <a style={{color: '#000000'}}>{locale.main.todayUp}</a>
+            </Link>
+          </SectionTitle>
           <AnimeList 
             day={day}
           />

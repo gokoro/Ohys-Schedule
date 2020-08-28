@@ -15,10 +15,18 @@ const Sidebar = props => {
             <div className="ctx">
                 <div className="head bold size-18">{sidebar.ohysFamily}</div>
                 <div className="box">
-                    <a href="https://ohys.seia.io/" className="item">Fanmade</a>
-                    <a href="https://cryental.dev/services/anime/" className="item">Mirror</a>
-                    <a href="https://nyaa.si/user/ohys?f=0&c=0_0&q=" className="item">Nyaa.si</a>
-                    <a href="https://eu.ohys.net/t/rss.php?dir=disk" className="item">RSS</a>
+                    <div>
+                        <a href="https://ohys.seia.io/" className="item">Fanmade</a>
+                    </div>
+                    <div>
+                        <a href="https://cryental.dev/services/anime/" className="item">Mirror</a>
+                    </div>
+                    <div>
+                        <a href="https://nyaa.si/user/ohys?f=0&c=0_0&q=" className="item">Nyaa.si</a>
+                    </div>
+                    <div>
+                        <a href="https://eu.ohys.net/t/rss.php?dir=disk" className="item">RSS</a>
+                    </div>
                 </div>
             </div>
             <div className="ctx">
@@ -44,18 +52,21 @@ const Sidebar = props => {
                     padding-top: 6rem;
                 }
                 .sidebar .head {
-                    margin-bottom: 13px;
+                    margin-bottom: 8px;
                     padding-bottom: 4px;
-                    border-bottom: 1px solid #bdc3c7;
                 }
                 .sidebar .ctx {
                     margin-bottom: 32px;
                     letter-spacing: 0;
                 }
-                .sidebar .ctx > .box > a.item {
-                    display: block;
+                .sidebar .ctx > .box a.item {
+                    display: inline;
                     margin-bottom: 4px;
-                    font-size: 15px;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+                .sidebar .ctx > .box a.item:hover {
+                    color: #6c5ce7;
                 }
             `}</style>
         </div>
