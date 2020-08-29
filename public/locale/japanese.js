@@ -17,7 +17,7 @@ export default {
             today: '今日'
         }
     },
-    about: {
+    setting: {
         repository: 'リポジトリ',
         contact: 'お問い合わせ',
         contactDiscord: 'Ohys-Rawsディスコード',

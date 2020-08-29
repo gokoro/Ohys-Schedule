@@ -17,7 +17,7 @@ export default {
             today: '오늘'
         }
     },
-    about: {
+    setting: {
         repository: '리포지토리',
         contact: '연락',
         contactDiscord: 'Ohys-Raws 디스코드',

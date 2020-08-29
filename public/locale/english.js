@@ -17,7 +17,7 @@ export default {
             today: 'Today'
         }
     },
-    about: {
+    setting: {
         repository: 'Repository',
         contact: 'Contact',
         contactDiscord: 'Ohys-Raws Discord',
