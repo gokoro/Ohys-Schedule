@@ -1,0 +1,55 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      # Create Environments
+      - name: Ready - Checkout
+        uses: actions/checkout@v2.3.2
+
+      - name: Ready - Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Ready - Cache modules
+        uses: actions/cache@v2.1.1
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+            
+      - name: Ready - Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+          
+      - name: Ready - Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: true
+
+      # Deploy
+      - name: Install Dependencies
+        run: yarn install
+      
+      - name: Build static files
+        run: next build && next export
+        env:
+          apiUrl: ${{ secrets.apiUrl }} # Here be Backend api endpoint
+  
+      - name: Push static contents to S3
+        run: aws s3 sync ./out s3://${{ secrets.S3_BUCKET_NAME }}
+
+      - name: Invalidate CloudFront Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CDN_DISTRIBUTION_ID }} --paths "/*"
