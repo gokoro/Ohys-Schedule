@@ -1,8 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ohys-Schedule
+
+An anime schedule of the animes Ohys-Raws releases.
+
+## Requirements
+
+This application requires the following back-end applications.
+
+- [Ohys-Server](https://github.com/gokoro/Ohys-Server) - For providing API endpoints.
+- [Ohys-Parse](https://github.com/gokoro/Ohys-Parse) - For parsing data from Ohys-Raws. By default, It generally uses MongoDB for dumping data.
+
+These two apps must be running concurrently.
 
 ## Getting Started
-
-First, run the development server:
 
 ```bash
 npm run dev
@@ -14,17 +23,28 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-## Learn More
+## Building
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build
+# or
+yarn build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The built static files will be saved in the ``.next`` folder.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Running
 
-## Deploy on Vercel
+```bash
+npm run start
+# or
+yarn start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+After building, You can run a Node.js server to deploy your own application.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Or you can also deploy it on [Vercel](https://vercel.com/) simply.
+
+## License
+
+This repository is licensed under the MIT License.
