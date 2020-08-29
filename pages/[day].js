@@ -65,6 +65,9 @@ export default function Day() {
           </div>
         </Section>
         <style jsx>{`
+          :global(.animecardlist) {
+            margin-top: 48px;
+          }
           .buttonSection {
             margin-bottom: 16px;
           }
@@ -75,7 +78,6 @@ export default function Day() {
             margin-left: 4px;
           }
           .dayButtonContainer {
-            margin-top: 20px;
           }
         `}</style>
       </>

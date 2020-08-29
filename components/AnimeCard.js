@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { motion, useAnimation } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import Placeholder from './Placeholder'
 
@@ -29,28 +29,21 @@ const AnimeCardForm = props => {
                 </div>
                 <style jsx>{`
                     :global(.animecard) {
-                        width: 20%;
-                        margin: 1rem;
+                        display: flex;
+                        flex-direction: column;
                         position: relative;
-                        min-height: 10vh;
                         transition: box-shadow 0.15s;
                         cursor: pointer;
                     }
-                    :global(.animecard:hover) .top :global(img) {
+                    :global(.animecard:hover) .top :global(.img) {
                         box-shadow: 4px 8px 16px rgba(0,0,0,0.12);
                         filter: contrast(110%) brightness(100%);
                     }
                     .bottom {
-                        margin-top: 8px;
+                        margin-top: 10px;
                         background-color: transparent;
                         width: 100%;
                         border-radius: 4px 4px 5px 5px;
-                    }
-                    @media screen and (max-width: 568px) {
-                        :global(.animecard) {
-                            margin: 12px 4px;
-                            width: 45%;
-                        }
                     }
                 `}</style>
             </motion.a>
@@ -58,13 +51,12 @@ const AnimeCardForm = props => {
     )
 }
 const AnimeCard = props => {
-    const isImgLoaded = useAnimation()
     const { locale } = useContext(LanguageContext.Original)
     return (
         <AnimeCardForm
             id={props.id}
             top={<>
-                    <motion.div className="imgLoader" initial='hidden' animate={isImgLoaded} transition={{duration: 0.3, delay: 0.1}} variants={{
+                    <motion.div className="imgLoader" initial='hidden' animate="visible" transition={{duration: 0.3, delay: 0.1}} variants={{
                         hidden: {
                             opacity: 0
                         },
@@ -72,21 +64,37 @@ const AnimeCard = props => {
                             opacity: 1
                         }
                     }}>
-                        <img onLoad={() => isImgLoaded.start('visible')} className="rounded img" src={props.imageUrl} alt={props.name}/>
+                        <div className="rounded img" />
                     </motion.div>
                     <style jsx>{`
+                        :global(.imgLoader) {
+                            min-width: 100%;
+                            height: 15.8vw;
+                        }
                         .img {
-                            max-width: 100%;
-                            max-height: 250px;
                             width: 100%;
+                            height: 100%;
+                            background-image: url('${props.imageUrl}');
+                            background-size: cover;
                             box-shadow: var(--shadow-small);
                             filter: contrast(98%) brightness(98%);
                             transition: filter 0.1s, box-shadow 0.3s;
                         }
-                        :global(.imgLoader) {
-                            width: 100%;
-                            height: 100%;
-                        }
+                        @media screen and (max-width: 1080px) {
+                            :global(.imgLoader) {
+                                height: 22.5vw;
+                            }
+                        }   
+                        @media screen and (max-width: 768px) {
+                            :global(.imgLoader) {
+                                height: 29.3vw;
+                            }
+                        }   
+                        @media screen and (max-width: 568px) {
+                            :global(.imgLoader) {
+                                height: 50.6vw;
+                            }
+                        }   
                     `}</style>
             </>}
             bottom={<>
@@ -125,13 +133,8 @@ const AnimeCardPlaceholder = () => {
                 </div>
                 <style jsx>{`
                     .image {
-                        width: 180px;
+                        width: 100%;
                         min-height: 230px;
-                    }
-                    @media screen and (max-width: 568px) {
-                        .image {
-                            width: 150px;
-                        }
                     }
                 `}</style>
             </>}

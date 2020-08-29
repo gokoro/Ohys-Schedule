@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion'
-
 import { AnimeCard, AnimeCardPlaceholder } from './AnimeCard'
 
 import { useContext } from 'react'
@@ -15,7 +13,7 @@ const AnimeCardList = props => {
 
     if (schedule.isLoading) {
         return (
-            <div className="animecardlist">
+            <Form>
                 <AnimeCardPlaceholder />
                 <AnimeCardPlaceholder />
                 <AnimeCardPlaceholder />
@@ -24,23 +22,14 @@ const AnimeCardList = props => {
                 <AnimeCardPlaceholder />
                 <AnimeCardPlaceholder />
                 <AnimeCardPlaceholder />
-                <style jsx>{`
-                    .animecardlist {
-                        display: flex;
-                        flex-flow: row wrap;
-                    }
-                    .animecardlist :global(.animecard) {
-                        flex: none;
-                    }
-                `}</style>
-            </div>
+            </Form>
         )
     }
 
     const sliceSize = lang.lang === 'korean' || lang.lang === 'japanese' ? 13 : 20 
 
     return (
-        <div className="animecardlist">
+        <Form>
             {data.data.map(item => (
                 <AnimeCard
                     key={item._id}
@@ -52,21 +41,31 @@ const AnimeCardList = props => {
                     placeholderColor={item.color}
                 />
             ))}
-            <style jsx>{`
-                .animecardlist {
-                    display: flex;
-                    flex-flow: row wrap;
-                }
-                .animecardlist :global(.animecard) {
-                    flex: none;
-                }
-                @media screen and (max-width: 568px) {
-                    .animecardlist {
-                        justify-content: space-between;
-                    }
-                }
-            `}</style>
-        </div>
+        </Form>
     )
 }
+const Form = ({children}) => (
+    <div className="animecardlist">
+        {children}
+        <style jsx>{`
+            .animecardlist {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                column-gap: 48px;
+                row-gap: 40px;
+            }
+            @media screen and (max-width: 768px) {
+                .animecardlist {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            @media screen and (max-width: 568px) {
+                .animecardlist {
+                    grid-template-columns: repeat(2, 1fr);
+                    column-gap: 2rem;
+                }
+            }
+        `}</style>
+    </div>
+)
 export default AnimeCardList
