@@ -35,15 +35,12 @@ const HeaderLinks = () => {
     )
 }
 const DayLink = props => {
-    const { locale } = useContext(LanguageContext.Original)
+    const isTodayActive = props.day === props.value
 
     return (<>
         <ClassNameAsPathLink activeClassName='active' href="/[day]" as={`/${props.value}`}>
             <a>
-                {props.day === props.value &&
-                    <div className="day">{locale.components.header.now}</div>
-                }
-                <div className={props.day === props.value && 'todayActive'}>{props.text}</div>
+                <div className={isTodayActive && 'todayActive'}>{props.text}</div>
             </a>
         </ClassNameAsPathLink>
         <style jsx>{`
@@ -59,10 +56,10 @@ const DayLink = props => {
                 height: fit-content;
                 letter-spacing: 0;
                 color: var(--sub-text-color);
+                border-bottom: 2px solid transparent;
             }
             .day {
                 position: relative;
-                bottom: 4px;
                 font-size: 10px;
                 line-height: 0%;
                 letter-spacing: 0.5px;

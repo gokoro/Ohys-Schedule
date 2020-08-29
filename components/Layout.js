@@ -31,11 +31,7 @@ const Layout = (props) => {
                         </div>
                     </div>
                 </div>
-            {/* <Footer /> */}
             <style jsx>{`
-                .wrapper {
-                    margin-top: var(--header-height);
-                }
                 .content {
                     width: var(--wrapper-size);
                     margin: 0 auto;
