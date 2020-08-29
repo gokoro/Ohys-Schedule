@@ -11,14 +11,14 @@ const Header = () => {
                     <div className="logo">
                         <Link href="/">
                             <a className="link">
-                                <img className="link-img rounded" src="/images/logo.png" alt="Ohys"/>
+                                <img className="link-img rounded" src="/images/logo.jpg" alt="Ohys"/>
                                 <span className="link-text">Schedule</span>
                             </a>
                         </Link>
                     </div>
                     <div className="right-side">
-                        <ClassNameLink activeClassName="actived" href="/about">
-                            <a>About</a>
+                        <ClassNameLink activeClassName="actived" href="/setting">
+                            <a><img src="/svg/setting-icon.svg" /></a>
                         </ClassNameLink>
                     </div>
                 </div>
