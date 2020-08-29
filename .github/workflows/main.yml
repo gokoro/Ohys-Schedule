@@ -44,7 +44,7 @@ jobs:
         run: yarn install
       
       - name: Build static files
-        run: next build && next export
+        run: yarn export
         env:
           apiUrl: ${{ secrets.APIURL }} # Here be Backend api endpoint
   
