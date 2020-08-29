@@ -1,6 +1,12 @@
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import HeaderLinks from '../components/HeaderLinks'
 import ClassNameLink from '../components/ClassNameLink'
+
+const DynamicHeaderLinks = dynamic(
+    () => import('../components/HeaderLinks'),
+    { ssr: false }
+)
 
 const Header = () => {
     return (
@@ -26,7 +32,7 @@ const Header = () => {
         </div>
         <div className="dayLinks b-default">
             <div className="wrapper">
-                <HeaderLinks />
+                <DynamicHeaderLinks />
             </div>
         </div>
         <style jsx>{`
