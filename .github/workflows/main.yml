@@ -21,7 +21,7 @@ jobs:
       - name: Ready - Cache modules
         uses: actions/cache@v2.1.1
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
@@ -46,7 +46,7 @@ jobs:
       - name: Build static files
         run: next build && next export
         env:
-          apiUrl: ${{ secrets.apiUrl }} # Here be Backend api endpoint
+          apiUrl: ${{ secrets.APIURL }} # Here be Backend api endpoint
   
       - name: Push static contents to S3
         run: aws s3 sync ./out s3://${{ secrets.S3_BUCKET_NAME }}
