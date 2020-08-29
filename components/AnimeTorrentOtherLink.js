@@ -19,7 +19,7 @@ const AnimeTorrentOtherLink = props => {
                 {res.isLoading ? <Placeholder lineCountFor={2}/> : 
                 <div className="links">
                     <ExternalLinkItem text="Fanmade" href={`https://ohys.seia.io/series/${data.data.name}`} />
-                    <ExternalLinkItem text="Mirror" href={`https://cryental.dev/services/anime/?search=${data.data.name}`} />
+                    <ExternalLinkItem text="Mirror" href={`https://cryental.dev/services/anime/series/?search=${data.data.name}`} />
                     <ExternalLinkItem text="Nyaa" href={`https://nyaa.si/user/ohys?f=0&c=0_0&q=${data.data.name}`} />
                 </div>
                 }

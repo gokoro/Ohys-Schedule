@@ -52,7 +52,7 @@ const Form = ({children}) => (
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 column-gap: 48px;
-                row-gap: 40px;
+                row-gap: 36px;
             }
             @media screen and (max-width: 768px) {
                 .animecardlist {
@@ -62,7 +62,7 @@ const Form = ({children}) => (
             @media screen and (max-width: 568px) {
                 .animecardlist {
                     grid-template-columns: repeat(2, 1fr);
-                    column-gap: 2rem;
+                    column-gap: 1rem;
                 }
             }
         `}</style>

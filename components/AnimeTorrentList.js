@@ -57,7 +57,9 @@ const AnimeTorrentListItem = props => {
                     <img src="/svg/file-icon.svg" alt=""/>
             </div>
             <div className="main sec">
-                <a className="torrent bold" href={props.torrentLink}>{props.name} - {props.episode}</a>
+                <a className="torrent bold" href={props.torrentLink}>
+                    {props.name} - {props.episode === 0 && props.videoFormat === 'torrent' ? 'All the episodes' : props.episode}
+                </a>
                 <div className="info">
                     {props.resolution} {props.audioFormat} {props.videoFormat} {props.broadcaster} 
                 </div>
