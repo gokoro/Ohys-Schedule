@@ -7,17 +7,17 @@ import { useContext } from 'react'
 
 import LanguageContext from '../context/LanguageContext'
 
-const animated = {
-    hidden: {
-        opacity: 0.2,
-        scale: 0.95
-    },
-    visible: {
-        opacity: 1,
-        scale: 1
-    },
-}
 const AnimeCardForm = props => {
+    const animated = {
+        hidden: {
+            opacity: 0.2,
+            scale: 0.95
+        },
+        visible: {
+            opacity: 1,
+            scale: 1
+        },
+    }
     return (
         <Link href="/anime/[id]" as={`/anime/${props.id}`}>
             <motion.a className='animecard' initial='hidden' animate="visible" transition={{duration: 0.3}} variants={animated}>
@@ -36,8 +36,7 @@ const AnimeCardForm = props => {
                         cursor: pointer;
                     }
                     :global(.animecard:hover) .top :global(.img) {
-                        box-shadow: 4px 8px 16px rgba(0,0,0,0.12);
-                        filter: contrast(110%) brightness(100%);
+                        box-shadow: 4px 8px 16px rgba(0,0,0,0.16);
                     }
                     .bottom {
                         margin-top: 10px;
@@ -77,8 +76,7 @@ const AnimeCard = props => {
                             background-image: url('${props.imageUrl}');
                             background-size: cover;
                             box-shadow: var(--shadow-small);
-                            filter: contrast(98%) brightness(98%);
-                            transition: filter 0.1s, box-shadow 0.3s;
+                            transition: box-shadow 0.3s;
                         }
                         @media screen and (max-width: 1080px) {
                             :global(.imgLoader) {
