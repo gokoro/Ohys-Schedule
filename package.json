@@ -1,7 +1,8 @@
 {
   "name": "ohys-schedule",
-  "version": "2.0.0",
-  "private": true,
+  "description": "The Schedule of the animes that Ohys releases",
+  "version": "2.0.1",
+  "author": "Gokoro <lincroe@gmail.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
