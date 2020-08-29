@@ -1,6 +1,6 @@
 const ShadowWhiteBox = props => {
     return (
-        <div className={`box ${props.className}`}>
+        <div className={`box rounded-small ${props.className}`}>
             {props.children}
             <style jsx>{`
                 .box {

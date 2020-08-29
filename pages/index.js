@@ -1,6 +1,11 @@
 import moment from 'moment-timezone'
 
+import Link from 'next/link'
+
 import { useSchedule } from '../hooks/useSchedule'
+
+import { useContext } from 'react'
+import LanguageContext from '../context/LanguageContext'
 
 import Section from "../components/Section"
 import SectionTitle from '../components/SectionTitle'
@@ -11,6 +16,7 @@ import AnimeList from '../components/AnimeList'
 export default function Main() {
   const { day, jpMoment } = getToday()
 
+  const { locale } = useContext(LanguageContext.Original)
   const schedule = useSchedule(day)
   
   let onAirAnime = null
@@ -37,7 +43,7 @@ export default function Main() {
           <div className="top-container">
             <div className="item nextupBox">
               <Section>
-                <SectionTitle size="1.8rem" >Next Up</SectionTitle>
+                <SectionTitle size="1.8rem" >{locale.main.nextUp}</SectionTitle>
                 <PlaceholderBox
                   isLoading={schedule.isLoading}
                   className="link"
@@ -57,8 +63,12 @@ export default function Main() {
             isDisplayLink
             href="/[day]"
             as={`/${day}`}
-            linkText="> See Details"
-          >Today's Up</SectionTitle>
+            linkText={`> ${locale.main.seeDetails}`}
+          >
+            <Link href="/[day]" as={`/${day}`}>
+              <a style={{color: '#000000'}}>{locale.main.todayUp}</a>
+            </Link>
+          </SectionTitle>
           <AnimeList 
             day={day}
           />

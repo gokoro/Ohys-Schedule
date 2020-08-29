@@ -1,20 +1,25 @@
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
+import LanguageContext from '../context/LanguageContext'
+
 import { useAnime } from '../hooks/useAnime'
+import { useContext } from 'react'
 
 const AnimeTorrentOtherLink = props => {
+    const { locale } = useContext(LanguageContext.Original)
+
     const res = useAnime(props.animeId)
     const data = res.data
 
     return (
         <ShadowWhiteBox className="anime-torrent-other-link">
-            <div className="header bold size-18">External Links</div>
+            <div className="header bold size-18">{locale.components.animeTorrentOtherLink.externalLinks}</div>
             <div className="content">
                 {res.isLoading ? <Placeholder lineCountFor={2}/> : 
                 <div className="links">
                     <ExternalLinkItem text="Fanmade" href={`https://ohys.seia.io/series/${data.data.name}`} />
-                    <ExternalLinkItem text="Mirror" href={`https://cryental.dev/services/anime/?search=${data.data.name}`} />
+                    <ExternalLinkItem text="Mirror" href={`https://cryental.dev/services/anime/series/?search=${data.data.name}`} />
                     <ExternalLinkItem text="Nyaa" href={`https://nyaa.si/user/ohys?f=0&c=0_0&q=${data.data.name}`} />
                 </div>
                 }
@@ -22,6 +27,12 @@ const AnimeTorrentOtherLink = props => {
             <style jsx>{`
                 .header {
                     margin-bottom: 24px;
+                }
+                @media screen and (max-width: 568px) {
+                    .links {
+                        display: flex;
+                        justify-content: space-between;
+                    }
                 }
             `}</style>
         </ShadowWhiteBox>
@@ -42,6 +53,11 @@ const ExternalLinkItem = props => {
                 }
                 .item:hover {
                     background-color: #cacbcd;
+                }
+                @media screen and (max-width: 568px) {
+                    .item {
+                        margin-right: 0;
+                    }
                 }
             `}</style>
         </a>

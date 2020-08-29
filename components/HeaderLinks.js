@@ -2,19 +2,29 @@ import moment from 'moment-timezone'
 
 import ClassNameAsPathLink from './ClassNameAsPathLink'
 
+import LanguageContext from '../context/LanguageContext'
+
+import { useContext } from 'react'
+
 const HeaderLinks = () => {
+    const { locale: { 
+        common: {
+            day: dayLocaleSet
+        }
+    } } = useContext(LanguageContext.Original)
+
     const jpMoment = moment().tz('Asia/Tokyo')
     const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]  
 
     return (
         <div className="wrapper">
-            <DayLink day={day} text="Sun" value="sun" />
-            <DayLink day={day} text="Mon" value="mon" />
-            <DayLink day={day} text="Tue" value="tue" />
-            <DayLink day={day} text="Wed" value="wed" />
-            <DayLink day={day} text="Thu" value="thu" />
-            <DayLink day={day} text="Fri" value="fri" />
-            <DayLink day={day} text="Sat" value="sat" />
+            <DayLink day={day} text={dayLocaleSet.sun} value="sun" />
+            <DayLink day={day} text={dayLocaleSet.mon} value="mon" />
+            <DayLink day={day} text={dayLocaleSet.tue} value="tue" />
+            <DayLink day={day} text={dayLocaleSet.wed} value="wed" />
+            <DayLink day={day} text={dayLocaleSet.thu} value="thu" />
+            <DayLink day={day} text={dayLocaleSet.fri} value="fri" />
+            <DayLink day={day} text={dayLocaleSet.sat} value="sat" />
             <style jsx>{`
                 .wrapper {
                     width: 100%;
@@ -25,13 +35,12 @@ const HeaderLinks = () => {
     )
 }
 const DayLink = props => {
+    const isTodayActive = props.day === props.value
+
     return (<>
         <ClassNameAsPathLink activeClassName='active' href="/[day]" as={`/${props.value}`}>
             <a>
-                {props.day === props.value &&
-                    <div className="day">Now</div>
-                }
-                <div>{props.text}</div>
+                <div className={isTodayActive && 'todayActive'}>{props.text}</div>
             </a>
         </ClassNameAsPathLink>
         <style jsx>{`
@@ -47,17 +56,27 @@ const DayLink = props => {
                 height: fit-content;
                 letter-spacing: 0;
                 color: var(--sub-text-color);
+                border-bottom: 2px solid transparent;
             }
-            a.active {
-                border-bottom: 2px solid #000000;
-                color: #000000;
-            }
-            a .day {
+            .day {
                 position: relative;
-                bottom: 4px;
                 font-size: 10px;
                 line-height: 0%;
                 letter-spacing: 0.5px;
+                color: #000000;
+                font-weight: bold;
+            }
+            .todayActive {
+                color: #000000;
+                font-weight: bold;
+            }
+            .active {
+                border-bottom: 2px solid #6c5ce7;
+                color: #6c5ce7;
+                font-weight: bold;
+            }
+            .active .day, .active .todayActive {
+                color: #6c5ce7;
             }
         `}</style></>
     )

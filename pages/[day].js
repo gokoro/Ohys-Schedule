@@ -9,11 +9,14 @@ import SectionTitle from '../components/SectionTitle'
 import AnimeList from '../components/AnimeList'
 import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
+import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
 
+import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
 
 export default function Day() {
     const { listType } = useContext(ListTypeContext.Original)
+    const { locale } = useContext(LanguageContext.Original)
 
     const router = useRouter()
     const { day } = router.query
@@ -23,16 +26,21 @@ export default function Day() {
     }
 
     const jpMoment = moment().tz('Asia/Tokyo')
-    const toDay = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]  
+    const dayList = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    const currentDayNum = dayList.indexOf(day)
+
+    const toDay = dayList[jpMoment.day()]
+    const prevDay = dayList[currentDayNum - 1] || 'sat'
+    const nextDay = dayList[currentDayNum + 1] || 'sun'
 
     return (
       <>
         <Head>
-          <title>{`${day || ''} `}| Ohys-Schedule</title>
+          <title>{`${locale.common.day[day] || ''} `}| Ohys-Schedule</title>
         </Head>
         <Section>
           <SectionTitle size="1.5rem">
-            <span style={{textTransform: 'capitalize'}}>{day}{day === toDay && ' (Today)'}</span>'s Animes
+            {day === toDay && `${locale.day.headers.today}, `}{locale.day.headers[day]}
           </SectionTitle>
           <div className="buttonSection">
             <ListTypeSwitcher />
@@ -48,7 +56,18 @@ export default function Day() {
             />
           }
         </Section>
+        <Section>
+          <div className="dayButtonContainer">
+            <ChangeDayButtonContainer 
+              prevDay={prevDay}
+              nextDay={nextDay}
+            />
+          </div>
+        </Section>
         <style jsx>{`
+          :global(.animecardlist) {
+            margin-top: 48px;
+          }
           .buttonSection {
             margin-bottom: 16px;
           }
@@ -57,6 +76,8 @@ export default function Day() {
           }
           .buttonSection :global(.switch button) {
             margin-left: 4px;
+          }
+          .dayButtonContainer {
           }
         `}</style>
       </>

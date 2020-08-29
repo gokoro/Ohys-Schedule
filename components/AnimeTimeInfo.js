@@ -10,7 +10,6 @@ const AnimeTimeInfo = props => {
                     font-size: 13.8px;
                     letter-spacing: 1px;
                     color: #7f8c8d;
-                    font-family: Lato;
                 }
                 .time img {
                     width: 13px;

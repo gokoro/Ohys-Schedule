@@ -19,7 +19,7 @@ export default function name() {
                 <AnimeDetails 
                     animeId={id}
                     margin="8rem 0 24px"
-                    mobileMargin="8rem 0 0 0"
+                    mobileMargin="3rem 0 0 0"
                 />
             </Section>
             <Section>
@@ -58,7 +58,7 @@ export default function name() {
                         flex-direction: column;
                     }
                     .bottom-section-container > .torrent {
-                        margin: 0 0 42px 0;
+                        margin: 0 0 24px 0;
                     }
                 }
             `}</style>
