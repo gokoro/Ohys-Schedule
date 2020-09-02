@@ -6,16 +6,20 @@ import { useSchedule } from '../hooks/useSchedule'
 
 import { useContext } from 'react'
 import LanguageContext from '../context/LanguageContext'
+import ListTypeContext from '../context/ListTypeContext'
 
 import Section from "../components/Section"
 import SectionTitle from '../components/SectionTitle'
 import NextUpBox from '../components/NextUpBox'
 import PlaceholderBox from '../components/PlaceholderBox'
 import AnimeList from '../components/AnimeList'
+import AnimeCardList from '../components/AnimeCardList'
+import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
 export default function Main() {
   const { day, jpMoment } = getToday()
 
+  const { listType } = useContext(ListTypeContext.Original)
   const { locale } = useContext(LanguageContext.Original)
   const schedule = useSchedule(day)
   
@@ -69,9 +73,19 @@ export default function Main() {
               <a style={{color: '#000000'}}>{locale.main.todayUp}</a>
             </Link>
           </SectionTitle>
-          <AnimeList 
-            day={day}
-          />
+          <div className="buttonSection">
+            <ListTypeSwitcher />
+          </div>
+          {listType === 'list' &&
+            <AnimeList 
+              day={day}
+            />
+          }
+          {listType === 'card' &&
+            <AnimeCardList 
+              day={day}
+            />
+          }
         </Section>
         <style jsx>{`
           .top-container {
@@ -82,6 +96,18 @@ export default function Main() {
           }
           .nextupBox :global(.section) {
             padding-top: 0;
+          }
+          :global(.animecardlist) {
+            margin-top: 48px;
+          }
+          .buttonSection {
+            margin-bottom: 16px;
+          }
+          .buttonSection :global(.switch) {
+            margin-left: auto;
+          }
+          .buttonSection :global(.switch button) {
+            margin-left: 4px;
           }
           @media screen and (max-width: 1080px) {
             .top-container {
