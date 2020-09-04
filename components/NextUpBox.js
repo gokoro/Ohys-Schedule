@@ -55,6 +55,7 @@ const NextUpBox = props => {
                     position: relative;
                     box-shadow: var(--shadow-medium);
                     transition: box-shadow 0.1s;
+                    min-height: 250px;
                 }
                 .container:hover {
                     box-shadow: var(--shadow-big);
@@ -95,6 +96,7 @@ const NextUpBox = props => {
                 @media screen and (max-width: 568px) {
                     .container {
                         flex-direction: column-reverse;
+                        min-height: initial;
                     }
                     .container .left.item {
                         padding: 0;
