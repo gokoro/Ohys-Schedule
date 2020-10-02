@@ -14,6 +14,8 @@ const AnimeDetails = props => {
 
     const res = useAnime(props.animeId)
 
+    const currentEpisode = res.data?.data.items[res.data.data.items.length - 1]?.episode || 0
+
     const animated = {
         hidden: {
             opacity: 0.2,
@@ -48,7 +50,7 @@ const AnimeDetails = props => {
                         </div> : 
                         <div className="wrapper">
                             <img src={res.data.data.smallImageUrl} alt={res.data.data.name} className="rounded" />
-                            <div className="epNumber bold">{'Ep. ' + res.data.data.items[res.data.data.items.length - 1].episode}</div>
+                            <div className="epNumber bold">{'Ep. ' + currentEpisode}</div>
                         </div>
                     }
                 </div>
