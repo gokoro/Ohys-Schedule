@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react'
-import locale from '../public/locale'
+import locale from '../locale'
 
 const Context = createContext()
 
