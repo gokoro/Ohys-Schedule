@@ -1,7 +1,7 @@
 import moment from 'moment-timezone'
 
-import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import { cache } from 'swr'
 
 import Head from 'next/head'
 import Section from "../components/Section"
@@ -14,16 +14,11 @@ import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
 import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
 
-export default function Day() {
+export default function Day({ schedule, day: staticDayOption }) {
     const { listType } = useContext(ListTypeContext.Original)
     const { locale } = useContext(LanguageContext.Original)
 
-    const router = useRouter()
-    const { day } = router.query
-
-    if (!day) {
-      return null
-    }
+    const day = staticDayOption
 
     const jpMoment = moment().tz('Asia/Tokyo')
     const dayList = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
@@ -32,6 +27,8 @@ export default function Day() {
     const toDay = dayList[jpMoment.day()]
     const prevDay = dayList[currentDayNum - 1] || 'sat'
     const nextDay = dayList[currentDayNum + 1] || 'sun'
+
+    cache.set(`${process.env.apiUrl}/schedule?day=${day}`, schedule)
 
     return (
       <>
@@ -82,4 +79,29 @@ export default function Day() {
         `}</style>
       </>
     )
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { day: 'sun' } },
+      { params: { day: 'mon' } },
+      { params: { day: 'tue' } },
+      { params: { day: 'wed' } },
+      { params: { day: 'thu' } },
+      { params: { day: 'fri' } },
+      { params: { day: 'sat' } },
+    ],
+    fallback: false
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const apiUrl = process.env.apiUrl
+  const { day } = params
+
+  const res = await fetch(`${apiUrl}/schedule?day=${day}`)
+  const schedule = await res.json()
+
+  return { props: { schedule, day } }
 }

@@ -3,7 +3,14 @@ import useSWR from "swr"
 const useSchedule = (day) => {
     const apiUrl = process.env.apiUrl
 
-    const { data, error } = useSWR([`${apiUrl}/schedule`, day], (url, day) => fetcher({ url, day }))
+    const { data, error } = useSWR(`${apiUrl}/schedule?day=${day}`, fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnMount:false,
+        revalidateOnReconnect: false,
+        refreshWhenOffline: false,
+        refreshWhenHidden: false,
+        refreshInterval: 0
+    })
     
     return {
         data,
@@ -11,6 +18,6 @@ const useSchedule = (day) => {
         isError: error,
     }
 }
-const fetcher = (args) => fetch(args.url + '?day=' + args.day).then((res) => res.json())
+const fetcher = (...url) => fetch(...url).then((res) => res.json())
 
 export { useSchedule }
