@@ -1,21 +1,29 @@
+import { useRouter } from 'next/router'
+
 import Head from "next/head"
 import Header from './Header'
 import Sidebar from './Sidebar'
-import Footer from './Footer'
+import Helmet from './Helmet'
 
 const Layout = (props) => {
+    const { asPath } = useRouter()
+
     return (
         <>
             <Head>
                 <title>Ohys-Schedule</title>
+                <link rel="canonical" href={`https://ohys.gokoro.me${asPath}`} />
                 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
-                <meta name="description" content="The Schedule of the animes that Ohys releases." />
                 <link rel="shortcut icon" href="/images/logo.jpg" />
-                <meta name="og:title" content="Ohys-Schedule" />
-                <meta name="og:description" content="The Schedule of the animes that Ohys releases." />
-                <meta name="og:url" content="https://ohys.gokoro.me"/>
-                <link rel="canonical" href="https://ohys.gokoro.me" />
+                <meta property="og:type" content='article' />
+                <meta property="og:url" content={`https://ohys.gokoro.me${asPath}`} />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="Ohys-Schedule" />
             </Head>
+            <Helmet 
+                title="Ohys-Schedule"
+                description="The Schedule of the animes that Ohys releases."
+            />
             <Header />
                 <div className="wrapper">
                     <div className="content">

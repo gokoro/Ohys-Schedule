@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { useAnime } from '../../hooks/useAnime'
 
+import Helmet from '../../components/Helmet'
 import Section from "../../components/Section"
 import AnimeDetails from '../../components/AnimeDetails'
 import AnimeTorrentList from '../../components/AnimeTorrentList'
@@ -15,10 +16,17 @@ export default function name({ initialData }) {
         return null
     }
 
-    useAnime(id, { initialData })
+    const { data: animeData, isLoading } = useAnime(id, { initialData })
 
     return (
         <>
+            {!isLoading && (
+                <Helmet
+                    title={animeData.data.name}
+                    description={`${animeData.data.description.slice(0, 250)}...`}
+                    image={animeData.data.imageUrl}
+                />
+            )}
             <Section>
                 <AnimeDetails 
                     animeId={id}
@@ -75,7 +83,9 @@ name.getInitialProps = async (ctx) => {
     const { id } = ctx.query
 
     if (!ctx.req) {
-        return {}
+        return {
+            initialData: null
+        }
     }
 
     const res = await fetch(`${apiUrl}/anime?id=${id}`)

@@ -1,11 +1,10 @@
 import moment from 'moment-timezone'
 
 import { useContext } from 'react'
-import { cache } from 'swr'
 
 import { useSchedule } from '../hooks/useSchedule'
 
-import Head from 'next/head'
+import Helmet from '../components/Helmet'
 import Section from "../components/Section"
 import SectionTitle from '../components/SectionTitle'
 import AnimeList from '../components/AnimeList'
@@ -30,13 +29,16 @@ export default function Day({ schedule, day: staticDayOption }) {
     const prevDay = dayList[currentDayNum - 1] || 'sat'
     const nextDay = dayList[currentDayNum + 1] || 'sun'
 
+    const todayAsLocale = locale.common.day[day]
+
     useSchedule(day, { initialData: schedule })
 
     return (
       <>
-        <Head>
-          <title>{`${locale.common.day[day] || ''} `}| Ohys-Schedule</title>
-        </Head>
+        <Helmet
+          title={`${todayAsLocale} | Ohys-Schedule`}
+          description={`${todayAsLocale}'s animes which Ohys-Raws releases`}
+        />
         <Section>
           <SectionTitle size="1.5rem">
             {day === toDay && `${locale.day.headers.today}, `}{locale.day.headers[day]}
