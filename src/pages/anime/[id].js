@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useAnime } from '../../hooks/useAnime'
 
 import Section from "../../components/Section"
 import AnimeDetails from '../../components/AnimeDetails'
@@ -6,13 +7,16 @@ import AnimeTorrentList from '../../components/AnimeTorrentList'
 import AnimeDescriptionSection from '../../components/AnimeDescriptionSection'
 import AnimeTorrentOtherLink from '../../components/AnimeTorrentOtherLink'
 
-export default function name() {
+export default function name({ initialData }) {
     const router = useRouter()
     const { id } = router.query
 
     if (!id) {
         return null
     }
+
+    useAnime(id, { initialData })
+
     return (
         <>
             <Section>
@@ -64,4 +68,20 @@ export default function name() {
             `}</style>
         </>
     )
+}
+
+name.getInitialProps = async (ctx) => {
+    const { apiUrl } = process.env
+    const { id } = ctx.query
+
+    if (!ctx.req) {
+        return {}
+    }
+
+    const res = await fetch(`${apiUrl}/anime?id=${id}`)
+    const anime = await res.json()
+
+    return {
+        initialData: anime
+    }
 }

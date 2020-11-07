@@ -1,9 +1,14 @@
-import useSWR from "swr"
+import useSWR, { cache } from "swr"
 
-const useAnime = (id) => {
+const useAnime = (id, configs = {}) => {
     const apiUrl = process.env.apiUrl
+    const baseUrl = `${apiUrl}/anime?id=${id}`
+    
+    if (configs.initialData) {
+        cache.set(baseUrl, configs.initialData)
+    }
 
-    const { data, error } = useSWR([`${apiUrl}/anime`, id], (url, id) => fetcher({ url, id }))
+    const { data, error } = useSWR(baseUrl, fetcher, configs)
     
     return {
         data,
@@ -11,6 +16,6 @@ const useAnime = (id) => {
         isError: error,
     }
 }
-const fetcher = (args) => fetch(args.url + '?id=' + args.id).then((res) => res.json())
+const fetcher = (...args) => fetch(...args).then((res) => res.json())
 
 export { useAnime }
