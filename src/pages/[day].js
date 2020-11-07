@@ -94,7 +94,7 @@ export async function getStaticPaths() {
       { params: { day: 'fri' } },
       { params: { day: 'sat' } },
     ],
-    fallback: false
+    fallback: false,
   };
 }
 
@@ -105,5 +105,8 @@ export async function getStaticProps({ params }) {
   const res = await fetch(`${apiUrl}/schedule?day=${day}`)
   const schedule = await res.json()
 
-  return { props: { schedule, day } }
+  return {
+    props: { schedule, day },
+    revalidate: 60 * 60 * 24 // Refresh every 24 hour
+  }
 }
