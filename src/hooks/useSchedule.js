@@ -1,9 +1,16 @@
-import useSWR from "swr"
+import useSWR, { cache } from "swr"
 
-const useSchedule = (day) => {
+const useSchedule = (day, configs = {}) => {
     const apiUrl = process.env.apiUrl
 
-    const { data, error } = useSWR(`${apiUrl}/schedule?day=${day}`, fetcher, {
+    const baseUrl = `${apiUrl}/schedule?day=${day}`
+
+    if (configs.initialData) {
+        cache.set(baseUrl, configs.initialData)
+    }
+
+    const { data, error } = useSWR(baseUrl, fetcher, {
+        ...configs,
         revalidateOnFocus: false,
         revalidateOnMount:false,
         revalidateOnReconnect: false,

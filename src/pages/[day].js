@@ -3,6 +3,8 @@ import moment from 'moment-timezone'
 import { useContext } from 'react'
 import { cache } from 'swr'
 
+import { useSchedule } from '../hooks/useSchedule'
+
 import Head from 'next/head'
 import Section from "../components/Section"
 import SectionTitle from '../components/SectionTitle'
@@ -28,7 +30,7 @@ export default function Day({ schedule, day: staticDayOption }) {
     const prevDay = dayList[currentDayNum - 1] || 'sat'
     const nextDay = dayList[currentDayNum + 1] || 'sun'
 
-    cache.set(`${process.env.apiUrl}/schedule?day=${day}`, schedule)
+    useSchedule(day, { initialData: schedule })
 
     return (
       <>

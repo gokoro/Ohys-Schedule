@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import { useSchedule } from '../hooks/useSchedule'
 
+import { cache } from 'swr'
 import { useContext } from 'react'
 import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
@@ -16,28 +17,28 @@ import AnimeList from '../components/AnimeList'
 import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
-export default function Main() {
+export default function Main({ initialData }) {
+  const { apiUrl } = process.env
   const { day, jpMoment } = getToday()
 
   const { listType } = useContext(ListTypeContext.Original)
   const { locale } = useContext(LanguageContext.Original)
-  const schedule = useSchedule(day)
-  
+
+  const schedule = useSchedule(day, { initialData })
+
   let onAirAnime = null
 
-  if (!schedule.isLoading) {
-    const res = schedule.data
-    const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
-    
-    onAirAnime = res.data[res.data.length - 1]
+  const res = schedule.data
+  const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
+  
+  onAirAnime = res.data[res.data.length - 1]
 
-    for (let i = 0; i < res.data.length; i++) {
-      const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
+  for (let i = 0; i < res.data.length; i++) {
+    const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
 
-      if (jstTime <= releaseTime) {
-          onAirAnime = res.data[i]
-          break
-      }
+    if (jstTime <= releaseTime) {
+        onAirAnime = res.data[i]
+        break
     }
   }
 
@@ -128,5 +129,20 @@ function getToday() {
   return {
     jpMoment,
     day
+  }
+}
+
+export async function getServerSideProps() {
+  const { apiUrl } = process.env
+
+  const { day } = getToday()
+  
+  const res = await fetch(`${apiUrl}/schedule?day=${day}`)
+  const schedule = await res.json()
+
+  return {
+    props: {
+      initialData: schedule
+    }
   }
 }
