@@ -15,6 +15,7 @@ const Layout = (props) => {
                 <link rel="canonical" href={`https://ohys.gokoro.me${asPath}`} />
                 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet" />
                 <link rel="shortcut icon" href="/images/logo.jpg" />
+                <meta property="og:site_name" content="Ohys-Schedule" />
                 <meta property="og:type" content='article' />
                 <meta property="og:url" content={`https://ohys.gokoro.me${asPath}`} />
                 <meta name="twitter:card" content="summary_large_image" />

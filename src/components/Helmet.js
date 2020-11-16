@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-const Helmet = ({ title, description, image, children }) => {
+const Helmet = ({ title, description, image, themeColor, children }) => {
     return (
         <Head>
             {children}
@@ -20,6 +20,10 @@ const Helmet = ({ title, description, image, children }) => {
             {image && (<>
                 <meta property="og:image" content={image} key="og_image" />
                 <meta name="twitter:image" content={image} key="twitter_image" />
+            </>)}
+
+            {themeColor && (<>
+                <meta name="theme-color" content={themeColor} />
             </>)}
             
         </Head>

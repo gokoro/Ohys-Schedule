@@ -25,6 +25,7 @@ export default function name({ initialData }) {
                     title={animeData.data.name}
                     description={`${animeData.data.description.slice(0, 250)}...`}
                     image={animeData.data.imageUrl}
+                    themeColor={animeData.data.color}
                 />
             )}
             <Section>
@@ -84,7 +85,7 @@ name.getInitialProps = async (ctx) => {
 
     if (!ctx.req) {
         return {
-            initialData: null
+            initialData: false
         }
     }
 

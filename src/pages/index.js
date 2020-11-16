@@ -4,7 +4,6 @@ import Link from 'next/link'
 
 import { useSchedule } from '../hooks/useSchedule'
 
-import { cache } from 'swr'
 import { useContext } from 'react'
 import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
@@ -18,29 +17,31 @@ import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
 export default function Main({ initialData }) {
-  const { apiUrl } = process.env
   const { day, jpMoment } = getToday()
 
   const { listType } = useContext(ListTypeContext.Original)
   const { locale } = useContext(LanguageContext.Original)
 
-  const schedule = useSchedule(day, { initialData })
+  const schedule = useSchedule(day, { initialData }, { enableRevalidate: true })
 
   let onAirAnime = null
 
-  const res = schedule.data
-  const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
+  if (!schedule.isLoading) {
+    const res = schedule.data
+    const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
+    
+    onAirAnime = res.data[res.data.length - 1]
   
-  onAirAnime = res.data[res.data.length - 1]
-
-  for (let i = 0; i < res.data.length; i++) {
-    const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
-
-    if (jstTime <= releaseTime) {
-        onAirAnime = res.data[i]
-        break
+    for (let i = 0; i < res.data.length; i++) {
+      const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
+  
+      if (jstTime <= releaseTime) {
+          onAirAnime = res.data[i]
+          break
+      }
     }
   }
+
 
   return (
       <>
@@ -132,17 +133,21 @@ function getToday() {
   }
 }
 
-export async function getServerSideProps() {
+Main.getInitialProps = async (ctx) => {
   const { apiUrl } = process.env
 
   const { day } = getToday()
   
+  if (!ctx.req) {
+    return {
+        initialData: false
+    }
+  }
+
   const res = await fetch(`${apiUrl}/schedule?day=${day}`)
   const schedule = await res.json()
 
   return {
-    props: {
       initialData: schedule
-    }
   }
 }
