@@ -19,8 +19,8 @@ const AnimeCardForm = props => {
         },
     }
     return (
-        <Link href="/anime/[id]" as={`/anime/${props.id}`}>
-            <motion.a className='animecard' initial='hidden' animate="visible" transition={{duration: 0.3}} variants={animated}>
+        <Link href={`/anime/${props.id}`}>
+            <motion.a href={`/anime/${props.id}`} className='animecard' initial='hidden' animate="visible" transition={{duration: 0.3}} variants={animated}>
                 <div className="top">
                     {props.top}
                 </div>
