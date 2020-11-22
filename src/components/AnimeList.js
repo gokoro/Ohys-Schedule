@@ -44,7 +44,7 @@ const AnimeList = props => {
                         title={item.title[langContext.lang]}
                         time={item.released_time}
                         broadcaster={item.release_broadcaster}
-                        latestEpisode={item.items[item.__v - 1]?.episode || 0}
+                        latestEpisode={item.items[item.items.length - 1]?.episode || 0}
                     />
                 </AnimeListItem>
             ))}
