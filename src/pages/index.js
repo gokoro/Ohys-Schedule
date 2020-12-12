@@ -16,11 +16,13 @@ import AnimeList from '../components/AnimeList'
 import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
-export default function Main({ initialData }) {
-  const { day, jpMoment } = getToday()
+export default function Main({ schedules }) {
+  const { day, dayByNumber, jpMoment } = getToday()
 
   const { listType } = useContext(ListTypeContext.Original)
   const { locale } = useContext(LanguageContext.Original)
+
+  const { data: initialData } = schedules[dayByNumber]
 
   const schedule = useSchedule(day, { initialData }, { enableRevalidate: true })
 
@@ -125,29 +127,31 @@ export default function Main({ initialData }) {
 }
 function getToday() {
   const jpMoment = moment().tz('Asia/Tokyo')
-  const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]
+  const dayByNumber = jpMoment.day()
+  const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][dayByNumber]
   
   return {
     jpMoment,
-    day
+    day,
+    dayByNumber
   }
 }
 
-Main.getInitialProps = async (ctx) => {
+export async function getStaticProps() {
   const { apiUrl } = process.env
+  const dayItems = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-  const { day } = getToday()
-  
-  if (!ctx.req) {
-    return {
-        initialData: false
-    }
+  const retrieveSchedule = async (day) => {
+    const res = await fetch(`${apiUrl}/schedule?day=${day}`)
+    const data = await res.json()
+
+    return { day, data }
   }
 
-  const res = await fetch(`${apiUrl}/schedule?day=${day}`)
-  const schedule = await res.json()
+  const schedules = await Promise.all(dayItems.map(retrieveSchedule))
 
   return {
-      initialData: schedule
+    props: { schedules },
+    revalidate: 60 * 60 * 24 // Refresh every 24 hour
   }
 }
