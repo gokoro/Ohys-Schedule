@@ -1,3 +1,4 @@
+import { BsViewList, BsList } from 'react-icons/bs'
 import ListTypeContext from '../context/ListTypeContext'
 
 const ListTypeSwitcher = props => {
@@ -8,10 +9,10 @@ const ListTypeSwitcher = props => {
     return (
         <div className="switch">
             <button className={props.listType === 'card' ? 'active' : ''} onClick={handleClick} value={'card'}>
-                <img src="/svg/card-icon.svg"/>
+                <BsViewList size={16}/>
             </button>
             <button className={props.listType === 'list' ? 'active' : ''} onClick={handleClick} value={'list'}>
-                <img src="/svg/list-icon.svg"/>
+                <BsList size={16}/>
             </button>
             <style jsx>{`
                 .switch {

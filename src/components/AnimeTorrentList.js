@@ -1,3 +1,4 @@
+import { AiFillFile } from 'react-icons/ai'
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
@@ -54,7 +55,7 @@ const AnimeTorrentListItem = props => {
     return (
         <div className="item">
             <div className="left sec">
-                    <img src="/svg/file-icon.svg" alt=""/>
+                <AiFillFile />
             </div>
             <div className="main sec">
                 <a className="torrent bold" href={props.torrentLink}>

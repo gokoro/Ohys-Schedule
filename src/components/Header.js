@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { BsGearFill } from 'react-icons/bs'
 import HeaderLinks from '../components/HeaderLinks'
 import ClassNameLink from '../components/ClassNameLink'
 
@@ -24,7 +25,7 @@ const Header = () => {
                     </div>
                     <div className="right-side">
                         <ClassNameLink activeClassName="actived" href="/setting">
-                            <a><img src="/svg/setting-icon.svg" /></a>
+                            <a><BsGearFill color="black"/></a>
                         </ClassNameLink>
                     </div>
                 </div>

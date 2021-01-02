@@ -3,6 +3,8 @@ import LanguageContext from '../context/LanguageContext'
 
 import { useContext } from 'react'
 
+import { IoLogoDiscord } from 'react-icons/io5'
+
 const Sidebar = props => {
     const { locale: {
         components: {
@@ -33,9 +35,10 @@ const Sidebar = props => {
                 <div className="head bold size-18">{sidebar.contact}</div>
                 <div className="box">
                     <a style={{display: 'inline'}} href="https://discord.gg/EUvzwzx" title="Ohys-Raws Discord" className="item">
-                        <img style={{
-                            width: '32px'
-                        }} src="/svg/discord-logo.svg" alt="Ohys-Raws Discord"/>
+                        <IoLogoDiscord 
+                            size={30}
+                            color='black'
+                        />
                     </a>
                 </div>
             </div>

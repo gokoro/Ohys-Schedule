@@ -1,3 +1,4 @@
+import { IoLogoGithub } from 'react-icons/io5'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import LanguageSelector from '../components/LanguageSelector'
@@ -20,7 +21,12 @@ export default function setting() {
             <Section>
                 <SectionTitle size="1.5rem">{locale.setting.repository}</SectionTitle>
                 <div className="content">
-                    <a href="https://github.com/gokoro/Ohys-Schedule" title="Ohys-Schedule"><img style={{width: '24px'}} src="/svg/github-logo.svg" /></a>
+                    <a href="https://github.com/gokoro/Ohys-Schedule" title="Ohys-Schedule">
+                        <IoLogoGithub
+                            size={24}
+                            color='black'
+                        />
+                    </a>
                 </div>
             </Section>
             <Section>

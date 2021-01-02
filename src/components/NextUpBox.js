@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { BsArrowRight } from 'react-icons/bs'
 
 import Link from 'next/link'
 
@@ -40,7 +40,10 @@ const NextUpBox = props => {
                                 airingTime={distance}
                             />
                             <div className="seeDetails bold">
-                                <img src="/svg/arrow-right-icon.svg" />
+                                <BsArrowRight 
+                                    size={24}
+                                    style={{ marginRight: '4px' }}
+                                />
                             </div>
                         </div>
                     </div>
@@ -88,10 +91,6 @@ const NextUpBox = props => {
                     right: 18px;
                     bottom: 23px;
                     font-size: 16px;
-                }
-                .container .seeDetails img {
-                    margin-right: 4px;
-                    width: 24px;
                 }
                 @media screen and (max-width: 568px) {
                     .container {

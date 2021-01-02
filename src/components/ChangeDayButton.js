@@ -1,5 +1,6 @@
 import Router, { useRouter } from 'next/router'
 
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'
 import ColoredButton from './ColoredButton'
 
 const ChangeDayButton = props => {
@@ -11,11 +12,13 @@ const ChangeDayButton = props => {
         Router.events.on('routeChangeComplete', () => scrollTo(0, 0))
     }
 
+    const arrowStyle = { marginRight: '6px' }
+
     return (<>
         <span className="routerButton" onClick={onClick}>
             <ColoredButton bgColor="#1abc9c" hoverBgColor="#16a085" textColor="#FFFFFF" >
                 <div className="container">
-                    <img className="arrow" src="/svg/arrow-right-white-icon.svg"/>
+                    {isPrev ? <BsArrowLeft style={arrowStyle} /> : <BsArrowRight style={arrowStyle}/>}
                     <span className="text">
                         {isPrev ? 'Prev' : 'Next'}
                     </span>
@@ -27,15 +30,7 @@ const ChangeDayButton = props => {
                 cursor: pointer;
             }
             .container {
-                display: flex;
                 flex-direction: ${isPrev ? 'row' : 'row-reverse'}
-            }
-            .arrow {
-                ${isPrev && 'transform: rotate(180deg)'}
-            }
-            .text {
-                margin-${isPrev ? 'left' : 'right'}: 6px;
-                color: #FFFFFF !important;
             }
         `}</style>
     </>)
