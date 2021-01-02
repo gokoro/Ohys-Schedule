@@ -1,13 +1,7 @@
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { BsGearFill } from 'react-icons/bs'
 import HeaderLinks from '../components/HeaderLinks'
 import ClassNameLink from '../components/ClassNameLink'
-
-const DynamicHeaderLinks = dynamic(
-    () => import('../components/HeaderLinks'),
-    { ssr: false }
-)
 
 const Header = () => {
     return (
@@ -33,7 +27,7 @@ const Header = () => {
         </div>
         <div className="dayLinks b-default">
             <div className="wrapper">
-                <DynamicHeaderLinks />
+                <HeaderLinks />
             </div>
         </div>
         <style jsx>{`
