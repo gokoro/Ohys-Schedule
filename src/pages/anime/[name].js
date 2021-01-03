@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useAnime } from '../../hooks/useAnime'
+import { useAnimeName } from '../../hooks/useAnime'
 
 import Helmet from '../../components/Helmet'
 import Section from "../../components/Section"
@@ -10,13 +10,13 @@ import AnimeTorrentOtherLink from '../../components/AnimeTorrentOtherLink'
 
 export default function name({ initialData }) {
     const router = useRouter()
-    const { id } = router.query
+    const { name } = router.query
 
-    if (!id) {
+    if (!name) {
         return null
     }
 
-    const { data: animeData, isLoading } = useAnime(id, { initialData })
+    const { data: animeData, isLoading } = useAnimeName(name, { initialData })
 
     return (
         <>
@@ -30,7 +30,7 @@ export default function name({ initialData }) {
             )}
             <Section>
                 <AnimeDetails 
-                    animeId={id}
+                    animeName={name}
                     margin="8rem 0 24px"
                     mobileMargin="3rem 0 0 0"
                 />
@@ -39,15 +39,15 @@ export default function name({ initialData }) {
                 <div className="bottom-section-container">
                     <div className="torrent">
                         <AnimeTorrentList 
-                            animeId={id}
+                            animeName={name}
                         />
                         <AnimeTorrentOtherLink 
-                            animeId={id}
+                            animeName={name}
                         />
                     </div>
                     <div className="ep">
                         <AnimeDescriptionSection 
-                            animeId={id}
+                            animeName={name}
                         />
                     </div>
                 </div>
@@ -81,7 +81,7 @@ export default function name({ initialData }) {
 
 name.getInitialProps = async (ctx) => {
     const { apiUrl } = process.env
-    const { id } = ctx.query
+    const { name } = ctx.query
 
     if (!ctx.req) {
         return {
@@ -89,7 +89,7 @@ name.getInitialProps = async (ctx) => {
         }
     }
 
-    const res = await fetch(`${apiUrl}/anime?id=${id}`)
+    const res = await fetch(`${apiUrl}/anime?name=${name}`)
     const anime = await res.json()
 
     return {

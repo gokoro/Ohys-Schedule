@@ -19,8 +19,8 @@ const AnimeCardForm = props => {
         },
     }
     return (
-        <Link href={`/anime/${props.id}`}>
-            <motion.a href={`/anime/${props.id}`} className='animecard' initial='hidden' animate="visible" transition={{duration: 0.3}} variants={animated}>
+        <Link href={props.href}>
+            <motion.a href={props.href} className='animecard' initial='hidden' animate="visible" transition={{duration: 0.3}} variants={animated}>
                 <div className="top">
                     {props.top}
                 </div>
@@ -53,7 +53,7 @@ const AnimeCard = props => {
     const { locale } = useContext(LanguageContext.Original)
     return (
         <AnimeCardForm
-            id={props.id}
+            href={props.href}
             top={<>
                     <motion.div className="imgLoader" initial='hidden' animate="visible" transition={{duration: 0.3, delay: 0.1}} variants={{
                         hidden: {

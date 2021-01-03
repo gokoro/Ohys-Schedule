@@ -37,6 +37,7 @@ const AnimeCardList = props => {
                     time={item.released_time}
                     imageUrl={item.smallImageUrl}
                     placeholderColor={item.color}
+                    href={`/anime/${item.name}`}
                 />
             ))}
         </Form>

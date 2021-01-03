@@ -3,13 +3,13 @@ import ShadowWhiteBox from './ShadowWhiteBox'
 
 import LanguageContext from '../context/LanguageContext'
 
-import { useAnime } from '../hooks/useAnime'
+import { useAnimeName } from '../hooks/useAnime'
 import { useContext } from 'react'
 
 const AnimeTorrentOtherLink = props => {
     const { locale } = useContext(LanguageContext.Original)
 
-    const res = useAnime(props.animeId)
+    const res = useAnimeName(props.animeName)
     const data = res.data
 
     return (

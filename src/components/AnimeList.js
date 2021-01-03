@@ -39,7 +39,7 @@ const AnimeList = props => {
     return (
         <div className="AnimeList">
             {data.data.map(item => (
-                <AnimeListItem key={item._id} id={item._id}>
+                <AnimeListItem key={item._id} name={item.name}>
                     <InfoWrapper 
                         title={item.title[langContext.lang] || item.title.romaji}
                         time={item.released_time}
@@ -56,7 +56,7 @@ const AnimeList = props => {
 
 const AnimeListItem = props => {
     return (
-        <Link href='/anime/[id]' as={`/anime/${props.id}`}>
+        <Link href={`/anime/${props.name}`}>
             <a className="AnimeListItem">
                 <div className="wrapper">
                     {props.children}
