@@ -1,11 +1,25 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BsGearFill } from 'react-icons/bs'
 import HeaderLinks from '../components/HeaderLinks'
 import ClassNameLink from '../components/ClassNameLink'
 
 const Header = () => {
-    return (
-        <>
+    const [ scrollPosition, setScrollPosition ] = useState(0)
+    const isScrollDown = scrollPosition > 70
+
+    const handleScroll = () => {
+        setScrollPosition(window.pageYOffset)
+    }
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll)
+
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+
+    return (<>
         <div className="header b-default">
             <div className="wrapper">
                 <div className="container">
@@ -25,7 +39,7 @@ const Header = () => {
                 </div>
             </div>
         </div>
-        <div className="dayLinks b-default">
+        <div className={`dayLinks b-default ${isScrollDown ? 'shadow' : ''}`}>
             <div className="wrapper">
                 <HeaderLinks />
             </div>
@@ -42,6 +56,11 @@ const Header = () => {
             }
             .dayLinks {
                 border-bottom: 1px solid #ecf0f1;
+                box-shadow: none;
+                transition: box-shadow 0.3s;
+            }
+            .dayLinks.shadow {
+                box-shadow: var(--shadow-small);
             }
             .header a {
                 color: var(--sub-text-color);
@@ -92,7 +111,7 @@ const Header = () => {
                 }
             }
         `}</style>
-        </>
-    )
+        
+    </>)
 }
 export default Header
