@@ -41,7 +41,7 @@ const AnimeList = props => {
             {data.data.map(item => (
                 <AnimeListItem key={item._id} id={item._id}>
                     <InfoWrapper 
-                        title={item.title[langContext.lang]}
+                        title={item.title[langContext.lang] || item.title.romaji}
                         time={item.released_time}
                         broadcaster={item.release_broadcaster}
                         latestEpisode={item.items[item.items.length - 1]?.episode || 0}

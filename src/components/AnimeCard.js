@@ -102,12 +102,14 @@ const AnimeCard = props => {
                     .title {
                         font-size: 14px;
                         color: #000000;
+                        line-height: 20px;
                     }
                     .sub {
                         color: var(--sub-text-color);
                         font-size: 12px;
                         letter-spacing: 0;
                         line-height: 16px;
+                        margin-bottom: 2px;
                     }
                     @media screen and (max-width: 568px) {
                         .title {

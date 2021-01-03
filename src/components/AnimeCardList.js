@@ -26,15 +26,13 @@ const AnimeCardList = props => {
         )
     }
 
-    const sliceSize = lang.lang === 'korean' || lang.lang === 'japanese' ? 13 : 20 
-
     return (
         <Form>
             {data.data.map(item => (
                 <AnimeCard
                     key={item._id}
                     id={item._id}
-                    name={item.title[lang.lang].length > sliceSize ? item.title[lang.lang].slice(0, sliceSize) + '...' : item.title[lang.lang]}
+                    name={item.title[lang.lang] || item.title.romaji}
                     day={props.day}
                     time={item.released_time}
                     imageUrl={item.smallImageUrl}
