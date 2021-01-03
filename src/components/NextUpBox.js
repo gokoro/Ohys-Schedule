@@ -20,7 +20,7 @@ const NextUpBox = props => {
 
     return (
         <>
-            <Link href='/anime/[id]' as={`/anime/${nextUpAnime._id}`}>
+            <Link href={`/anime/${nextUpAnime.name}`}>
                 <a className="link">
                     <div className="container">
                         <div className="left item">
