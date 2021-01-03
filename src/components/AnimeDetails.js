@@ -16,6 +16,17 @@ const AnimeDetails = props => {
 
     const currentEpisode = res.data?.data.items[res.data.data.items.length - 1]?.episode || 0
 
+    const episodeFragments = []
+    const episodeInfoLength = res.data?.data.episode_info.length || 0
+
+    if (episodeInfoLength < 3) {
+        for (let i = 0, l = 3 - episodeInfoLength; i < l; i++) {
+            episodeFragments.push(
+                <div key={i} className="content" style={{ width: '100%' }} />
+            )
+        }
+    }
+
     const animated = {
         hidden: {
             opacity: 0.2,
@@ -76,6 +87,7 @@ const AnimeDetails = props => {
                                             />
                                         </motion.div>
                                     ))}
+                                    {episodeFragments}
                                 </div>
                             </div>
                         </div>

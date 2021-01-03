@@ -1,61 +1,3 @@
-import Placeholder from './Placeholder'
-import ShadowWhiteBox from './ShadowWhiteBox'
-
-import { useAnime } from '../hooks/useAnime'
-import { useState } from 'react'
-
-const AnimeEpisodeList = props => {
-    const res = useAnime(props.animeId)
-    const data = res.data
-
-    const [ sliceSize, setSliceSize ] = useState({
-        start: 0,
-        end: 6
-    })
-
-    const handleLoadClick = () => {
-        setSliceSize({
-            ...sliceSize,
-            end: sliceSize.end + 6
-        })
-    }
-    return (
-        <ShadowWhiteBox className="animeepisodelist">
-            <div className="header bold size-16">Episodes</div>
-            <div className="content">
-                {res.isLoading ? <Placeholder lineCountFor={20}/> : <>
-                    {data.data.episode_info.length === 0 ?
-                        <div>No Episodes Detected.</div> : <>
-                        {data.data.episode_info.slice(sliceSize.start, sliceSize.end).map((item) => (
-                            <AnimeStorySectionItem
-                                key={item.title}
-                                imageUrl={item.thumbnail}
-                                episodeName={item.title}
-                            />
-                        ))}
-                        <button className="load rounded-small size-16" onClick={handleLoadClick}>Load More</button>
-                        </>
-                    }
-                </>}
-            </div>
-            <style jsx>{`
-                :global(.animeepisodelist) > .header {
-                    margin-bottom: 16px;
-                }
-                button.load {
-                    border: none;
-                    width: 100%;
-                    padding: 12px;
-                    transition: background-color 0.1s;
-                }
-                button.load:hover {
-                    background-color: #dcdde1;
-                }
-            `}</style>
-        </ShadowWhiteBox>
-    )
-}
-
 const AnimeEpisodeListItem = props => {
     return (
         <div className="item">
@@ -112,6 +54,5 @@ const AnimeEpisodeListItem = props => {
     )
 }
 export {
-    AnimeEpisodeList,
     AnimeEpisodeListItem
 }
