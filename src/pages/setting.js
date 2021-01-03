@@ -41,7 +41,7 @@ export default function setting() {
             <Section>
                 <SectionTitle size="1.5rem">{locale.setting.copyright}</SectionTitle>
                 <div className="content">
-                    <p>Copyright 2020 Gokoro. All rights reserved.</p>
+                    <p>Copyright {new Date().getFullYear()} Gokoro. All rights reserved.</p>
                     <p>{locale.setting.copyArticle}</p>
                 </div>
             </Section>
