@@ -1,3 +1,4 @@
+import { BsClockFill } from 'react-icons/bs'
 import Link from 'next/link'
 import { urlFilter } from '../lib/urlFilter'
 
@@ -96,7 +97,7 @@ const InfoWrapper = props => {
     return (
         <div className="infowrapper">
             <AnimeTimeInfo 
-                iconSrc='/svg/clock-icon.svg'
+                iconSrc={<BsClockFill />}
                 text={`${props.time} | ${props.broadcaster} | Ep. ${props.latestEpisode}`}
             />
             {props.title}

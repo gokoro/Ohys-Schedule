@@ -1,3 +1,5 @@
+import { BsFillStopwatchFill } from 'react-icons/bs'
+
 import { useContext } from 'react'
 import LanguageContext from '../context/LanguageContext'
 
@@ -11,7 +13,7 @@ const AnimeRemainTimeSection = props => {
     return (
         <div className="AnimeRemainTimeSection">
             <AnimeTimeInfo 
-                iconSrc="/svg/timer-icon.svg"
+                iconSrc={<BsFillStopwatchFill />}
                 text={props.isOnAir ? translated.isAir : translated.soonAir}
             />
             <CalcTimeForBroadcast

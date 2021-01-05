@@ -1,3 +1,5 @@
+import { BsClockFill } from 'react-icons/bs'
+
 import AnimeTimeInfo from './AnimeTimeInfo'
 
 const AnimeInfoSection = props => {
@@ -5,7 +7,7 @@ const AnimeInfoSection = props => {
     return (
         <div className="AnimeInfoSection">
             <AnimeTimeInfo
-                iconSrc='/svg/clock-icon.svg'
+                iconSrc={<BsClockFill />}
                 text={`${(day || '').toUpperCase()} ${time} ${('| ' + broadcaster) || ''}`}
             />
             <div className="size-24 bold title"><span className="text">{title}</span></div>

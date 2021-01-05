@@ -1,13 +1,9 @@
-import { BsClockFill } from 'react-icons/bs'
-
 const AnimeTimeInfo = props => {
     return (
         <div className="AnimeTimeInfo time bold">
-            <BsClockFill 
-                size={13}
-                style={{ marginRight: '6px' }}
-                color="black"
-            />
+            <span className="icon-container">
+                {props.iconSrc}
+            </span>
             <span>{props.text}</span>
             <style jsx>{`
                 .time {
@@ -16,14 +12,18 @@ const AnimeTimeInfo = props => {
                     letter-spacing: 1px;
                     color: #7f8c8d;
                 }
+                .icon-container {
+                    font-size: 12px;
+                    margin-right: 6px;
+                    color: black;
+                }
                 @media screen and (max-width: 568px) {
                     .time {
                         font-size: 10px;
                         margin-bottom: 0;
                     }
-                    .time svg {
-                        width: 8px!important;
-                        height: 8px!important;
+                    .icon-container {
+                        font-size: 10px;
                     }
                 }
             `}</style>
