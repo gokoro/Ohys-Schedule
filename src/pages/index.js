@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { useSchedule } from '../hooks/useSchedule'
 
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import LanguageContext from '../context/LanguageContext'
 import ListTypeContext from '../context/ListTypeContext'
 
@@ -25,24 +25,26 @@ export default function Main({ schedules }) {
   const { data: initialData } = schedules[dayByNumber]
 
   const schedule = useSchedule(day, { initialData }, { enableRevalidate: true })
+  const res = schedule.data
 
-  let onAirAnime = null
+  const [ currentAnime, setCurrentAnime ] = useState(res.data[res.data.length - 1])
 
-  if (!schedule.isLoading) {
-    const res = schedule.data
-    const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
-    
-    onAirAnime = res.data[res.data.length - 1]
-  
-    for (let i = 0; i < res.data.length; i++) {
-      const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
-  
-      if (jstTime <= releaseTime) {
-          onAirAnime = res.data[i]
-          break
-      }
+  useEffect(() => {
+    if (!schedule.isLoading) {
+        const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
+            
+        setCurrentAnime(res.data[res.data.length - 1])
+            
+        for (let i = 0; i < res.data.length; i++) {
+            const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
+
+            if (jstTime <= releaseTime) {
+                setCurrentAnime(res.data[i])
+                break
+            }
+        }
     }
-  }
+  }, [])
 
 
   return (
@@ -58,7 +60,7 @@ export default function Main({ schedules }) {
                   placeholderLineCount={9}>
                     <NextUpBox
                       dayOfWeek={day}
-                      nextUpAnime={onAirAnime}
+                      nextUpAnime={currentAnime}
                     />
                 </PlaceholderBox>
               </Section>
