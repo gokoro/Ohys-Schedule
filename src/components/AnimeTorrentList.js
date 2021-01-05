@@ -4,11 +4,11 @@ import ShadowWhiteBox from './ShadowWhiteBox'
 
 import LanguageContext from '../context/LanguageContext'
 
-import { useAnimeName } from '../hooks/useAnime'
+import { useAnime } from '../hooks/useAnime'
 import { useContext } from 'react'
 
 const AnimeTorrentList = props => {
-    const res = useAnimeName(props.animeName)
+    const res = useAnime(props.animeId)
     const lang = useContext(LanguageContext.Original)
     const { locale } = lang
 

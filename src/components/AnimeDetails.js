@@ -6,13 +6,13 @@ import { AnimeEpisodeListItem } from './AnimeEpisodeList'
 
 import LanguageContext from '../context/LanguageContext'
 
-import { useAnimeName } from '../hooks/useAnime'
+import { useAnime } from '../hooks/useAnime'
 import { useContext } from 'react'
 
 const AnimeDetails = props => {
     const lang = useContext(LanguageContext.Original)
 
-    const res = useAnimeName(props.animeName)
+    const res = useAnime(props.animeId)
 
     const currentEpisode = res.data?.data.items[res.data.data.items.length - 1]?.episode || 0
 

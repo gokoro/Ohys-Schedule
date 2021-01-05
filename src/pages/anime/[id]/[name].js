@@ -1,22 +1,33 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useAnimeName } from '../../hooks/useAnime'
+import { useAnime } from '../../../hooks/useAnime'
+import { urlFilter } from '../../../lib/urlFilter'
 
-import Helmet from '../../components/Helmet'
-import Section from "../../components/Section"
-import AnimeDetails from '../../components/AnimeDetails'
-import AnimeTorrentList from '../../components/AnimeTorrentList'
-import AnimeDescriptionSection from '../../components/AnimeDescriptionSection'
-import AnimeTorrentOtherLink from '../../components/AnimeTorrentOtherLink'
+import Helmet from '../../../components/Helmet'
+import Section from "../../../components/Section"
+import AnimeDetails from '../../../components/AnimeDetails'
+import AnimeTorrentList from '../../../components/AnimeTorrentList'
+import AnimeDescriptionSection from '../../../components/AnimeDescriptionSection'
+import AnimeTorrentOtherLink from '../../../components/AnimeTorrentOtherLink'
+
+const specialRegex = /[^a-z0-9\s-]/g
+const spaceRegex = /\s/g
 
 export default function name({ initialData }) {
     const router = useRouter()
-    const { name } = router.query
+    const { id, name } = router.query
 
-    if (!name) {
+    if (!id || !name) {
         return null
     }
 
-    const { data: animeData, isLoading } = useAnimeName(name, { initialData })
+    const filteredName = urlFilter(initialData.data?.name || name)
+
+    useEffect(() => {
+        router.replace(`/anime/${id}/${filteredName}`)
+    }, [])
+
+    const { data: animeData, isLoading } = useAnime(id, { initialData })
 
     return (
         <>
@@ -30,7 +41,7 @@ export default function name({ initialData }) {
             )}
             <Section>
                 <AnimeDetails 
-                    animeName={name}
+                    animeId={id}
                     margin="8rem 0 24px"
                     mobileMargin="3rem 0 0 0"
                 />
@@ -39,15 +50,15 @@ export default function name({ initialData }) {
                 <div className="bottom-section-container">
                     <div className="torrent">
                         <AnimeTorrentList 
-                            animeName={name}
+                            animeId={id}
                         />
                         <AnimeTorrentOtherLink 
-                            animeName={name}
+                            animeId={id}
                         />
                     </div>
                     <div className="ep">
                         <AnimeDescriptionSection 
-                            animeName={name}
+                            animeId={id}
                         />
                     </div>
                 </div>
@@ -81,7 +92,7 @@ export default function name({ initialData }) {
 
 name.getInitialProps = async (ctx) => {
     const { apiUrl } = process.env
-    const { name } = ctx.query
+    const { id } = ctx.query
 
     if (!ctx.req) {
         return {
@@ -89,7 +100,7 @@ name.getInitialProps = async (ctx) => {
         }
     }
 
-    const res = await fetch(`${apiUrl}/anime?name=${name}`)
+    const res = await fetch(`${apiUrl}/anime?id=${id}`)
     const anime = await res.json()
 
     return {

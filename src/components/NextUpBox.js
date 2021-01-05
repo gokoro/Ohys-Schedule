@@ -1,4 +1,5 @@
 import { BsArrowRight } from 'react-icons/bs'
+import { urlFilter } from '../lib/urlFilter'
 
 import Link from 'next/link'
 
@@ -20,7 +21,7 @@ const NextUpBox = props => {
 
     return (
         <>
-            <Link href={`/anime/${nextUpAnime.name}`}>
+            <Link href={`/anime/${nextUpAnime._id}/${urlFilter(nextUpAnime.name)}`}>
                 <a className="link">
                     <div className="container">
                         <div className="left item">

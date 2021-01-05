@@ -3,7 +3,7 @@ import Placeholder from './Placeholder'
 
 import LanguageContext from '../context/LanguageContext'
 
-import { useAnimeName } from '../hooks/useAnime'
+import { useAnime } from '../hooks/useAnime'
 import { useState, useEffect, useContext } from 'react'
 
 const AnimeDescriptionSection = props => {
@@ -11,7 +11,7 @@ const AnimeDescriptionSection = props => {
 
     const { locale } = useContext(LanguageContext.Original)
 
-    const { data, isLoading } = useAnimeName(props.animeName)
+    const { data, isLoading } = useAnime(props.animeId)
 
     useEffect(() => {
         if (!isLoading && data.data.description.length <= 150) {

@@ -1,3 +1,5 @@
+import { urlFilter } from '../lib/urlFilter'
+
 import { AnimeCard, AnimeCardPlaceholder } from './AnimeCard'
 
 import { useContext } from 'react'
@@ -37,7 +39,7 @@ const AnimeCardList = props => {
                     time={item.released_time}
                     imageUrl={item.smallImageUrl}
                     placeholderColor={item.color}
-                    href={`/anime/${item.name}`}
+                    href={`/anime/${item._id}/${urlFilter(item.name)}`}
                 />
             ))}
         </Form>

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { urlFilter } from '../lib/urlFilter'
 
 import { useContext } from 'react'
 import { useSchedule } from '../hooks/useSchedule'
@@ -39,7 +40,7 @@ const AnimeList = props => {
     return (
         <div className="AnimeList">
             {data.data.map(item => (
-                <AnimeListItem key={item._id} name={item.name}>
+                <AnimeListItem key={item._id} href={`/anime/${item._id}/${urlFilter(item.name)}`}>
                     <InfoWrapper 
                         title={item.title[langContext.lang] || item.title.romaji}
                         time={item.released_time}
@@ -56,7 +57,7 @@ const AnimeList = props => {
 
 const AnimeListItem = props => {
     return (
-        <Link href={`/anime/${props.name}`}>
+        <Link href={props.href}>
             <a className="AnimeListItem">
                 <div className="wrapper">
                     {props.children}
