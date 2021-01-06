@@ -10,12 +10,14 @@
     "export": "next build && next export"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "framer-motion": "^2.4.3-beta.2",
     "moment-timezone": "^0.5.31",
-    "next": "9.5.4",
+    "next": "^10.0.1",
     "nprogress": "^0.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-icons": "^4.1.0",
     "swr": "^0.3.0"
   },
   "license": "MIT"
