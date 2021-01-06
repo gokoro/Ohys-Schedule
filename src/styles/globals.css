@@ -3,8 +3,8 @@ body {
   padding: 0;
   margin: 0;
   font-family:
-  '-apple-system', 'BlinkMacSystemFont', 'Apple SD Gothic Neo',
-  'Lato', 'Noto Sans KR', 'Noto Sans JP', 'Segoe UI', Sans-Serif,
+  'Lato', 'Noto Sans KR', 'Noto Sans JP',
+  '-apple-system', 'BlinkMacSystemFont', 'Apple SD Gothic Neo', 'Segoe UI', Sans-Serif,
   'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   letter-spacing: -0.3px;
   line-height: 150%;
