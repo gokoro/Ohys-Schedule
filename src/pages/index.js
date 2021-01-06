@@ -27,15 +27,11 @@ export default function Main({ schedules }) {
 
   const schedule = useSchedule(day, { initialData })
   const res = schedule.data
-
-  const [ currentAnime, setCurrentAnime ] = useState(res.data[res.data.length - 1])
-
+  
+  const [ currentAnime, setCurrentAnime ] = useState(null)
+  
   useEffect(() => {
-    if (!schedule.isLoading) {
-        const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
-            
-        setCurrentAnime(res.data[res.data.length - 1])
-            
+      const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
         for (let i = 0; i < res.data.length; i++) {
             const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
 
@@ -44,9 +40,7 @@ export default function Main({ schedules }) {
                 break
             }
         }
-    }
   }, [])
-
 
   return (
       <>
@@ -56,7 +50,7 @@ export default function Main({ schedules }) {
               <Section>
                 <SectionTitle size="1.8rem" >{locale.main.nextUp}</SectionTitle>
                 <PlaceholderBox
-                  isLoading={schedule.isLoading}
+                  isLoading={!currentAnime}
                   className="link"
                   placeholderLineCount={9}>
                     <NextUpBox
