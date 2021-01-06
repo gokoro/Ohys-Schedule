@@ -10,6 +10,7 @@
     "export": "next build && next export"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "framer-motion": "^2.4.3-beta.2",
     "moment-timezone": "^0.5.31",
     "next": "^10.0.1",

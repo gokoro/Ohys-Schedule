@@ -1,4 +1,5 @@
 import moment from 'moment-timezone'
+import { api } from '../lib/api'
 
 import Link from 'next/link'
 
@@ -24,7 +25,7 @@ export default function Main({ schedules }) {
 
   const { data: initialData } = schedules[dayByNumber]
 
-  const schedule = useSchedule(day, { initialData }, { enableRevalidate: true })
+  const schedule = useSchedule(day, { initialData })
   const res = schedule.data
 
   const [ currentAnime, setCurrentAnime ] = useState(res.data[res.data.length - 1])
@@ -140,12 +141,11 @@ function getToday() {
 }
 
 export async function getStaticProps() {
-  const { apiUrl } = process.env
   const dayItems = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
   const retrieveSchedule = async (day) => {
-    const res = await fetch(`${apiUrl}/schedule?day=${day}`)
-    const data = await res.json()
+    const res = await api.get(`/schedule`, { params: { day }})
+    const data = res.data
 
     return { day, data }
   }

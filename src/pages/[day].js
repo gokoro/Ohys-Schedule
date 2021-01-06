@@ -1,4 +1,5 @@
 import moment from 'moment-timezone'
+import { api } from '../lib/api'
 
 import { useContext } from 'react'
 
@@ -101,11 +102,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const apiUrl = process.env.apiUrl
   const { day } = params
 
-  const res = await fetch(`${apiUrl}/schedule?day=${day}`)
-  const schedule = await res.json()
+  const res = await api.get(`/schedule`, { params: { day }})
+  const schedule = res.data
 
   return {
     props: { schedule, day },

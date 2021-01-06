@@ -1,3 +1,4 @@
+import { api } from '../../../lib/api'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useAnime } from '../../../hooks/useAnime'
@@ -9,9 +10,6 @@ import AnimeDetails from '../../../components/AnimeDetails'
 import AnimeTorrentList from '../../../components/AnimeTorrentList'
 import AnimeDescriptionSection from '../../../components/AnimeDescriptionSection'
 import AnimeTorrentOtherLink from '../../../components/AnimeTorrentOtherLink'
-
-const specialRegex = /[^a-z0-9\s-]/g
-const spaceRegex = /\s/g
 
 export default function name({ initialData }) {
     const router = useRouter()
@@ -91,7 +89,6 @@ export default function name({ initialData }) {
 }
 
 name.getInitialProps = async (ctx) => {
-    const { apiUrl } = process.env
     const { id } = ctx.query
 
     if (!ctx.req) {
@@ -100,10 +97,10 @@ name.getInitialProps = async (ctx) => {
         }
     }
 
-    const res = await fetch(`${apiUrl}/anime?id=${id}`)
-    const anime = await res.json()
+    const res = await api.get(`/anime`, { params: { id } })
+    const initialData = res.data
 
     return {
-        initialData: anime
+        initialData
     }
 }

@@ -1,13 +1,13 @@
 import useSWR, { cache } from "swr"
-
+import { api } from '../lib/api'
+    
 const useSchedule = (day, configs = {}, customConfigs = {}) => {
-    const apiUrl = process.env.apiUrl
-    const baseUrl = `${apiUrl}/schedule?day=${day}`
+    const baseUrl = `/schedule`
 
     let customed = {}
 
     if (configs.initialData) {
-        cache.set(baseUrl, configs.initialData)
+        cache.set([baseUrl, day], configs.initialData)
     }
 
     if (!customConfigs.enableRevalidate) {
@@ -22,7 +22,7 @@ const useSchedule = (day, configs = {}, customConfigs = {}) => {
         }
     }
 
-    const { data, error } = useSWR(baseUrl, fetcher, {
+    const { data, error } = useSWR([baseUrl, day], (url, day) => fetcher(url, { day }), {
         ...configs,
         ...customed
     })
@@ -33,6 +33,6 @@ const useSchedule = (day, configs = {}, customConfigs = {}) => {
         isError: error,
     }
 }
-const fetcher = (...url) => fetch(...url).then((res) => res.json())
+const fetcher = (url, params) => api.get(url, { params }).then(res => res.data)
 
 export { useSchedule }
