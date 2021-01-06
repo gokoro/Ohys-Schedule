@@ -27,12 +27,20 @@ export default function name({ initialData }) {
 
     const { data: animeData, isLoading } = useAnime(id, { initialData })
 
+    let description = ''
+
+    if (!isLoading) {
+        const info = animeData.data.description
+        
+        description = info.length < 250 ? info : info.slice(0, 250)
+    }
+
     return (
         <>
             {!isLoading && (
                 <Helmet
                     title={animeData.data.name}
-                    description={`${animeData.data.description.slice(0, 250)}...`}
+                    description={description}
                     image={animeData.data.imageUrl}
                     themeColor={animeData.data.color}
                 />
