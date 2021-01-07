@@ -32,7 +32,7 @@ export default function name({ initialData }) {
     if (!isLoading) {
         const info = animeData.data.description
         
-        description = info.length < 250 ? info : info.slice(0, 250)
+        description = info.length < 250 ? info : `${info.slice(0, 250).trim()}...`
     }
 
     return (
