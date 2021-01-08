@@ -39,6 +39,11 @@ export default function Main({ schedules }) {
                 setCurrentAnime(res.data[i])
                 break
             }
+
+            if (i + 1 === res.data.length) {
+                setCurrentAnime(res.data[res.data.length - 1])
+                break
+            }
         }
   }, [])
 
