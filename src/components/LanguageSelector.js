@@ -4,9 +4,16 @@ import { PreferredLanguageState } from '../states/preferredLanguage'
 const LanguageSelector = props => {
     const [ lang, setLang ] = useRecoilState(PreferredLanguageState)
 
+    const handleChange = (e) => {
+        const value = e.target.value
+
+        setLang(value)
+        localStorage.setItem('lang', value)
+    }
+
     return (
         <div className="langSelector">
-            <select value={lang} onChange={(e) => setLang(e.target.value)} className="rounded-small">
+            <select value={lang} onChange={handleChange} className="rounded-small">
                 <option value="english">English</option>
                 <option value="romaji">Romaji</option>
                 <option value="korean">한국어</option>
