@@ -2,13 +2,13 @@ import { urlFilter } from '../lib/urlFilter'
 
 import { AnimeCard, AnimeCardPlaceholder } from './AnimeCard'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 import { useSchedule } from '../hooks/useSchedule'
 
-import LanguageContext from '../context/LanguageContext'
+import { PreferredLanguageState } from '../states/preferredLanguage'
 
 const AnimeCardList = props => {
-    const lang = useContext(LanguageContext.Original)
+    const lang = useRecoilValue(PreferredLanguageState)
 
     const schedule = useSchedule(props.day)
     const data = schedule.data
@@ -34,7 +34,7 @@ const AnimeCardList = props => {
                 <AnimeCard
                     key={item._id}
                     id={item._id}
-                    name={item.title[lang.lang] || item.title.romaji}
+                    name={item.title[lang] || item.title.romaji}
                     day={props.day}
                     time={item.released_time}
                     imageUrl={item.smallImageUrl}

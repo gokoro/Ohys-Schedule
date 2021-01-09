@@ -2,16 +2,16 @@ import { BsClockFill } from 'react-icons/bs'
 import Link from 'next/link'
 import { urlFilter } from '../lib/urlFilter'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 import { useSchedule } from '../hooks/useSchedule'
 
-import LanguageContext from '../context/LanguageContext'
+import { PreferredLanguageState } from '../states/preferredLanguage'
 
 import Placeholder from './Placeholder'
 import AnimeTimeInfo from './AnimeTimeInfo'
 
 const AnimeList = props => {
-    const langContext = useContext(LanguageContext.Original)
+    const lang = useRecoilValue(PreferredLanguageState)
     
     const schedule = useSchedule(props.day)
     const data = schedule.data
@@ -43,7 +43,7 @@ const AnimeList = props => {
             {data.data.map(item => (
                 <AnimeListItem key={item._id} href={`/anime/${item._id}/${urlFilter(item.name)}`}>
                     <InfoWrapper 
-                        title={item.title[langContext.lang] || item.title.romaji}
+                        title={item.title[lang] || item.title.romaji}
                         time={item.released_time}
                         broadcaster={item.release_broadcaster}
                         latestEpisode={item.items[item.items.length - 1]?.episode || 0}

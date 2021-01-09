@@ -2,43 +2,30 @@ import moment from 'moment-timezone'
 
 import ClassNameAsPathLink from './ClassNameAsPathLink'
 
-import LanguageContext from '../context/LanguageContext'
+import { currentDayState } from '../states/currentTime'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
-import { useContext, useState, useEffect } from 'react'
+import { useRecoilValue } from 'recoil'
+import { useState, useEffect } from 'react'
 
 const HeaderLinks = () => {
-    const { locale: { 
+    const {
         common: {
             day: dayLocaleSet
         }
-    } } = useContext(LanguageContext.Original)
+    } = useRecoilValue(LocaleMessageState)
 
-    const [ dayState, setDayState ] = useState('')
-
-    const getDay = () => {
-        const jpMoment = moment().tz('Asia/Tokyo')
-        const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][jpMoment.day()]  
-
-        return day
-    }
-
-    useEffect(() => {
-        setDayState(getDay())
-
-        const interval = setInterval(() => setDayState(getDay()), 1000 * 60)
-
-        return () => clearInterval(interval)
-    }, [])
+    const currentDay = useRecoilValue(currentDayState)
 
     return (
         <div className="wrapper">
-            <DayLink day={dayState} text={dayLocaleSet.sun} value="sun" />
-            <DayLink day={dayState} text={dayLocaleSet.mon} value="mon" />
-            <DayLink day={dayState} text={dayLocaleSet.tue} value="tue" />
-            <DayLink day={dayState} text={dayLocaleSet.wed} value="wed" />
-            <DayLink day={dayState} text={dayLocaleSet.thu} value="thu" />
-            <DayLink day={dayState} text={dayLocaleSet.fri} value="fri" />
-            <DayLink day={dayState} text={dayLocaleSet.sat} value="sat" />
+            <DayLink day={currentDay} text={dayLocaleSet.sun} value="sun" />
+            <DayLink day={currentDay} text={dayLocaleSet.mon} value="mon" />
+            <DayLink day={currentDay} text={dayLocaleSet.tue} value="tue" />
+            <DayLink day={currentDay} text={dayLocaleSet.wed} value="wed" />
+            <DayLink day={currentDay} text={dayLocaleSet.thu} value="thu" />
+            <DayLink day={currentDay} text={dayLocaleSet.fri} value="fri" />
+            <DayLink day={currentDay} text={dayLocaleSet.sat} value="sat" />
             <style jsx>{`
                 .wrapper {
                     width: 100%;
@@ -49,11 +36,11 @@ const HeaderLinks = () => {
     )
 }
 const DayLink = props => {
-    const { locale: { 
+    const {
         components: {
             header: dayLocaleSet
         }
-    } } = useContext(LanguageContext.Original)
+    } = useRecoilValue(LocaleMessageState)
 
     const isTodayActive = props.day === props.value
 

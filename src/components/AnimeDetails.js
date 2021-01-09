@@ -4,13 +4,13 @@ import { motion } from 'framer-motion'
 import Placeholder from './Placeholder'
 import { AnimeEpisodeListItem } from './AnimeEpisodeList'
 
-import LanguageContext from '../context/LanguageContext'
+import { PreferredLanguageState } from '../states/preferredLanguage'
 
 import { useAnime } from '../hooks/useAnime'
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
 const AnimeDetails = props => {
-    const lang = useContext(LanguageContext.Original)
+    const lang = useRecoilValue(PreferredLanguageState)
 
     const res = useAnime(props.animeId)
 
@@ -73,7 +73,7 @@ const AnimeDetails = props => {
                                 {res.data.data.name}
                             </div>
                             <div className="title item size-24 bold">
-                                {res.data.data.title[lang.lang] || res.data.data.name}
+                                {res.data.data.title[lang] || res.data.data.name}
                             </div>
                         </div>
                         <div className="addition-section">

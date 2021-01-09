@@ -3,12 +3,12 @@ import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import LanguageSelector from '../components/LanguageSelector'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 export default function setting() {
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
 
     return (
         <>

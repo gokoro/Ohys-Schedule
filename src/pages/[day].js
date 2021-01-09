@@ -1,9 +1,10 @@
 import moment from 'moment-timezone'
 import { api } from '../lib/api'
 
-import { useContext } from 'react'
-
 import { useSchedule } from '../hooks/useSchedule'
+import { useRecoilValue } from 'recoil'
+
+import { animeListTypeState } from '../states/animeListType'
 
 import Helmet from '../components/Helmet'
 import Section from "../components/Section"
@@ -13,12 +14,12 @@ import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
 
-import LanguageContext from '../context/LanguageContext'
-import ListTypeContext from '../context/ListTypeContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 export default function Day({ schedule, day: staticDayOption }) {
-    const { listType } = useContext(ListTypeContext.Original)
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
+
+    const listType = useRecoilValue(animeListTypeState)
 
     const day = staticDayOption
 

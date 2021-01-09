@@ -2,15 +2,14 @@ import { AiFillFile } from 'react-icons/ai'
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 import { useAnime } from '../hooks/useAnime'
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
 const AnimeTorrentList = props => {
     const res = useAnime(props.animeId)
-    const lang = useContext(LanguageContext.Original)
-    const { locale } = lang
+    const locale = useRecoilValue(LocaleMessageState)
 
     let data = null
 
@@ -27,7 +26,7 @@ const AnimeTorrentList = props => {
                     {[...data.items].reverse().map(item => (
                         <AnimeTorrentListItem 
                             key={item._id}
-                            name={data.title[lang.lang]}
+                            name={data.title[lang]}
                             romajiName={data.name}
                             episode={item.episode}
                             resolution={item.resolution}

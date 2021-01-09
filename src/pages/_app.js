@@ -5,9 +5,7 @@ import NProgress from 'nprogress/nprogress'
 import * as gtag from '../lib/gtag'
 
 import Router from 'next/router'
-
-import LanguageContext from '../context/LanguageContext'
-import ListTypeContext from '../context/ListTypeContext'
+import { RecoilRoot } from 'recoil'
 
 import Layout from "../components/Layout"
 
@@ -21,13 +19,11 @@ NProgress.settings.showSpinner = false
 
 function MyApp({ Component, pageProps }) {
   return (
-    <LanguageContext.Provider>
-      <ListTypeContext.Provider>
+    <RecoilRoot>
         <Layout>
-          <Component {...pageProps} />
+            <Component {...pageProps} />
         </Layout>
-      </ListTypeContext.Provider>
-    </LanguageContext.Provider>
+    </RecoilRoot>
   )
 }
 

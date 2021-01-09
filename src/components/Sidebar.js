@@ -1,16 +1,15 @@
-import LanguageSelector from './LanguageSelector'
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
 import { IoLogoDiscord } from 'react-icons/io5'
 
 const Sidebar = props => {
-    const { locale: {
+    const { 
         components: {
             sidebar
         }
-    } } = useContext(LanguageContext.Original)
+    } = useRecoilValue(LocaleMessageState)
 
     return (
         <div className="sidebar">

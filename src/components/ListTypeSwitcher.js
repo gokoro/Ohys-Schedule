@@ -1,17 +1,21 @@
+import { useRecoilState } from 'recoil'
 import { BsViewList, BsList } from 'react-icons/bs'
-import ListTypeContext from '../context/ListTypeContext'
 
-const ListTypeSwitcher = props => {
+import { animeListTypeState } from '../states/animeListType'
+
+const ListTypeSwitcher = () => {
+    const [ listType, setListType ] = useRecoilState(animeListTypeState)
+
     const handleClick = e => {
-        props.setListType(e.currentTarget.value)
+        setListType(e.currentTarget.value)
     }
 
     return (
         <div className="switch">
-            <button className={props.listType === 'card' ? 'active' : ''} onClick={handleClick} value={'card'}>
+            <button className={listType === 'card' ? 'active' : ''} onClick={handleClick} value={'card'}>
                 <BsViewList size={16}/>
             </button>
-            <button className={props.listType === 'list' ? 'active' : ''} onClick={handleClick} value={'list'}>
+            <button className={listType === 'list' ? 'active' : ''} onClick={handleClick} value={'list'}>
                 <BsList size={16}/>
             </button>
             <style jsx>{`
@@ -36,16 +40,5 @@ const ListTypeSwitcher = props => {
         </div>
     )
 }
-const ContextWrapper = () => {
-    return (
-        <ListTypeContext.Consumer>
-            {({listType, setListType}) => (
-                <ListTypeSwitcher 
-                    listType={listType}
-                    setListType={setListType}
-                />
-            )}
-        </ListTypeContext.Consumer>
-    )
-}
-export default ContextWrapper
+
+export default ListTypeSwitcher

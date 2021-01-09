@@ -3,9 +3,9 @@ import { motion } from 'framer-motion'
 
 import Placeholder from './Placeholder'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 const AnimeCardForm = props => {
     const animated = {
@@ -50,7 +50,7 @@ const AnimeCardForm = props => {
     )
 }
 const AnimeCard = props => {
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
     return (
         <AnimeCardForm
             href={props.href}

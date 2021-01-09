@@ -5,6 +5,10 @@ import Header from './Header'
 import Sidebar from './Sidebar'
 import Helmet from './Helmet'
 
+import { RefreshCurrentTimeComponent } from '../states/currentTime'
+import { SetPreferredLanguageComponent } from '../states/preferredLanguage'
+import { SetAnimeListTypeComponent } from '../states/animeListType'
+
 const Layout = (props) => {
     const { asPath } = useRouter()
 
@@ -24,6 +28,9 @@ const Layout = (props) => {
                 title="Ohys-Schedule"
                 description="The Schedule of the animes that Ohys releases."
             />
+            <RefreshCurrentTimeComponent />
+            <SetPreferredLanguageComponent />
+            <SetAnimeListTypeComponent />
             <Header />
                 <div className="wrapper">
                     <div className="content">

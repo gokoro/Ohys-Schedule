@@ -1,13 +1,13 @@
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 import { useAnime } from '../hooks/useAnime'
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 
 const AnimeTorrentOtherLink = props => {
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
 
     const res = useAnime(props.animeId)
     const data = res.data

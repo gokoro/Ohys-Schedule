@@ -1,9 +1,12 @@
-import LanguageContext from '../context/LanguageContext'
+import { useRecoilState } from 'recoil' 
+import { PreferredLanguageState } from '../states/preferredLanguage'
 
 const LanguageSelector = props => {
+    const [ lang, setLang ] = useRecoilState(PreferredLanguageState)
+
     return (
         <div className="langSelector">
-            <select value={props.defaultLang} onChange={(e) => props.setLang(e.target.value)} className="rounded-small">
+            <select value={lang} onChange={(e) => setLang(e.target.value)} className="rounded-small">
                 <option value="english">English</option>
                 <option value="romaji">Romaji</option>
                 <option value="korean">한국어</option>
@@ -22,16 +25,5 @@ const LanguageSelector = props => {
         </div>
     )
 }
-const ContextWrapper = () => {
-    return (
-        <LanguageContext.Consumer>
-            {({setLang, lang}) => (
-                <LanguageSelector 
-                    setLang={setLang}
-                    defaultLang={lang}
-                />
-            )}
-        </LanguageContext.Consumer>
-    )
-}
-export default ContextWrapper
+
+export default LanguageSelector

@@ -1,13 +1,13 @@
 import { BsFillStopwatchFill } from 'react-icons/bs'
 
-import { useContext } from 'react'
-import LanguageContext from '../context/LanguageContext'
+import { useRecoilValue } from 'recoil'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 import AnimeTimeInfo from './AnimeTimeInfo'
 import CalcTimeForBroadcast from './CalcTimeForBroadcast'
 
 const AnimeRemainTimeSection = props => {
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
     const { animeRemainTimeSection: translated } = locale.components
 
     return (

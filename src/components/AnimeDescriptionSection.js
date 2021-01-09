@@ -1,15 +1,16 @@
 import ShadowWhiteBox from './ShadowWhiteBox'
 import Placeholder from './Placeholder'
 
-import LanguageContext from '../context/LanguageContext'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 import { useAnime } from '../hooks/useAnime'
-import { useState, useEffect, useContext } from 'react'
+import { useRecoilValue } from 'recoil'
+import { useState, useEffect } from 'react'
 
 const AnimeDescriptionSection = props => {
     const [ isButtonClicked, setButtonClicked ] = useState(false)
 
-    const { locale } = useContext(LanguageContext.Original)
+    const locale = useRecoilValue(LocaleMessageState)
 
     const { data, isLoading } = useAnime(props.animeId)
 

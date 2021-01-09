@@ -1,13 +1,27 @@
-import { createContext, useState, useEffect } from 'react'
+import { useEffect } from 'react'
+import { atom, selector, useSetRecoilState } from 'recoil'
+
 import locale from '../locale'
 
-const Context = createContext()
+export const PreferredLanguageState = atom({
+    key: 'PreferredLanguageState',
+    default: ''
+})
 
-const LanguageProvider = props => {
-    const [lang, setLang] = useState()
-    
+export const LocaleMessageState = selector({
+    key: 'LocaleMessageState',
+    get: ({ get }) => {
+        const currentLanguage = get(PreferredLanguageState)
+
+        return locale[currentLanguage || 'romaji']
+    }
+})
+
+export const SetPreferredLanguageComponent = () => {
+    const setCurrentLanguage = useSetRecoilState(PreferredLanguageState)
+
     const setupLang = lang => {
-        setLang(lang)
+        setCurrentLanguage(lang)
         localStorage.setItem('lang', lang)
     }
 
@@ -30,22 +44,9 @@ const LanguageProvider = props => {
                     break
             }
         } else {
-            setLang(storageLang)
+            setCurrentLanguage(storageLang)
         }
     }, [])
 
-    return (
-        <Context.Provider value={{
-            lang,
-            setLang: setupLang,
-            locale: locale[lang || 'romaji']
-        }}>
-            {props.children}
-        </Context.Provider>
-    )
-}
-export default {
-    Provider: LanguageProvider,
-    Consumer: Context.Consumer,
-    Original: Context
+    return null
 }

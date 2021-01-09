@@ -3,11 +3,14 @@ import { api } from '../lib/api'
 
 import Link from 'next/link'
 
+import { useEffect } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { useSchedule } from '../hooks/useSchedule'
 
-import { useContext, useState, useEffect } from 'react'
-import LanguageContext from '../context/LanguageContext'
-import ListTypeContext from '../context/ListTypeContext'
+import { currentAnimeState } from '../states/currentAnime'
+import { currentSecondState, currentDayState } from '../states/currentTime'
+import { LocaleMessageState } from '../states/preferredLanguage'
+import { animeListTypeState } from '../states/animeListType'
 
 import Section from "../components/Section"
 import SectionTitle from '../components/SectionTitle'
@@ -18,34 +21,36 @@ import AnimeCardList from '../components/AnimeCardList'
 import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
 export default function Main({ schedules }) {
-  const { day, dayByNumber, jpMoment } = getToday()
+  const [ currentAnime, setCurrentAnime ] = useRecoilState(currentAnimeState)
 
-  const { listType } = useContext(ListTypeContext.Original)
-  const { locale } = useContext(LanguageContext.Original)
+  const currentSecond = useRecoilValue(currentSecondState)
+  const day = useRecoilValue(currentDayState)
 
-  const { data: initialData } = schedules[dayByNumber]
+  const locale = useRecoilValue(LocaleMessageState)
+  const listType = useRecoilValue(animeListTypeState)
+
+  const initialData = schedules[day]
 
   const schedule = useSchedule(day, { initialData })
   const res = schedule.data
   
-  const [ currentAnime, setCurrentAnime ] = useState(null)
-  
   useEffect(() => {
-      const jstTime = moment.duration(jpMoment.format('HH:mm')).asSeconds()
-        for (let i = 0; i < res.data.length; i++) {
-            const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
-
-            if (jstTime <= releaseTime) {
-                setCurrentAnime(res.data[i])
-                break
+      if (!currentAnime) {
+            for (let i = 0; i < res.data.length; i++) {
+                const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
+    
+                if (currentSecond <= releaseTime) {
+                    setCurrentAnime(res.data[i])
+                    break
+                }
+    
+                if (i + 1 === res.data.length) {
+                    setCurrentAnime(res.data[res.data.length - 1])
+                    break
+                }
             }
-
-            if (i + 1 === res.data.length) {
-                setCurrentAnime(res.data[res.data.length - 1])
-                break
-            }
-        }
-  }, [])
+      }
+  }, [currentSecond])
 
   return (
       <>
@@ -127,29 +132,28 @@ export default function Main({ schedules }) {
       </>
   )
 }
-function getToday() {
-  const jpMoment = moment().tz('Asia/Tokyo')
-  const dayByNumber = jpMoment.day()
-  const day = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][dayByNumber]
-  
-  return {
-    jpMoment,
-    day,
-    dayByNumber
-  }
-}
 
 export async function getStaticProps() {
-  const dayItems = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+  const schedules = {
+    sun: null,
+    mon: null,
+    tue: null,
+    wed: null,
+    thu: null,
+    fri: null,
+    sat: null,
+  }
 
   const retrieveSchedule = async (day) => {
     const res = await api.get(`/schedule`, { params: { day }})
     const data = res.data
 
-    return { day, data }
+    schedules[day] = data
   }
 
-  const schedules = await Promise.all(dayItems.map(retrieveSchedule))
+  await Promise.all(
+      Object.keys(schedules).map(retrieveSchedule)
+  )
 
   return {
     props: { schedules },

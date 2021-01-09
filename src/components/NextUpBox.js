@@ -3,17 +3,17 @@ import { urlFilter } from '../lib/urlFilter'
 
 import Link from 'next/link'
 
-import { useContext } from 'react'
+import { useRecoilValue } from 'recoil'
 import { useTimeDistance } from '../hooks/useTimeDistance'
 
-import LanguageContext from '../context/LanguageContext'
+import { PreferredLanguageState } from '../states/preferredLanguage'
 
 import AnimeInfoSection from './AnimeInfoSection'
 import AnimeRemainTimeSection from './AnimeRemainTimeSection'
 
 const NextUpBox = props => {
-    const langContext = useContext(LanguageContext.Original)
     const { nextUpAnime } = props
+    const lang = useRecoilValue(PreferredLanguageState)
 
     const distance = useTimeDistance(nextUpAnime.released_time || null)
 
@@ -32,7 +32,7 @@ const NextUpBox = props => {
                                 day={props.dayOfWeek}
                                 time={nextUpAnime.released_time}
                                 broadcaster={nextUpAnime.release_broadcaster}
-                                title={nextUpAnime.title[langContext.lang]}
+                                title={nextUpAnime.title[lang]}
                                 isOnAir={isOnAir}
                                 margin='22px 0'
                             />
