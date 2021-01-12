@@ -110,6 +110,6 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { schedule, day },
-    revalidate: 60 * 60 * 24 // Refresh every 24 hour
+    revalidate: 60 * 60
   }
 }
