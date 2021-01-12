@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { useSchedule } from '../hooks/useSchedule'
 
-import { currentAnimeState } from '../states/currentAnime'
+import { currentAnimeState, currentAnimeIndexState } from '../states/currentAnime'
 import { currentSecondState, currentDayState } from '../states/currentTime'
 import { LocaleMessageState } from '../states/preferredLanguage'
 import { animeListTypeState } from '../states/animeListType'
@@ -22,6 +22,7 @@ import ListTypeSwitcher from '../components/ListTypeSwitcher'
 
 export default function Main({ schedules }) {
   const [ currentAnime, setCurrentAnime ] = useRecoilState(currentAnimeState)
+  const [ currentAnimeIndex, setCurrentAnimeIndex ] = useRecoilState(currentAnimeIndexState)
 
   const currentSecond = useRecoilValue(currentSecondState)
   const day = useRecoilValue(currentDayState)
@@ -34,23 +35,42 @@ export default function Main({ schedules }) {
   const schedule = useSchedule(day, { initialData })
   const res = schedule.data
   
+  const animeTimeList = res.data.map((item) => item.released_time)
+
   useEffect(() => {
-      if (!currentAnime) {
-            for (let i = 0; i < res.data.length; i++) {
-                const releaseTime = moment.duration(res.data[i].released_time).asSeconds() + (30 * 60) // + 30 minutes
-    
-                if (currentSecond <= releaseTime) {
-                    setCurrentAnime(res.data[i])
-                    break
-                }
-    
-                if (i + 1 === res.data.length) {
-                    setCurrentAnime(res.data[res.data.length - 1])
-                    break
-                }
+        for (let i = 0, l = animeTimeList.length; i < l; i++) {
+            const releaseTime = moment
+                .duration(animeTimeList[i])
+                .add(30, 'minutes')
+                .asSeconds()
+
+            const isCurrentNext = currentSecond <= releaseTime
+
+            if (!isCurrentNext) {
+                continue
             }
-      }
-  }, [currentSecond])
+
+            if (isCurrentNext && currentAnimeIndex === i) {
+                break
+            }
+            
+            if (isCurrentNext && currentAnimeIndex !== i) {
+                setCurrentAnimeIndex(i)
+                setCurrentAnime(res.data[i])
+                
+                break
+            }
+
+            const lastIndex = l - 1
+
+            if (i === lastIndex) {
+                setCurrentAnimeIndex(i)
+                setCurrentAnime(res.data[i])
+
+                break
+            }
+        }
+  }, [day, currentSecond])
 
   return (
       <>

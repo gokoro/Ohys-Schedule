@@ -3,25 +3,26 @@ import moment from 'moment-timezone'
 import { useState, useEffect } from 'react'
 
 const useTimeDistance = distanceTime => {
-    const [distance, setdistance] = useState({
+    const [distance, setDistance] = useState({
         day: null,
         hour: null,
         minute: null,
         second: null
     })
     
-    const paramTime = moment(distanceTime, 'hh:mm')
+    const inputMoment = moment.tz(distanceTime, 'hh:mm', 'Asia/Tokyo')
     
     const calcDistance = () => {
         const jpMoment = moment().tz('Asia/Tokyo')
-        const duration = moment.duration(paramTime.diff(jpMoment))
-        setdistance(state => ({
-            ...state,
+        const duration = moment.duration(jpMoment.diff(inputMoment))
+
+        setDistance({
+            ...distance,
             day: duration.days(),
             hour: duration.hours(),
             minute: duration.minutes(),
             second: duration.seconds()
-        }))
+        })
     }
     
     useEffect(() => {

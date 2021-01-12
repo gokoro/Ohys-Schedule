@@ -7,7 +7,10 @@ const ListTypeSwitcher = () => {
     const [ listType, setListType ] = useRecoilState(animeListTypeState)
 
     const handleClick = e => {
-        setListType(e.currentTarget.value)
+        const value = e.currentTarget.value
+        
+        setListType(value)
+        localStorage.setItem('listType', value)
     }
 
     return (

@@ -2,13 +2,14 @@ import { AiFillFile } from 'react-icons/ai'
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
 
-import { LocaleMessageState } from '../states/preferredLanguage'
+import { LocaleMessageState, PreferredLanguageState } from '../states/preferredLanguage'
 
 import { useAnime } from '../hooks/useAnime'
 import { useRecoilValue } from 'recoil'
 
 const AnimeTorrentList = props => {
     const res = useAnime(props.animeId)
+    const lang = useRecoilValue(PreferredLanguageState)
     const locale = useRecoilValue(LocaleMessageState)
 
     let data = null

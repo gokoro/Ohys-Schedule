@@ -17,7 +17,7 @@ const NextUpBox = props => {
 
     const distance = useTimeDistance(nextUpAnime.released_time || null)
 
-    const isOnAir = distance.day < 0 || distance.hour < 0 || distance.minute < 0 || distance.second < 0
+    const isOnAir = distance.day > 0 || distance.hour > 0 || distance.minute > 0 || distance.second > 0
 
     return (
         <>
