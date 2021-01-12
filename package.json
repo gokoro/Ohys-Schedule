@@ -1,8 +1,6 @@
 {
   "name": "ohys-schedule",
-  "description": "The Schedule of the animes that Ohys releases",
-  "version": "2.0.2",
-  "author": "Gokoro <lincroe@gmail.com>",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -20,6 +18,5 @@
     "react-icons": "^4.1.0",
     "recoil": "^0.1.2",
     "swr": "^0.3.0"
-  },
-  "license": "MIT"
+  }
 }
