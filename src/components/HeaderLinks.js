@@ -67,14 +67,6 @@ const DayLink = props => {
                 color: var(--sub-text-color);
                 border-bottom: 2px solid transparent;
             }
-            .day {
-                position: relative;
-                font-size: 10px;
-                line-height: 0%;
-                letter-spacing: 0.5px;
-                color: #000000;
-                font-weight: bold;
-            }
             .now {
                 display: none;
             }
@@ -85,6 +77,8 @@ const DayLink = props => {
                 left: 0;
                 top: -3px;
                 display: initial;
+            }
+            .nowActive {
                 color: #000000;
                 font-weight: bold;
             }
