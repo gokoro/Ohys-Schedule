@@ -47,8 +47,8 @@ const DayLink = props => {
     return (<>
         <ClassNameAsPathLink activeClassName='active' href="/[day]" as={`/${props.value}`}>
             <a>
-                {isTodayActive && <div className="today">{dayLocaleSet.now}</div>}
-                <div className={isTodayActive && 'todayActive'}>{props.text}</div>
+                <div className={`now${isTodayActive ? ' nowActive' : ''}`}>{dayLocaleSet.now}</div>
+                <div className={`today${isTodayActive ? ' nowActive' : ''}`}>{props.text}</div>
             </a>
         </ClassNameAsPathLink>
         <style jsx>{`
@@ -75,13 +75,16 @@ const DayLink = props => {
                 color: #000000;
                 font-weight: bold;
             }
-            .today {
+            .now {
+                display: none;
+            }
+            .now.nowActive {
                 position: absolute;
                 width: 100%;
                 font-size: 10px;
+                left: 0;
                 top: -3px;
-            }
-            .todayActive, .today {
+                display: initial;
                 color: #000000;
                 font-weight: bold;
             }
@@ -90,7 +93,7 @@ const DayLink = props => {
                 color: #6c5ce7;
                 font-weight: bold;
             }
-            .active .day, .active .todayActive, .active .today {
+            .active .nowActive {
                 color: #6c5ce7;
             }
         `}</style></>
