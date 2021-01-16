@@ -13,11 +13,10 @@ const useTimeDistance = distanceTime => {
     const inputMoment = moment.tz(distanceTime, 'hh:mm', 'Asia/Tokyo')
     
     const calcDistance = () => {
-        const jpMoment = moment().tz('Asia/Tokyo')
-        const duration = moment.duration(jpMoment.diff(inputMoment))
+        const jpMoment = moment.tz('Asia/Tokyo')
+        const duration = moment.duration(inputMoment.diff(jpMoment))
 
         setDistance({
-            ...distance,
             day: duration.days(),
             hour: duration.hours(),
             minute: duration.minutes(),
