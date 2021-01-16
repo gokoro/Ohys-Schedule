@@ -51,25 +51,26 @@ export default function Main({ schedules }) {
             }
 
             if (isCurrentNext && currentAnimeIndex === i) {
-                break
+                return
             }
             
             if (isCurrentNext && currentAnimeIndex !== i) {
                 setCurrentAnimeIndex(i)
                 setCurrentAnime(res.data[i])
                 
-                break
-            }
-
-            const lastIndex = l - 1
-
-            if (i === lastIndex) {
-                setCurrentAnimeIndex(i)
-                setCurrentAnime(res.data[i])
-
-                break
+                return
             }
         }
+
+        if (!currentAnime) {
+            const lastIndex = animeTimeList.length - 1
+
+            setCurrentAnimeIndex(lastIndex)
+            setCurrentAnime(res.data[lastIndex])
+
+            return
+        }
+
   }, [day, currentSecond])
 
   return (
