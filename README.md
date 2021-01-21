@@ -31,7 +31,7 @@ npm run build
 yarn build
 ```
 
-The built static files will be saved in the ``.next`` folder.
+The built static files will be saved in the `.next` folder.
 
 ## Running
 

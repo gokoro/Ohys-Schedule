@@ -2,13 +2,12 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family:
-  'Lato', 'Noto Sans KR', 'Noto Sans JP',
-  '-apple-system', 'BlinkMacSystemFont', 'Apple SD Gothic Neo', 'Segoe UI', Sans-Serif,
-  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: 'Lato', 'Noto Sans KR', 'Noto Sans JP', '-apple-system',
+    'BlinkMacSystemFont', 'Apple SD Gothic Neo', 'Segoe UI', Sans-Serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   letter-spacing: -0.3px;
   line-height: 150%;
-  background: #FCFCFC;
+  background: #fcfcfc;
 }
 body {
   overflow-x: hidden;
@@ -39,19 +38,19 @@ button {
   border-radius: 50%;
 }
 .size-16 {
-  font-size: 16px
+  font-size: 16px;
 }
 .size-18 {
-  font-size: 18px
+  font-size: 18px;
 }
 .size-20 {
-  font-size: 20px
+  font-size: 20px;
 }
 .size-22 {
-  font-size: 22px
+  font-size: 22px;
 }
 .size-24 {
-  font-size: 24px
+  font-size: 24px;
 }
 .bold {
   font-weight: bold;
@@ -60,10 +59,10 @@ button {
   --wrapper-size: 80%;
   --mobile-wrapper-size: 90%;
   --header-height: 8rem;
-  --shadow-small: 0px 4px 8px rgba(0,0,0,0.12);
-  --shadow-default: 2px 8px 10px rgba(0,0,0,0.12);
-  --shadow-medium: 0 20px 20px rgba(0,0,0,.08);
-  --shadow-big: 0 25px 30px rgba(0,0,0,0.12);
+  --shadow-small: 0px 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-default: 2px 8px 10px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0 20px 20px rgba(0, 0, 0, 0.08);
+  --shadow-big: 0 25px 30px rgba(0, 0, 0, 0.12);
   --border-color-gray: #ecf0f1;
   --file-link-color: #4183c4;
   --file-link-hover-color: #1e70bf;
@@ -80,113 +79,140 @@ button {
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
   background-color: transparent;
-  background-image: -webkit-gradient(linear,left top,right top,from(rgba(0,0,0,.08)),color-stop(15%,rgba(0,0,0,.15)),color-stop(30%,rgba(0,0,0,.08)));
-  background-image: -webkit-linear-gradient(left,rgba(0,0,0,.08) 0,rgba(0,0,0,.15) 15%,rgba(0,0,0,.08) 30%);
-  background-image: linear-gradient(to right,rgba(0,0,0,.08) 0,rgba(0,0,0,.15) 15%,rgba(0,0,0,.08) 30%);
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(rgba(0, 0, 0, 0.08)),
+    color-stop(15%, rgba(0, 0, 0, 0.15)),
+    color-stop(30%, rgba(0, 0, 0, 0.08))
+  );
+  background-image: -webkit-linear-gradient(
+    left,
+    rgba(0, 0, 0, 0.08) 0,
+    rgba(0, 0, 0, 0.15) 15%,
+    rgba(0, 0, 0, 0.08) 30%
+  );
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.08) 0,
+    rgba(0, 0, 0, 0.15) 15%,
+    rgba(0, 0, 0, 0.08) 30%
+  );
   background-size: 1200px 100%;
-  max-width: 30rem
+  max-width: 30rem;
 }
 
 @-webkit-keyframes placeholderShimmer {
   0% {
-      background-position: -1200px 0
+    background-position: -1200px 0;
   }
 
   100% {
-      background-position: 1200px 0
+    background-position: 1200px 0;
   }
 }
 
 @keyframes placeholderShimmer {
   0% {
-      background-position: -1200px 0
+    background-position: -1200px 0;
   }
 
   100% {
-      background-position: 1200px 0
+    background-position: 1200px 0;
   }
 }
 
-.ui.placeholder+.ui.placeholder {
-  margin-top: 2rem
+.ui.placeholder + .ui.placeholder {
+  margin-top: 2rem;
 }
 
-.ui.placeholder+.ui.placeholder {
-  -webkit-animation-delay: .15s;
-  animation-delay: .15s
+.ui.placeholder + .ui.placeholder {
+  -webkit-animation-delay: 0.15s;
+  animation-delay: 0.15s;
 }
 
-.ui.placeholder+.ui.placeholder+.ui.placeholder {
-  -webkit-animation-delay: .3s;
-  animation-delay: .3s
+.ui.placeholder + .ui.placeholder + .ui.placeholder {
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
 }
 
-.ui.placeholder+.ui.placeholder+.ui.placeholder+.ui.placeholder {
-  -webkit-animation-delay: .45s;
-  animation-delay: .45s
+.ui.placeholder + .ui.placeholder + .ui.placeholder + .ui.placeholder {
+  -webkit-animation-delay: 0.45s;
+  animation-delay: 0.45s;
 }
 
-.ui.placeholder+.ui.placeholder+.ui.placeholder+.ui.placeholder+.ui.placeholder {
-  -webkit-animation-delay: .6s;
-  animation-delay: .6s
+.ui.placeholder
+  + .ui.placeholder
+  + .ui.placeholder
+  + .ui.placeholder
+  + .ui.placeholder {
+  -webkit-animation-delay: 0.6s;
+  animation-delay: 0.6s;
 }
 
-.ui.placeholder,.ui.placeholder .image.header:after,.ui.placeholder .line,.ui.placeholder .line:after,.ui.placeholder>:before {
-  background-color: #fff
+.ui.placeholder,
+.ui.placeholder .image.header:after,
+.ui.placeholder .line,
+.ui.placeholder .line:after,
+.ui.placeholder > :before {
+  background-color: #fff;
 }
 
 .ui.placeholder .image:not(.header):not(.ui) {
-  height: 100px
+  height: 100px;
 }
 
 .ui.placeholder .line {
   position: relative;
-  height: .85714286em
+  height: 0.85714286em;
 }
 
-.ui.placeholder .line:after,.ui.placeholder .line:before {
+.ui.placeholder .line:after,
+.ui.placeholder .line:before {
   top: 100%;
   position: absolute;
   content: '';
-  background-color: inherit
+  background-color: inherit;
 }
 
 .ui.placeholder .line:before {
-  left: 0
+  left: 0;
 }
 
 .ui.placeholder .line:after {
-  right: 0
+  right: 0;
 }
 
 .ui.placeholder .line {
-  margin-bottom: .5em
+  margin-bottom: 0.5em;
 }
 
-.ui.placeholder .line:after,.ui.placeholder .line:before {
-  height: .5em
+.ui.placeholder .line:after,
+.ui.placeholder .line:before {
+  height: 0.5em;
 }
 
 .ui.placeholder .line:not(:first-child) {
-  margin-top: .5em
+  margin-top: 0.5em;
 }
 
 .ui.placeholder .line:nth-child(1):after {
-  width: 0%
+  width: 0%;
 }
 
 .ui.placeholder .line:nth-child(2):after {
-  width: 50%
+  width: 50%;
 }
 
 .ui.placeholder .line:nth-child(3):after {
-  width: 10%
+  width: 10%;
 }
 
 .ui.placeholder .line:nth-child(4):after {
-  width: 35%
+  width: 35%;
 }
 
 .ui.placeholder .line:nth-child(5):after {
-  width: 65%
+  width: 65%;
 }

@@ -1,40 +1,46 @@
-import useSWR, { cache } from "swr"
+import useSWR, { cache } from 'swr'
 import { api } from '../lib/api'
 
 const useAnime = (id, configs = {}) => {
-    const baseUrl = `/anime`
+  const baseUrl = `/anime`
 
-    if (configs.initialData) {
-        cache.set([baseUrl, id], configs.initialData)
-    }
+  if (configs.initialData) {
+    cache.set([baseUrl, id], configs.initialData)
+  }
 
-    const { data, error } = useSWR([baseUrl, id], (url, id) => fetcher(url, { id }), configs)
-    
-    return {
-        data,
-        isLoading: !error && !data,
-        isError: error,
-    }
+  const { data, error } = useSWR(
+    [baseUrl, id],
+    (url, id) => fetcher(url, { id }),
+    configs
+  )
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  }
 }
 
 const useAnimeName = (name, configs = {}) => {
-    const baseUrl = `/anime`
-    
-    if (configs.initialData) {
-        cache.set([baseUrl, name], configs.initialData)
-    }
+  const baseUrl = `/anime`
 
-    const { data, error } = useSWR([baseUrl, name], (url, name) => fetcher(url, { name }), configs)
-    
-    return {
-        data,
-        isLoading: !error && !data,
-        isError: error,
-    }
-}
-const fetcher = (url, params) => api.get(url, { params }).then(res => res.data)
+  if (configs.initialData) {
+    cache.set([baseUrl, name], configs.initialData)
+  }
 
-export {
-    useAnime,
-    useAnimeName
+  const { data, error } = useSWR(
+    [baseUrl, name],
+    (url, name) => fetcher(url, { name }),
+    configs
+  )
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  }
 }
+const fetcher = (url, params) =>
+  api.get(url, { params }).then((res) => res.data)
+
+export { useAnime, useAnimeName }

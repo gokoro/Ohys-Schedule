@@ -1,4 +1,4 @@
-import "../styles/globals.css"
+import '../styles/globals.css'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress/nprogress'
 
@@ -7,7 +7,7 @@ import * as gtag from '../lib/gtag'
 import Router from 'next/router'
 import { RecoilRoot } from 'recoil'
 
-import Layout from "../components/Layout"
+import Layout from '../components/Layout'
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
@@ -20,9 +20,9 @@ NProgress.settings.showSpinner = false
 function MyApp({ Component, pageProps }) {
   return (
     <RecoilRoot>
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </RecoilRoot>
   )
 }
