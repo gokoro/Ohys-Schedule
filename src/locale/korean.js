@@ -64,5 +64,11 @@ export default {
       fri: '금',
       sat: '토',
     },
+    time: {
+      day: '일',
+      hour: '시간',
+      minute: '분',
+      second: '초',
+    },
   },
 }

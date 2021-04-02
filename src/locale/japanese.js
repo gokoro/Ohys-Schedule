@@ -64,5 +64,11 @@ export default {
       fri: '金',
       sat: '土',
     },
+    time: {
+      day: '日',
+      hour: '時間',
+      minute: '分',
+      second: '秒',
+    },
   },
 }

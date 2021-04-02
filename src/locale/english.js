@@ -64,5 +64,11 @@ export default {
       fri: 'Fri',
       sat: 'Sat',
     },
+    time: {
+      day: 'd',
+      hour: 'h',
+      minute: 'm',
+      second: 's',
+    },
   },
 }
