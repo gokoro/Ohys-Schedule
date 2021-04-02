@@ -1,19 +1,15 @@
 import moment from 'moment-timezone'
-import { api } from '../lib/api'
-
-import { useSchedule } from '../hooks/useSchedule'
 import { useRecoilValue } from 'recoil'
-
-import { animeListTypeState } from '../states/animeListType'
-
+import AnimeCardList from '../components/AnimeCardList'
+import AnimeList from '../components/AnimeList'
+import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
 import Helmet from '../components/Helmet'
+import ListTypeSwitcher from '../components/ListTypeSwitcher'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
-import AnimeList from '../components/AnimeList'
-import AnimeCardList from '../components/AnimeCardList'
-import ListTypeSwitcher from '../components/ListTypeSwitcher'
-import ChangeDayButtonContainer from '../components/ChangeDayButtonContainer'
-
+import { useSchedule } from '../hooks/useSchedule'
+import { api } from '../lib/api'
+import { animeListTypeState } from '../states/animeListType'
 import { LocaleMessageState } from '../states/preferredLanguage'
 
 export default function Day({ schedule, day: staticDayOption }) {
@@ -100,6 +96,6 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { schedule, day },
-    revalidate: 60 * 60,
+    revalidate: 60 * 60 * 24,
   }
 }

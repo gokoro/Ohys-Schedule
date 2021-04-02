@@ -1,27 +1,23 @@
 import moment from 'moment-timezone'
-import { api } from '../lib/api'
-
 import Link from 'next/link'
-
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { useSchedule } from '../hooks/useSchedule'
-
-import {
-  currentAnimeState,
-  currentAnimeIndexState,
-} from '../states/currentAnime'
-import { currentSecondState, currentDayState } from '../states/currentTime'
-import { LocaleMessageState } from '../states/preferredLanguage'
-import { animeListTypeState } from '../states/animeListType'
-
-import Section from '../components/Section'
-import SectionTitle from '../components/SectionTitle'
+import AnimeCardList from '../components/AnimeCardList'
+import AnimeList from '../components/AnimeList'
+import ListTypeSwitcher from '../components/ListTypeSwitcher'
 import NextUpBox from '../components/NextUpBox'
 import PlaceholderBox from '../components/PlaceholderBox'
-import AnimeList from '../components/AnimeList'
-import AnimeCardList from '../components/AnimeCardList'
-import ListTypeSwitcher from '../components/ListTypeSwitcher'
+import Section from '../components/Section'
+import SectionTitle from '../components/SectionTitle'
+import { useSchedule } from '../hooks/useSchedule'
+import { api } from '../lib/api'
+import { animeListTypeState } from '../states/animeListType'
+import {
+  currentAnimeIndexState,
+  currentAnimeState,
+} from '../states/currentAnime'
+import { currentDayState, currentSecondState } from '../states/currentTime'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 export default function Main({ schedules }) {
   const [currentAnime, setCurrentAnime] = useRecoilState(currentAnimeState)
@@ -170,6 +166,6 @@ export async function getStaticProps() {
 
   return {
     props: { schedules },
-    revalidate: 60 * 60,
+    revalidate: 60 * 60 * 24,
   }
 }
