@@ -23,7 +23,7 @@ const Sidebar = (props) => {
             </a>
           </div>
           <div>
-            <a href="https://eu.ohys.net/t/rss.php?dir=disk" className="item">
+            <a href="https://eu.ohys.nl/t/rss.php?dir=disk" className="item">
               RSS
             </a>
           </div>
