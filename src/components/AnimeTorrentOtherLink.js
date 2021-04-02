@@ -1,10 +1,8 @@
+import { useRecoilValue } from 'recoil'
+import { useAnime } from '../hooks/useAnime'
+import { LocaleMessageState } from '../states/preferredLanguage'
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'
-
-import { LocaleMessageState } from '../states/preferredLanguage'
-
-import { useAnime } from '../hooks/useAnime'
-import { useRecoilValue } from 'recoil'
 
 const AnimeTorrentOtherLink = (props) => {
   const locale = useRecoilValue(LocaleMessageState)
@@ -22,10 +20,6 @@ const AnimeTorrentOtherLink = (props) => {
           <Placeholder lineCountFor={2} />
         ) : (
           <div className="links">
-            <ExternalLinkItem
-              text="Fanmade"
-              href={`https://ohys.seia.io/series/${data.data.name}`}
-            />
             <ExternalLinkItem
               text="Mirror"
               href={`https://cryental.dev/services/anime/?search=${data.data.name}`}

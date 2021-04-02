@@ -1,8 +1,6 @@
-import { LocaleMessageState } from '../states/preferredLanguage'
-
-import { useRecoilValue } from 'recoil'
-
 import { IoLogoDiscord } from 'react-icons/io5'
+import { useRecoilValue } from 'recoil'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 const Sidebar = (props) => {
   const {
@@ -14,11 +12,6 @@ const Sidebar = (props) => {
       <div className="ctx">
         <div className="head bold size-18">{sidebar.ohysFamily}</div>
         <div className="box">
-          <div>
-            <a href="https://ohys.seia.io/" className="item">
-              Fanmade
-            </a>
-          </div>
           <div>
             <a href="https://cryental.dev/services/anime/" className="item">
               Mirror
