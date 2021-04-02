@@ -1,13 +1,11 @@
-import { useRouter } from 'next/router'
-
 import Head from 'next/head'
-import Header from './Header'
-import Sidebar from './Sidebar'
-import Helmet from './Helmet'
-
+import { useRouter } from 'next/router'
+import { SetAnimeListTypeComponent } from '../states/animeListType'
 import { RefreshCurrentTimeComponent } from '../states/currentTime'
 import { SetPreferredLanguageComponent } from '../states/preferredLanguage'
-import { SetAnimeListTypeComponent } from '../states/animeListType'
+import Header from './Header'
+import Helmet from './Helmet'
+import Sidebar from './Sidebar'
 
 const Layout = (props) => {
   const { asPath } = useRouter()

@@ -1,13 +1,9 @@
-import { BsArrowRight } from 'react-icons/bs'
-import { urlFilter } from '../lib/urlFilter'
-
 import Link from 'next/link'
-
+import { BsArrowRight } from 'react-icons/bs'
 import { useRecoilValue } from 'recoil'
 import { useTimeDistance } from '../hooks/useTimeDistance'
-
+import { urlFilter } from '../lib/urlFilter'
 import { PreferredLanguageState } from '../states/preferredLanguage'
-
 import AnimeInfoSection from './AnimeInfoSection'
 import AnimeRemainTimeSection from './AnimeRemainTimeSection'
 
@@ -19,9 +15,9 @@ const NextUpBox = (props) => {
 
   const isOnAir =
     distance.day < 0 ||
-    distance.hour < 0 ||
-    distance.minute < 0 ||
-    distance.second < 0
+    distance.hour > 0 ||
+    distance.minute > 0 ||
+    distance.second > 0
 
   return (
     <>
