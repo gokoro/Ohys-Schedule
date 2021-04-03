@@ -24,6 +24,7 @@ const Layout = (props) => {
         <meta property="og:url" content={`https://ohys.gokoro.me${asPath}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="Ohys-Schedule" />
+        <link rel="dns-prefetch" href={process.env.apiUrl} />
       </Head>
       <Helmet
         title="Ohys-Schedule"
