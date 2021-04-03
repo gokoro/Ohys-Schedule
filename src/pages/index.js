@@ -1,4 +1,3 @@
-import moment from 'moment-timezone'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -11,6 +10,7 @@ import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import { useSchedule } from '../hooks/useSchedule'
 import { api } from '../lib/api'
+import dayjs from '../lib/dayjs'
 import { animeListTypeState } from '../states/animeListType'
 import {
   currentAnimeIndexState,
@@ -40,8 +40,12 @@ export default function Main({ schedules }) {
 
   useEffect(() => {
     for (let i = 0, l = animeTimeList.length; i < l; i++) {
-      const releaseTime = moment
-        .duration(animeTimeList[i])
+      const [hours, seconds] = animeTimeList[i].split(':')
+      const releaseTime = dayjs
+        .duration({
+          hours,
+          seconds,
+        })
         .add(30, 'minutes')
         .asSeconds()
 

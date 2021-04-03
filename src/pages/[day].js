@@ -1,4 +1,3 @@
-import moment from 'moment-timezone'
 import { useRecoilValue } from 'recoil'
 import AnimeCardList from '../components/AnimeCardList'
 import AnimeList from '../components/AnimeList'
@@ -9,21 +8,20 @@ import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import { useSchedule } from '../hooks/useSchedule'
 import { api } from '../lib/api'
+import dayjs from '../lib/dayjs'
 import { animeListTypeState } from '../states/animeListType'
 import { LocaleMessageState } from '../states/preferredLanguage'
 
-export default function Day({ schedule, day: staticDayOption }) {
+export default function Day({ schedule, day }) {
   const locale = useRecoilValue(LocaleMessageState)
 
   const listType = useRecoilValue(animeListTypeState)
 
-  const day = staticDayOption
-
-  const jpMoment = moment().tz('Asia/Tokyo')
+  const now = dayjs()
   const dayList = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
   const currentDayNum = dayList.indexOf(day)
 
-  const toDay = dayList[jpMoment.day()]
+  const toDay = dayList[now.day()]
   const prevDay = dayList[currentDayNum - 1] || 'sat'
   const nextDay = dayList[currentDayNum + 1] || 'sun'
 

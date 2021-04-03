@@ -1,22 +1,19 @@
-import moment from 'moment-timezone'
-
 import { useEffect } from 'react'
 import { atom, useSetRecoilState } from 'recoil'
+import dayjs from '../lib/dayjs'
 
 const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 export const getJPMoment = () => {
-  const currentJPMoment = moment().tz('Asia/Tokyo')
+  const now = dayjs()
 
-  const currentSecond = moment
-    .duration(currentJPMoment.format('HH:mm'))
-    .asSeconds()
+  const [hours, seconds] = now.format('HH:mm').split(':')
+  const currentSecond = dayjs.duration({ hours, seconds }).asSeconds()
 
-  const currentDayNumber = currentJPMoment.day()
+  const currentDayNumber = now.day()
   const currentDay = days[currentDayNumber]
 
   return {
-    currentJPMoment,
     currentSecond,
     currentDay,
     currentDayNumber,

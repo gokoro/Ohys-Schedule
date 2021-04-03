@@ -1,6 +1,5 @@
-import moment from 'moment-timezone'
-
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import dayjs from '../lib/dayjs'
 
 const useTimeDistance = (distanceTime) => {
   const [distance, setDistance] = useState({
@@ -10,11 +9,10 @@ const useTimeDistance = (distanceTime) => {
     second: null,
   })
 
-  const inputMoment = moment.tz(distanceTime, 'hh:mm', 'Asia/Tokyo')
+  const inputMoment = dayjs(distanceTime, 'HH:mm')
 
   const calcDistance = () => {
-    const jpMoment = moment.tz('Asia/Tokyo')
-    const duration = moment.duration(inputMoment.diff(jpMoment))
+    const duration = dayjs.duration(inputMoment.diff(dayjs()))
 
     setDistance({
       day: duration.days(),

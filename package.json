@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "dayjs": "^1.10.4",
     "framer-motion": "^2.4.3-beta.2",
-    "moment-timezone": "^0.5.31",
     "next": "^10.0.1",
     "nprogress": "^0.2.0",
     "react": "16.13.1",
