@@ -7,8 +7,8 @@ const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 export const getJPMoment = () => {
   const now = dayjs()
 
-  const [hours, seconds] = now.format('HH:mm').split(':')
-  const currentSecond = dayjs.duration({ hours, seconds }).asSeconds()
+  const [hours, minutes] = now.format('HH:mm').split(':')
+  const currentSecond = dayjs.duration({ hours, minutes }).asSeconds()
 
   const currentDayNumber = now.day()
   const currentDay = days[currentDayNumber]

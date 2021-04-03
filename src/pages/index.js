@@ -40,11 +40,11 @@ export default function Main({ schedules }) {
 
   useEffect(() => {
     for (let i = 0, l = animeTimeList.length; i < l; i++) {
-      const [hours, seconds] = animeTimeList[i].split(':')
+      const [hours, minutes] = animeTimeList[i].split(':')
       const releaseTime = dayjs
         .duration({
           hours,
-          seconds,
+          minutes,
         })
         .add(30, 'minutes')
         .asSeconds()
