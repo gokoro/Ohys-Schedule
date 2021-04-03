@@ -1,12 +1,7 @@
-import moment from 'moment-timezone'
-
-import ClassNameAsPathLink from './ClassNameAsPathLink'
-
+import { useRecoilValue } from 'recoil'
 import { currentDayState } from '../states/currentTime'
 import { LocaleMessageState } from '../states/preferredLanguage'
-
-import { useRecoilValue } from 'recoil'
-import { useState, useEffect } from 'react'
+import ClassNameAsPathLink from './ClassNameAsPathLink'
 
 const HeaderLinks = () => {
   const {

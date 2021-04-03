@@ -15,9 +15,9 @@ const NextUpBox = (props) => {
 
   const isOnAir =
     distance.day < 0 ||
-    distance.hour > 0 ||
-    distance.minute > 0 ||
-    distance.second > 0
+    distance.hour < 0 ||
+    distance.minute < 0 ||
+    distance.second < 0
 
   return (
     <>

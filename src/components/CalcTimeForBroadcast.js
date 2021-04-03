@@ -13,35 +13,17 @@ const CalcTimeForBroadcast = ({ time }) => {
     },
   } = useRecoilValue(LocaleMessageState)
 
-  const hMinus = 24 - 1 + time.hour
-  const mMinus = 60 - 1 + time.minute
-  const sMinus = 60 - 1 + time.second
+  const combineTime = (time, lang) =>
+    time === 0 ? '' : time > 0 ? time + lang : -time + lang
+
+  const day = combineTime(time.day, dayLang)
+  const hour = combineTime(time.hour, hourLang)
+  const minute = combineTime(time.minute, minuteLang)
+  const second = combineTime(time.second, secondLang)
+
   return (
     <span className="remainedTime">
-      {!time.day || time.day < 0
-        ? ''
-        : `${time.day < 0 ? -time.day : time.day}${dayLang} `}
-      {!time.hour
-        ? ''
-        : `${
-            time.hour < 0 && time.day >= 0
-              ? `${hMinus === 0 ? '' : `${hMinus}${hourLang}`}`
-              : `${-time.hour}${hourLang}`
-          } `}
-      {!time.minute
-        ? ''
-        : `${
-            time.minute < 0 && time.day >= 0
-              ? `${mMinus === 0 ? '' : `${mMinus}${minuteLang}`}`
-              : `${-time.minute}${minuteLang}`
-          } `}
-      {!time.second
-        ? ''
-        : `${
-            time.second < 0 && time.day >= 0
-              ? `${sMinus === 0 ? '' : `${sMinus}${secondLang}`}`
-              : `${-time.second}${secondLang}`
-          } `}
+      {day} {hour} {minute} {second}
     </span>
   )
 }
