@@ -5,7 +5,7 @@ import dayjs from '../lib/dayjs'
 const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 export const getJPMoment = () => {
-  const now = dayjs()
+  const now = dayjs.tz()
 
   const [hours, minutes] = now.format('HH:mm').split(':')
   const currentSecond = dayjs.duration({ hours, minutes }).asSeconds()

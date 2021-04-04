@@ -9,7 +9,6 @@ dayjs.extend(timezone)
 dayjs.extend(duration)
 dayjs.extend(customParseFormat)
 
-dayjs.tz.guess()
 dayjs.tz.setDefault('Asia/Tokyo')
 
 export default dayjs

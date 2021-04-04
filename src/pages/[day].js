@@ -17,7 +17,7 @@ export default function Day({ schedule, day }) {
 
   const listType = useRecoilValue(animeListTypeState)
 
-  const now = dayjs()
+  const now = dayjs.tz()
   const dayList = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
   const currentDayNum = dayList.indexOf(day)
 

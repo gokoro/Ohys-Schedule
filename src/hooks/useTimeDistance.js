@@ -9,10 +9,10 @@ const useTimeDistance = (distanceTime) => {
     second: null,
   })
 
-  const inputMoment = dayjs(distanceTime, 'HH:mm')
+  const inputMoment = dayjs.tz(distanceTime, 'HH:mm', 'Asia/Tokyo')
 
   const calcDistance = () => {
-    const duration = dayjs.duration(inputMoment.diff(dayjs()))
+    const duration = dayjs.duration(inputMoment.diff(dayjs.tz()))
 
     setDistance({
       day: duration.days(),
