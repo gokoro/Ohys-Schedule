@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 
@@ -39,7 +40,7 @@ const AnimeCardForm = (props) => {
             transition: box-shadow 0.15s;
             cursor: pointer;
           }
-          :global(.animecard:hover) .top :global(.img) {
+          :global(.animecard:hover) .top :global(.imgContainer) {
             box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.16);
           }
           .bottom {
@@ -61,7 +62,7 @@ const AnimeCard = (props) => {
       top={
         <>
           <motion.div
-            className="imgLoader"
+            className="imgContainer rounded"
             initial="hidden"
             animate="visible"
             transition={{ duration: 0.3, delay: 0.1 }}
@@ -75,14 +76,18 @@ const AnimeCard = (props) => {
             }}
           >
             <AspectRatio.Root ratio={4 / 5}>
-              <img className="img rounded" src={props.imageUrl} />
+              <Image
+                className="animeCardImg rounded"
+                src={props.imageUrl || '/'}
+                layout="fill"
+              />
             </AspectRatio.Root>
           </motion.div>
           <style jsx>{`
-            .img {
-              width: 100%;
-              height: 100%;
+            :global(.animeCardImg) {
               object-fit: cover;
+            }
+            :global(.imgContainer) {
               box-shadow: var(--shadow-small);
               transition: box-shadow 0.3s;
             }

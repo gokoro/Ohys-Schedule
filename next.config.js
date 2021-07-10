@@ -5,4 +5,5 @@ module.exports = {
     apiUrl,
     apiBuildUrl: apiBuildUrl || apiUrl,
   },
+  images: { domains: ['s4.anilist.co'] },
 }
