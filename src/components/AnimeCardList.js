@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { urlFilter } from '../lib/urlFilter'
 
 import { AnimeCard, AnimeCardPlaceholder } from './AnimeCard'

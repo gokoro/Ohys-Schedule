@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { IoLogoGithub } from 'react-icons/io5'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'

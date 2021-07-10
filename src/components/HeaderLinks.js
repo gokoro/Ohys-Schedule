@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useRecoilValue } from 'recoil'
 import { currentDayState } from '../states/currentTime'
 import { LocaleMessageState } from '../states/preferredLanguage'

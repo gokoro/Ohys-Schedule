@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const AnimeTimeInfo = (props) => {
   return (
     <div className="AnimeTimeInfo time bold">

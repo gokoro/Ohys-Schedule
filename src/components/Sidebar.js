@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { IoLogoDiscord } from 'react-icons/io5'
 import { useRecoilValue } from 'recoil'
 import { LocaleMessageState } from '../states/preferredLanguage'

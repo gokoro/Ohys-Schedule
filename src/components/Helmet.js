@@ -1,3 +1,4 @@
+import * as React from 'react'
 import Head from 'next/head'
 
 const Helmet = ({ title, description, image, themeColor, children }) => {

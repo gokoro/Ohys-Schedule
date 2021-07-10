@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useRecoilValue } from 'recoil'
 import { useAnime } from '../hooks/useAnime'
 import { LocaleMessageState } from '../states/preferredLanguage'

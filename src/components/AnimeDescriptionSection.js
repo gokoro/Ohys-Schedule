@@ -1,3 +1,4 @@
+import * as React from 'react'
 import ShadowWhiteBox from './ShadowWhiteBox'
 import Placeholder from './Placeholder'
 

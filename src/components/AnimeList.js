@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { BsClockFill } from 'react-icons/bs'
 import Link from 'next/link'
 import { urlFilter } from '../lib/urlFilter'

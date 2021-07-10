@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { buildApi } from '../../../lib/api'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'

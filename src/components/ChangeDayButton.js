@@ -1,3 +1,4 @@
+import * as React from 'react'
 import Router, { useRouter } from 'next/router'
 
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs'

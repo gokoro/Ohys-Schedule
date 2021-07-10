@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { BsFillStopwatchFill } from 'react-icons/bs'
 
 import { useRecoilValue } from 'recoil'

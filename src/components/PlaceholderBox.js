@@ -1,3 +1,4 @@
+import * as React from 'react'
 import Placeholder from './Placeholder'
 
 const PlaceholderBox = (props) => {

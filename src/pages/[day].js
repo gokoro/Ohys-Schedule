@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { useRecoilValue } from 'recoil'
 import AnimeCardList from '../components/AnimeCardList'
 import AnimeList from '../components/AnimeList'

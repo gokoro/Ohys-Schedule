@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const Section = (props) => {
   return (
     <div className="section">

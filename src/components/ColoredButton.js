@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const ColoredButton = (props) => {
   const { textColor, bgColor, hoverBgColor } = props
   return (

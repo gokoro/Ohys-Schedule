@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 const AnimeEpisodeListItem = (props) => {
   return (
     <div className="item">

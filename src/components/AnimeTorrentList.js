@@ -1,3 +1,4 @@
+import * as React from 'react'
 import { AiFillFile } from 'react-icons/ai'
 import Placeholder from './Placeholder'
 import ShadowWhiteBox from './ShadowWhiteBox'

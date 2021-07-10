@@ -1,3 +1,4 @@
+import * as React from 'react'
 import ChangeDayButton from './ChangeDayButton'
 
 const ChangeDayButtonContainer = (props) => {
