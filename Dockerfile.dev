@@ -4,6 +4,8 @@ EXPOSE 3000
 
 WORKDIR /usr/src/app
 
+RUN apk add --upgrade --no-cache vips-dev build-base --repository https://alpine.global.ssl.fastly.net/alpine/edge/main
+
 COPY package.json yarn.lock ./
 RUN yarn install
 
