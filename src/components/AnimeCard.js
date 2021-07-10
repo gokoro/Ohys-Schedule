@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 
 import Placeholder from './Placeholder'
 
@@ -73,35 +74,17 @@ const AnimeCard = (props) => {
               },
             }}
           >
-            <div className="rounded img" />
+            <AspectRatio.Root ratio={4 / 5}>
+              <img className="img rounded" src={props.imageUrl} />
+            </AspectRatio.Root>
           </motion.div>
           <style jsx>{`
-            :global(.imgLoader) {
-              min-width: 100%;
-              height: 15.8vw;
-            }
             .img {
               width: 100%;
               height: 100%;
-              background-image: url('${props.imageUrl}');
-              background-size: cover;
+              object-fit: cover;
               box-shadow: var(--shadow-small);
               transition: box-shadow 0.3s;
-            }
-            @media screen and (max-width: 1080px) {
-              :global(.imgLoader) {
-                height: 22.5vw;
-              }
-            }
-            @media screen and (max-width: 768px) {
-              :global(.imgLoader) {
-                height: 29.3vw;
-              }
-            }
-            @media screen and (max-width: 568px) {
-              :global(.imgLoader) {
-                height: 50.6vw;
-              }
             }
           `}</style>
         </>
