@@ -9,7 +9,7 @@ import PlaceholderBox from '../components/PlaceholderBox'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import { useSchedule } from '../hooks/useSchedule'
-import { api } from '../lib/api'
+import { buildApi } from '../lib/api'
 import dayjs from '../lib/dayjs'
 import { animeListTypeState } from '../states/animeListType'
 import {
@@ -160,7 +160,7 @@ export async function getStaticProps() {
   }
 
   const retrieveSchedule = async (day) => {
-    const res = await api.get(`/schedule`, { params: { day } })
+    const res = await buildApi.get(`/schedule`, { params: { day } })
     const data = res.data
 
     schedules[day] = data

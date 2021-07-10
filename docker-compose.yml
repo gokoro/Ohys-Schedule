@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    environment:
+      apiUrl: http://localhost:5000
+      apiBuildUrl: http://server:3000
+
+  server:
+    image: ghcr.io/gokoro/ohys-server:latest
+    ports:
+      - 5000:3000
+    environment:
+      DATABASE_URL: mongodb://root:root@db:27017
+      DATABASE_NAME: ohys
+
+  parse:
+    image: ghcr.io/gokoro/ohys-parse:latest
+    environment:
+      DATABASE_URL: mongodb://root:root@db:27017
+      DATABASE_NAME: ohys
+      CURRENT_YEAR: 2021 # Edit this!
+      CURRENT_SEASON: 3 # Edit this!
+
+  db:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: ohys
+
+volumes:
+  mongo:

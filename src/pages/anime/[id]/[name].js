@@ -1,4 +1,4 @@
-import { api } from '../../../lib/api'
+import { buildApi } from '../../../lib/api'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useAnime } from '../../../hooks/useAnime'
@@ -101,7 +101,7 @@ name.getInitialProps = async (ctx) => {
     }
   }
 
-  const res = await api.get(`/anime`, { params: { id } })
+  const res = await buildApi.get(`/anime`, { params: { id } })
   const initialData = res.data
 
   return {

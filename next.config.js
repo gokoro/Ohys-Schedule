@@ -1,5 +1,8 @@
+const { apiUrl, apiBuildUrl } = process.env
+
 module.exports = {
   env: {
-    apiUrl: process.env.apiUrl,
+    apiUrl,
+    apiBuildUrl: apiBuildUrl || apiUrl,
   },
 }

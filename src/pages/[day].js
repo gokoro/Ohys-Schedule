@@ -7,7 +7,7 @@ import ListTypeSwitcher from '../components/ListTypeSwitcher'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import { useSchedule } from '../hooks/useSchedule'
-import { api } from '../lib/api'
+import { buildApi } from '../lib/api'
 import dayjs from '../lib/dayjs'
 import { animeListTypeState } from '../states/animeListType'
 import { LocaleMessageState } from '../states/preferredLanguage'
@@ -89,7 +89,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { day } = params
 
-  const res = await api.get(`/schedule`, { params: { day } })
+  const res = await buildApi.get(`/schedule`, { params: { day } })
   const schedule = res.data
 
   return {
