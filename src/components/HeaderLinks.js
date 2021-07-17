@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { currentDayState } from '../states/currentTime'
 import { LocaleMessageState } from '../states/preferredLanguage'
@@ -9,7 +10,8 @@ const HeaderLinks = () => {
     common: { day: dayLocaleSet },
   } = useRecoilValue(LocaleMessageState)
 
-  const currentDay = useRecoilValue(currentDayState)
+  const currentDayRecoil = useRecoilValue(currentDayState)
+  const [currentDay] = useState(currentDayRecoil)
 
   return (
     <div className="wrapper">
