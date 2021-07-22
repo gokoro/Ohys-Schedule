@@ -28,12 +28,28 @@ services:
     environment:
       DATABASE_URL: mongodb://root:root@db:27017
       DATABASE_NAME: ohys
+      SONIC_HOST: sonic
+      SONIC_PORT: 1491
+      SONIC_AUTH: SecretPassword
       CURRENT_YEAR: 2021 # Edit this!
       CURRENT_SEASON: 3 # Edit this!
+
+  search:
+    image: ghcr.io/gokoro/ohys-search:latest
+    ports:
+      - 4000:3000
+    environment:
+      DATABASE_URL: mongodb://root:root@db:27017
+      DATABASE_NAME: ohys
+      SONIC_HOST: sonic
+      SONIC_PORT: 1491
+      SONIC_AUTH: SecretPassword
 
   db:
     image: mongo
     restart: always
+    ports:
+      - 27017:27017
     volumes:
       - mongo:/data/db
     environment:
@@ -41,5 +57,15 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: ohys
 
+  sonic:
+    image: valeriansaliou/sonic:v1.3.0
+    restart: always
+    ports:
+      - 1491:1491
+    volumes:
+      - sonic:/var/lib/sonic/store
+      - ./docker/sonic/sonic.cfg:/etc/sonic.cfg
+
 volumes:
   mongo:
+  sonic:
