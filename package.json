@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^0.0.14",
+    "@stitches/react": "^0.2.3",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
     "framer-motion": "^2.4.3-beta.2",
