@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import { getCssString } from '../lib/stitches'
 
 import { GA_TRACKING_ID } from '../lib/gtag'
 
@@ -8,6 +9,10 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <style
+            id="stitches"
+            dangerouslySetInnerHTML={{ __html: getCssString() }}
+          />
           <script
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
