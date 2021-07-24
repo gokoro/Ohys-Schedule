@@ -9,11 +9,12 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      # - /usr/src/app/node_modules
       - /usr/src/app/.next
     environment:
       apiUrl: http://localhost:5000
       apiBuildUrl: http://server:3000
+      apiSearchUrl: http://localhost:4000
 
   server:
     image: ghcr.io/gokoro/ohys-server:latest

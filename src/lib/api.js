@@ -7,3 +7,7 @@ export const api = axios.create({
 export const buildApi = axios.create({
   baseURL: process.env.apiBuildUrl,
 })
+
+export const searchApi = axios.create({
+  baseURL: process.env.apiSearchUrl,
+})

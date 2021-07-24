@@ -1,8 +1,9 @@
-const { apiUrl, apiBuildUrl, googleAnalyticsTag } = process.env
+const { apiUrl, apiBuildUrl, apiSearchUrl, googleAnalyticsTag } = process.env
 
 module.exports = {
   env: {
     apiUrl,
+    apiSearchUrl,
     apiBuildUrl: apiBuildUrl || apiUrl,
     googleAnalyticsTag,
   },

@@ -1,5 +1,5 @@
 import useSWR, { cache } from 'swr'
-import { api } from '../lib/api'
+import { api, searchApi } from '../lib/api'
 
 const useAnime = (id, configs = {}) => {
   const baseUrl = `/anime`
@@ -40,7 +40,29 @@ const useAnimeName = (name, configs = {}) => {
     isError: error,
   }
 }
+
+const useAnimeSearch = (title) => {
+  const baseUrl = `/search`
+
+  const { data, error } = useSWR([baseUrl, title], searchFetcher)
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
 const fetcher = (url, params) =>
   api.get(url, { params }).then((res) => res.data)
 
-export { useAnime, useAnimeName }
+const searchFetcher = (url, title) =>
+  searchApi
+    .get(url, {
+      params: {
+        title,
+      },
+    })
+    .then((res) => res.data)
+
+export { useAnime, useAnimeName, useAnimeSearch }
