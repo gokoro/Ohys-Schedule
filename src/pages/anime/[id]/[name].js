@@ -24,7 +24,7 @@ export default function name({ initialData }) {
 
   useEffect(() => {
     router.replace(`/anime/${id}/${filteredName}`)
-  }, [])
+  }, [filteredName])
 
   const { data: animeData, isLoading } = useAnime(id, { initialData })
 

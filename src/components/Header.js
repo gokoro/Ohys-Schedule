@@ -2,10 +2,12 @@ import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { BsGearFill, BsSearch } from 'react-icons/bs'
+import { useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
 import { SearchInput, SearchResult } from './Search'
-import HeaderLinks from '../components/HeaderLinks'
-import ClassNameLink from '../components/ClassNameLink'
+import { animeSearchActiveState } from '../states/animeSearch'
+import HeaderLinks from './HeaderLinks'
+import ClassNameLink from './ClassNameLink'
 
 const RightSideButton = styled('button', { all: 'unset', cursor: 'pointer' })
 const RightSideLink = styled('a', {
@@ -22,7 +24,9 @@ const Header = () => {
   const [scrollPosition, setScrollPosition] = useState(0)
   const isScrollDown = scrollPosition > 70
 
-  const [isSearchActive, setSearchActive] = useState(false)
+  const [isSearchActive, setSearchActive] = useRecoilState(
+    animeSearchActiveState
+  )
 
   const clickRef = useRef(null)
 

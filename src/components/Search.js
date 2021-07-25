@@ -1,10 +1,19 @@
 import { useRef, useEffect, useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
 import { styled } from '../lib/stitches'
+import debounce from 'lodash.debounce'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+import * as AspectRatio from '@radix-ui/react-aspect-ratio'
+import Highlighter from 'react-highlight-words'
 import { BsSearch } from 'react-icons/bs'
 import { useAnimeSearch } from '../hooks/useAnime'
-import { animeSearchKeywordState } from '../states/animeSearch'
+import {
+  animeSearchKeywordState,
+  animeSearchActiveState,
+} from '../states/animeSearch'
+import { urlFilter } from '../lib/urlFilter'
 
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
@@ -57,15 +66,7 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
   },
 })
 
-const ScrollAreaCorner = styled(ScrollAreaPrimitive.Corner, {
-  // background: '#000',
-})
-
-const AnimeItem = styled('div', {
-  padding: '8px 0',
-  margin: '0 12px',
-  borderBottom: '1px solid #f1f3f5',
-})
+const ScrollAreaCorner = ScrollAreaPrimitive.Corner
 
 const Input = styled('input', {
   all: 'unset',
@@ -84,6 +85,8 @@ const InputContainer = styled(Flex, {
   borderRadius: 5,
 })
 
+const getDebounced = (callback, ms) => debounce(callback, ms)
+
 const SearchInput = (props) => {
   const inputRef = useRef(null)
   const setKeyword = useSetRecoilState(animeSearchKeywordState)
@@ -91,6 +94,8 @@ const SearchInput = (props) => {
   const handleChange = (e) => {
     setKeyword(e.target.value || '')
   }
+
+  const handleDebounceChange = getDebounced(handleChange, 500)
 
   useEffect(() => {
     inputRef.current.focus()
@@ -103,7 +108,7 @@ const SearchInput = (props) => {
       <BsSearch />
       <Input
         {...props}
-        onChange={handleChange}
+        onChange={handleDebounceChange}
         placeholder="Search..."
         ref={inputRef}
         css={{ marginLeft: 8 }}
@@ -112,21 +117,92 @@ const SearchInput = (props) => {
   )
 }
 
+const StyledAnimeContainer = styled(Flex, {
+  padding: '8px 12px',
+  borderBottom: '1px solid #f1f3f5',
+  fontSize: 14,
+  background: '#FFF',
+  transition: 'background 10ms',
+
+  '&:hover': {
+    background: '#f8f9fa',
+  },
+})
+
+const StyledAnimeLink = styled('a', {
+  color: '#000',
+  '&:hover': {
+    color: '#000',
+  },
+})
+
+const StyledAnimeImgContainer = styled('div', {
+  // width: 30,
+})
+
+const AnimeItem = ({ id, name, imageUrl, ...props }) => {
+  const href = `/anime/${id}/${urlFilter(name)}`
+  const keyword = useRecoilValue(animeSearchKeywordState)
+
+  return (
+    <Link href={href} passHref>
+      <StyledAnimeLink {...props}>
+        <StyledAnimeContainer>
+          <StyledAnimeImgContainer>
+            <AspectRatio.Root ratio={4 / 5}>
+              <Image src={imageUrl} layout="fill" />
+            </AspectRatio.Root>
+          </StyledAnimeImgContainer>
+          <div>
+            <Highlighter
+              searchWords={[keyword]}
+              autoEscape={true}
+              textToHighlight={name}
+              highlightStyle={{
+                color: '#4c6ef5',
+                fontWeight: '700',
+                background: 'none',
+              }}
+            />
+          </div>
+        </StyledAnimeContainer>
+      </StyledAnimeLink>
+    </Link>
+  )
+}
+
 const SearchResult = (props) => {
   const keyword = useRecoilValue(animeSearchKeywordState)
 
-  const { data, isLoading } = useAnimeSearch(keyword)
+  const setSearchOpen = useSetRecoilState(animeSearchActiveState)
+
+  const [cached, setCached] = useState([])
+
+  const { data: res, isLoading } = useAnimeSearch(keyword)
+  const data = res?.data
+
+  const handleItemClick = () => {
+    setSearchOpen(false)
+  }
+
+  useEffect(() => {
+    if (!isLoading) {
+      setCached(data)
+    }
+  }, [data])
 
   return (
     <ScrollArea {...props}>
       <ScrollAreaViewport>
-        {isLoading ? (
-          <></>
-        ) : (
-          data.data.map(({ _id, name }) => (
-            <AnimeItem key={_id}>{name}</AnimeItem>
-          ))
-        )}
+        {cached.map(({ _id, name, imageUrl }) => (
+          <AnimeItem
+            key={_id}
+            id={_id}
+            name={name}
+            imageUrl={imageUrl}
+            onClick={handleItemClick}
+          />
+        ))}
       </ScrollAreaViewport>
       <ScrollAreaScrollbar orientation="vertical">
         <ScrollAreaThumb />
