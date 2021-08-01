@@ -1,17 +1,9 @@
 import * as React from 'react'
-import Link from 'next/link'
 
 const SectionTitle = (props) => {
   return (
     <div className="SectionTitle">
       <div className="item title bold">{props.children}</div>
-      {props.isDisplayLink && (
-        <div className="item link">
-          <Link href={props.href} as={props.as}>
-            <a>{props.linkText}</a>
-          </Link>
-        </div>
-      )}
       <style jsx>{`
         .SectionTitle {
           display: flex;
@@ -23,6 +15,9 @@ const SectionTitle = (props) => {
           font-size: ${props.size || '14px'};
         }
         .item {
+          display: block;
+          width: 100%;
+          line-height: 120%;
           flex: none;
         }
         .item.link {
