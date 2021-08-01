@@ -83,8 +83,6 @@ const InputContainer = styled(Flex, {
   borderRadius: 5,
 })
 
-const getDebounced = (callback, ms) => debounce(callback, ms)
-
 const SearchInput = (props) => {
   const router = useRouter()
   const inputRef = useRef(null)

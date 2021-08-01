@@ -8,6 +8,7 @@ import { SearchInput, SearchResult } from './Search'
 import { animeSearchActiveState } from '../states/animeSearch'
 import HeaderLinks from './HeaderLinks'
 import ClassNameLink from './ClassNameLink'
+import useWindowSize from '../hooks/useWindowSize'
 
 const RightSideButton = styled('button', { all: 'unset', cursor: 'pointer' })
 const RightSideLink = styled('a', {
@@ -17,10 +18,25 @@ const RightSideLink = styled('a', {
 
 const SearchContainer = styled('div', {
   position: 'relative',
-  width: 300,
+  variants: {
+    fullWidth: {
+      true: {
+        width: '100%',
+      },
+      false: {
+        width: 'initial',
+      },
+    },
+  },
+})
+
+const InputContainer = styled('div', {
+  position: 'relative',
+  minWidth: 300,
 })
 
 const Header = () => {
+  const { width: windowWidth } = useWindowSize()
   const [scrollPosition, setScrollPosition] = useState(0)
   const isScrollDown = scrollPosition > 70
 
@@ -28,7 +44,7 @@ const Header = () => {
     animeSearchActiveState
   )
 
-  const clickRef = useRef(null)
+  const isHideExtra = isSearchActive && windowWidth <= 576
 
   const handleScroll = () => {
     setScrollPosition(window.pageYOffset)
@@ -43,6 +59,8 @@ const Header = () => {
       setSearchActive(false)
     }
   }
+
+  const clickRef = useRef(null)
 
   if (isScrollDown) {
     setSearchActive(false)
@@ -63,22 +81,29 @@ const Header = () => {
       <div className="header b-default">
         <div className="wrapper">
           <div className="container">
-            <div className="logo">
-              <Link href="/">
-                <a className="link">
-                  <img
-                    className="link-img rounded"
-                    src="/images/logo.jpg"
-                    alt="Ohys"
-                  />
-                  <span className="link-text">Schedule</span>
-                </a>
-              </Link>
-            </div>
+            {!isHideExtra && (
+              <div className="logo">
+                <Link href="/">
+                  <a className="link">
+                    <>
+                      <img
+                        className="link-img rounded"
+                        src="/images/logo.jpg"
+                        alt="Ohys"
+                      />
+                      <span className="link-text">Schedule</span>
+                    </>
+                  </a>
+                </Link>
+              </div>
+            )}
             <div className="right-side">
               <SearchContainer
+                fullWidth={{
+                  '@initial': isSearchActive,
+                  '@sm': false,
+                }}
                 ref={clickRef}
-                css={{ width: isSearchActive ? 300 : 'initial' }}
               >
                 {!isSearchActive && (
                   <RightSideButton onClick={handleSearchClick}>
@@ -86,19 +111,23 @@ const Header = () => {
                   </RightSideButton>
                 )}
                 {isSearchActive && (
-                  <>
-                    <SearchInput />
-                    <SearchResult css={{ marginTop: 8 }} />
-                  </>
+                  <InputContainer>
+                    <>
+                      <SearchInput />
+                      <SearchResult css={{ marginTop: 8 }} />
+                    </>
+                  </InputContainer>
                 )}
               </SearchContainer>
-              <div>
-                <ClassNameLink activeClassName="actived" href="/setting">
-                  <RightSideLink>
-                    <BsGearFill color="black" />
-                  </RightSideLink>
-                </ClassNameLink>
-              </div>
+              {!isHideExtra && (
+                <div>
+                  <ClassNameLink activeClassName="actived" href="/setting">
+                    <RightSideLink>
+                      <BsGearFill color="black" />
+                    </RightSideLink>
+                  </ClassNameLink>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -152,7 +181,9 @@ const Header = () => {
           margin-right: 12px;
         }
         .header .container .right-side {
+          width: 100%;
           display: flex;
+          justify-content: flex-end;
           align-items: center;
           margin-left: auto;
         }

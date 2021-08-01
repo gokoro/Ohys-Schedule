@@ -8,7 +8,7 @@ const SectionTitle = (props) => {
         .SectionTitle {
           display: flex;
           margin-bottom: 18px;
-          padding-bottom: 14px;
+          padding-bottom: 8px;
           border-bottom: 1px solid #ecf0f1;
         }
         .title {
