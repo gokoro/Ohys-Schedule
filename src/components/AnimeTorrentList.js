@@ -65,8 +65,11 @@ const AnimeTorrentListItem = (props) => {
         <AiFillFile />
       </div>
       <div className="main sec">
-        <a className="torrent bold" href={props.torrentLink}>
-          {props.name} -{' '}
+        <a
+          className="torrent bold"
+          href={`https://nyaa.si${props.torrentLink}`}
+        >
+          {props.name || props.romajiName} -{' '}
           {props.episode === 0 && props.videoFormat === 'torrent'
             ? 'All the episodes'
             : props.episode}
