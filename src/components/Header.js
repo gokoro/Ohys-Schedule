@@ -44,6 +44,10 @@ const Header = () => {
     }
   }
 
+  if (isScrollDown) {
+    setSearchActive(false)
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('mousedown', handleOutsideClick)

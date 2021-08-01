@@ -41,6 +41,7 @@ const ListTypeSwitcher = () => {
           padding: 6px 10px;
           border-radius: 4px;
           transition: background-color 0.07s;
+          margin-left: 4px;
         }
         button:hover {
           background-color: #dcdde1;

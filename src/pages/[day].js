@@ -28,7 +28,7 @@ export default function Day({ schedule, day }) {
 
   const todayAsLocale = locale.common.day[day]
 
-  useSchedule(day, { initialData: schedule })
+  const { data } = useSchedule(day, { initialData: schedule })
 
   return (
     <>
@@ -44,8 +44,8 @@ export default function Day({ schedule, day }) {
         <div className="buttonSection">
           <ListTypeSwitcher />
         </div>
-        {listType === 'list' && <AnimeList day={day} />}
-        {listType === 'card' && <AnimeCardList day={day} />}
+        {listType === 'list' && <AnimeList data={data.data} day={day} />}
+        {listType === 'card' && <AnimeCardList data={data.data} day={day} />}
       </Section>
       <Section>
         <div className="dayButtonContainer">

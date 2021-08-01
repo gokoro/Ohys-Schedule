@@ -98,9 +98,11 @@ const AnimeCard = (props) => {
       }
       bottom={
         <>
-          <div className="sub bold">
-            {locale.common.day[props.day]} {props.time}
-          </div>
+          {props.day && props.time && (
+            <div className="sub bold">
+              {locale.common.day[props.day]} {props.time}
+            </div>
+          )}
           <div className="title bold">{props.name}</div>
           <style jsx>{`
             .title {

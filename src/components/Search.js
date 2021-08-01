@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useSetRecoilState, useRecoilValue } from 'recoil'
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
 import debounce from 'lodash.debounce'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
@@ -11,7 +11,7 @@ import {
   animeSearchKeywordState,
   animeSearchActiveState,
 } from '../states/animeSearch'
-import { urlFilter } from '../lib/urlFilter'
+import { useRouter } from 'next/router'
 
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
@@ -86,19 +86,26 @@ const InputContainer = styled(Flex, {
 const getDebounced = (callback, ms) => debounce(callback, ms)
 
 const SearchInput = (props) => {
+  const router = useRouter()
   const inputRef = useRef(null)
-  const setKeyword = useSetRecoilState(animeSearchKeywordState)
+  const [keyword, setKeyword] = useRecoilState(animeSearchKeywordState)
+  const setSearchOpen = useSetRecoilState(animeSearchActiveState)
 
   const handleChange = (e) => {
     setKeyword(e.target.value || '')
   }
 
-  const handleDebounceChange = getDebounced(handleChange, 500)
+  const ENTER_KEYCODE = 13
+
+  const handleSubmit = (e) => {
+    if (e.keyCode === ENTER_KEYCODE && e.target.value !== '') {
+      router.push(`/search?q=${keyword}`)
+      setSearchOpen(false)
+    }
+  }
 
   useEffect(() => {
     inputRef.current.focus()
-
-    return () => setKeyword('')
   }, [])
 
   return (
@@ -106,7 +113,9 @@ const SearchInput = (props) => {
       <BsSearch />
       <Input
         {...props}
-        onChange={handleDebounceChange}
+        defaultValue={keyword}
+        onChange={handleChange}
+        onKeyDown={handleSubmit}
         placeholder="Search..."
         ref={inputRef}
         css={{ marginLeft: 8 }}
@@ -135,7 +144,7 @@ const StyledAnimeLink = styled('a', {
 })
 
 const AnimeItem = ({ id, name, ...props }) => {
-  const href = `/anime/${id}/${urlFilter(name)}`
+  const href = `/search?q=${name}`
   const keyword = useRecoilValue(animeSearchKeywordState)
 
   return (

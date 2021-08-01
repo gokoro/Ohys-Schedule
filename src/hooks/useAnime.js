@@ -1,3 +1,5 @@
+import debounce from 'lodash.debounce'
+import { useEffect, useState } from 'react'
 import useSWR, { cache } from 'swr'
 import { api, searchApi } from '../lib/api'
 
@@ -43,8 +45,16 @@ const useAnimeName = (name, configs = {}) => {
 
 const useAnimeSearch = (title) => {
   const baseUrl = `/search`
+  const [keyword, setKeyword] = useState(title)
+  const debouncedSetKeyword = getDebounced(setKeyword, 500)
 
-  const { data, error } = useSWR([baseUrl, title], searchFetcher)
+  useEffect(() => {
+    debouncedSetKeyword(title)
+
+    return debouncedSetKeyword.cancel
+  }, [title])
+
+  const { data, error } = useSWR([baseUrl, keyword], searchFetcher)
 
   return {
     data,
@@ -52,6 +62,8 @@ const useAnimeSearch = (title) => {
     isError: error,
   }
 }
+
+const getDebounced = (callback, ms) => debounce(callback, ms)
 
 const fetcher = (url, params) =>
   api.get(url, { params }).then((res) => res.data)
