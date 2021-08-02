@@ -67,10 +67,13 @@ const ScrollAreaThumb = styled(ScrollAreaPrimitive.Thumb, {
 const ScrollAreaCorner = ScrollAreaPrimitive.Corner
 
 const Input = styled('input', {
-  all: 'unset',
+  fontFamily: 'unset',
+  outline: 'none',
+  border: 'none',
   width: '100%',
   height: 20,
-  padding: '8px 0',
+  padding: '18px 0',
+  fontSize: '1rem',
 })
 
 const Flex = styled('div', {
