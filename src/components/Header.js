@@ -18,16 +18,6 @@ const RightSideLink = styled('a', {
 
 const SearchContainer = styled('div', {
   position: 'relative',
-  variants: {
-    fullWidth: {
-      true: {
-        width: '100%',
-      },
-      false: {
-        width: 'initial',
-      },
-    },
-  },
 })
 
 const InputContainer = styled('div', {
@@ -99,9 +89,11 @@ const Header = () => {
             )}
             <div className="right-side">
               <SearchContainer
-                fullWidth={{
-                  '@initial': isSearchActive,
-                  '@sm': false,
+                css={{
+                  width: isSearchActive ? '100%' : 'initial',
+                  '@sm': {
+                    width: 'initial',
+                  },
                 }}
                 ref={clickRef}
               >
