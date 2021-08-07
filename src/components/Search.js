@@ -11,7 +11,6 @@ import {
   animeSearchActiveState,
 } from '../states/animeSearch'
 import { useRouter } from 'next/router'
-import NotFound from '../assets/notfound.svg'
 
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
