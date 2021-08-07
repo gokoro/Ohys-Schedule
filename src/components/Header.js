@@ -99,7 +99,7 @@ const Header = () => {
               >
                 {!isSearchActive && (
                   <RightSideButton
-                    css={{ paddingLeft: 24 }}
+                    css={{ paddingLeft: 2 }}
                     onClick={handleSearchClick}
                   >
                     <BsSearch color="black" />

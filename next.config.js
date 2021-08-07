@@ -7,5 +7,14 @@ module.exports = {
     apiBuildUrl: apiBuildUrl || apiUrl,
     googleAnalyticsTag,
   },
+
   images: { domains: ['s4.anilist.co'] },
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    return config
+  },
 }

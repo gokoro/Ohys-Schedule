@@ -2,7 +2,6 @@ import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
-import debounce from 'lodash.debounce'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import Highlighter from 'react-highlight-words'
 import { BsSearch } from 'react-icons/bs'
@@ -12,6 +11,7 @@ import {
   animeSearchActiveState,
 } from '../states/animeSearch'
 import { useRouter } from 'next/router'
+import NotFound from '../assets/notfound.svg'
 
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
@@ -168,6 +168,14 @@ const AnimeItem = ({ id, name, ...props }) => {
   )
 }
 
+const SearchMessage = styled('div', {
+  color: '#868e96',
+  textAlign: 'center',
+  marginTop: 40,
+  letterSpacing: '-.1px',
+  fontSize: 14,
+})
+
 const SearchResult = (props) => {
   const keyword = useRecoilValue(animeSearchKeywordState)
 
@@ -191,6 +199,14 @@ const SearchResult = (props) => {
   return (
     <ScrollArea {...props}>
       <ScrollAreaViewport>
+        {keyword === '' && cached.length === 0 && (
+          <SearchMessage>Type keywords here to search.</SearchMessage>
+        )}
+
+        {keyword !== '' && !isLoading && cached.length === 0 && (
+          <SearchMessage>Nothing found.</SearchMessage>
+        )}
+
         {cached.map(({ _id, name }) => (
           <AnimeItem key={_id} id={_id} name={name} onClick={handleItemClick} />
         ))}

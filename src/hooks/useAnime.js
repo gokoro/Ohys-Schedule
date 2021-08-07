@@ -58,7 +58,7 @@ const useAnimeSearch = (title) => {
 
   return {
     data,
-    isLoading: !error && !data,
+    isLoading: title !== keyword || (!error && !data),
     isError: error,
   }
 }
