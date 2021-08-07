@@ -6,7 +6,7 @@ import Helmet from '../components/Helmet'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import SearchCard from '../components/SearchCard'
-import NotFoundImage from '../assets/notFound.svg'
+import NotFoundImage from '../assets/notfound.svg'
 
 const Flex = styled('div', {
   display: 'flex',
