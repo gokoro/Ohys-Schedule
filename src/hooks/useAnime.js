@@ -45,6 +45,18 @@ const useAnimeName = (name, configs = {}) => {
 
 const useAnimeSearch = (title) => {
   const baseUrl = `/search`
+
+  const { data, error } = useSWR([baseUrl, title], searchFetcher)
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+const useAnimeSearchDebounced = (title) => {
+  const baseUrl = `/search`
   const [keyword, setKeyword] = useState(title)
   const debouncedSetKeyword = getDebounced(setKeyword, 500)
 
@@ -77,4 +89,4 @@ const searchFetcher = (url, title) =>
     })
     .then((res) => res.data)
 
-export { useAnime, useAnimeName, useAnimeSearch }
+export { useAnime, useAnimeName, useAnimeSearch, useAnimeSearchDebounced }

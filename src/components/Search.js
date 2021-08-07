@@ -5,7 +5,7 @@ import { styled } from '../lib/stitches'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import Highlighter from 'react-highlight-words'
 import { BsSearch } from 'react-icons/bs'
-import { useAnimeSearch } from '../hooks/useAnime'
+import { useAnimeSearchDebounced } from '../hooks/useAnime'
 import {
   animeSearchKeywordState,
   animeSearchActiveState,
@@ -182,7 +182,7 @@ const SearchResult = (props) => {
 
   const [cached, setCached] = useState([])
 
-  const { data: res, isLoading } = useAnimeSearch(keyword)
+  const { data: res, isLoading } = useAnimeSearchDebounced(keyword)
   const data = res?.data
 
   const handleItemClick = () => {
