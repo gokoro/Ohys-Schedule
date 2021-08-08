@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { BsGearFill, BsSearch } from 'react-icons/bs'
 import { useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
-import { SearchInput, SearchResult } from './Search'
+import { SearchInput, SearchResult, SearchBetaMessage } from './Search'
 import { animeSearchActiveState } from '../states/animeSearch'
 import HeaderLinks from './HeaderLinks'
 import ClassNameLink from './ClassNameLink'
@@ -18,6 +18,9 @@ const RightSideLink = styled('a', {
 
 const SearchContainer = styled('div', {
   position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
 })
 
 const InputContainer = styled('div', {
@@ -98,12 +101,15 @@ const Header = () => {
                 ref={clickRef}
               >
                 {!isSearchActive && (
-                  <RightSideButton
-                    css={{ paddingLeft: 2 }}
-                    onClick={handleSearchClick}
-                  >
-                    <BsSearch color="black" />
-                  </RightSideButton>
+                  <>
+                    <SearchBetaMessage />
+                    <RightSideButton
+                      css={{ paddingLeft: 2 }}
+                      onClick={handleSearchClick}
+                    >
+                      <BsSearch color="black" />
+                    </RightSideButton>
+                  </>
                 )}
                 {isSearchActive && (
                   <InputContainer>

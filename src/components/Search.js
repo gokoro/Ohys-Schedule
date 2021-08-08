@@ -13,6 +13,8 @@ import {
 import { useRouter } from 'next/router'
 import { LocaleMessageState } from '../states/preferredLanguage'
 
+import * as HoverCard from '@radix-ui/react-hover-card'
+
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
   height: 200,
@@ -224,4 +226,55 @@ const SearchResult = (props) => {
   )
 }
 
-export { SearchInput, SearchResult }
+const HoverCardTrigger = styled(HoverCard.Trigger, {
+  display: 'inline-block',
+  height: 20,
+  lineHeight: '18px',
+  fontSize: '0.5rem',
+  letterSpacing: 0,
+  color: '#e67700',
+  background: '#fff9db',
+  padding: '0 8px',
+  border: '1px solid #f08c00',
+  borderRadius: 10,
+  '&:hover': {
+    cursor: 'pointer',
+    color: '#e67700',
+  },
+})
+
+const HoverCardContent = styled(HoverCard.Content, {
+  letterSpacing: -0.1,
+  padding: 10,
+  fontSize: '0.8rem',
+  background: '#FFF',
+  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
+})
+
+const HoverCardArrow = styled(HoverCard.Arrow, {
+  fill: '#FFF',
+  boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
+})
+
+const UnderLineText = styled('span', {
+  borderBottom: '1px solid #000',
+})
+
+const SearchBetaMessage = () => {
+  return (
+    <>
+      <HoverCard.Root openDelay={300} closeDelay={100}>
+        <HoverCardTrigger>Beta</HoverCardTrigger>
+        <HoverCardContent>
+          <span>Searching from Ohys-Raws is now available!</span>{' '}
+          <UnderLineText as="a" css={{ fontWeight: 'bold' }} href="">
+            Learn More
+          </UnderLineText>
+          <HoverCardArrow />
+        </HoverCardContent>
+      </HoverCard.Root>
+    </>
+  )
+}
+
+export { SearchInput, SearchResult, SearchBetaMessage }
