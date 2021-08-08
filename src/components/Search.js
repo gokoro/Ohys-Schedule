@@ -11,6 +11,7 @@ import {
   animeSearchActiveState,
 } from '../states/animeSearch'
 import { useRouter } from 'next/router'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 const ScrollArea = styled(ScrollAreaPrimitive.Root, {
   width: '100%',
@@ -90,6 +91,7 @@ const SearchInput = (props) => {
   const inputRef = useRef(null)
   const [keyword, setKeyword] = useRecoilState(animeSearchKeywordState)
   const setSearchOpen = useSetRecoilState(animeSearchActiveState)
+  const lang = useRecoilValue(LocaleMessageState)
 
   const handleChange = (e) => {
     setKeyword(e.target.value || '')
@@ -116,7 +118,7 @@ const SearchInput = (props) => {
         defaultValue={keyword}
         onChange={handleChange}
         onKeyDown={handleSubmit}
-        placeholder="Search..."
+        placeholder={lang.components.search.search}
         ref={inputRef}
         css={{ marginLeft: 8 }}
       />
@@ -177,6 +179,7 @@ const SearchMessage = styled('div', {
 
 const SearchResult = (props) => {
   const keyword = useRecoilValue(animeSearchKeywordState)
+  const lang = useRecoilValue(LocaleMessageState)
 
   const setSearchOpen = useSetRecoilState(animeSearchActiveState)
 
@@ -199,11 +202,11 @@ const SearchResult = (props) => {
     <ScrollArea {...props}>
       <ScrollAreaViewport>
         {keyword === '' && cached.length === 0 && (
-          <SearchMessage>Type keywords here to search.</SearchMessage>
+          <SearchMessage>{lang.components.search.typeKeyword}</SearchMessage>
         )}
 
         {keyword !== '' && !isLoading && cached.length === 0 && (
-          <SearchMessage>Nothing found.</SearchMessage>
+          <SearchMessage>{lang.components.search.notFound}</SearchMessage>
         )}
 
         {cached.map(({ _id, name }) => (

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { useRecoilValue } from 'recoil'
 import { useAnimeSearch } from '../hooks/useAnime'
 import { styled } from '../lib/stitches'
 import LoadingIndicator from 'react-spinners/BeatLoader'
@@ -7,6 +8,7 @@ import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import SearchCard from '../components/SearchCard'
 import NotFoundImage from '../assets/notfound.svg'
+import { LocaleMessageState } from '../states/preferredLanguage'
 
 const Flex = styled('div', {
   display: 'flex',
@@ -40,6 +42,8 @@ const SearchPage = () => {
   const { data: res, isLoading } = useAnimeSearch(keyword)
   const data = res?.data || []
 
+  const lang = useRecoilValue(LocaleMessageState)
+
   return (
     <>
       <Helmet
@@ -48,7 +52,7 @@ const SearchPage = () => {
       />
       <Section>
         <SectionTitle size="1.5rem">
-          &lsquo;{keyword || ''}&rsquo; results
+          &lsquo;{keyword || ''}&rsquo; {lang.search.searchResult}
         </SectionTitle>
       </Section>
       <Section>
@@ -74,7 +78,7 @@ const SearchPage = () => {
         {!isLoading && data.length === 0 && (
           <NotFoundContainer>
             <NotFoundImage width="30%" height="100%" viewBox="0 0 1170 777" />
-            <NotFoundMessage>Nothing Found.</NotFoundMessage>
+            <NotFoundMessage>{lang.search.notfound}</NotFoundMessage>
           </NotFoundContainer>
         )}
       </Section>
