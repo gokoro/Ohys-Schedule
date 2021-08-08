@@ -35,7 +35,7 @@ const NotFoundMessage = styled('div', {
   marginTop: 24,
 })
 
-const SearchPage = () => {
+const SearchPage = ({ q: initialKeyword }) => {
   const router = useRouter()
   const { q: keyword } = router.query
 
@@ -47,8 +47,12 @@ const SearchPage = () => {
   return (
     <>
       <Helmet
-        title={`‘${keyword || ''}’ search results | Ohys-Schedule`}
-        description={`This is the result of searching for the ${keyword} in Ohys-Raws.`}
+        title={`‘${
+          keyword || initialKeyword || ''
+        }’ search results | Ohys-Schedule`}
+        description={`This is the result of searching for the ${
+          keyword || initialKeyword || ''
+        } in Ohys-Raws.`}
       />
       <Section>
         <SectionTitle size="1.5rem">
@@ -85,5 +89,7 @@ const SearchPage = () => {
     </>
   )
 }
+
+SearchPage.getInitialProps = (ctx) => ctx.query
 
 export default SearchPage
