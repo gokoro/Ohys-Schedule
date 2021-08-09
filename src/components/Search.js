@@ -11,7 +11,10 @@ import {
   animeSearchActiveState,
 } from '../states/animeSearch'
 import { useRouter } from 'next/router'
-import { LocaleMessageState } from '../states/preferredLanguage'
+import {
+  LocaleMessageState,
+  PreferredLanguageState,
+} from '../states/preferredLanguage'
 
 import * as HoverCard from '@radix-ui/react-hover-card'
 
@@ -181,7 +184,8 @@ const SearchMessage = styled('div', {
 
 const SearchResult = (props) => {
   const keyword = useRecoilValue(animeSearchKeywordState)
-  const lang = useRecoilValue(LocaleMessageState)
+  const lang = useRecoilValue(PreferredLanguageState)
+  const langMessage = useRecoilValue(LocaleMessageState)
 
   const setSearchOpen = useSetRecoilState(animeSearchActiveState)
 
@@ -204,15 +208,24 @@ const SearchResult = (props) => {
     <ScrollArea {...props}>
       <ScrollAreaViewport>
         {keyword === '' && cached.length === 0 && (
-          <SearchMessage>{lang.components.search.typeKeyword}</SearchMessage>
+          <SearchMessage>
+            {langMessage.components.search.typeKeyword}
+          </SearchMessage>
         )}
 
         {keyword !== '' && !isLoading && cached.length === 0 && (
-          <SearchMessage>{lang.components.search.notFound}</SearchMessage>
+          <SearchMessage>
+            {langMessage.components.search.notFound}
+          </SearchMessage>
         )}
 
-        {cached.map(({ _id, name }) => (
-          <AnimeItem key={_id} id={_id} name={name} onClick={handleItemClick} />
+        {cached.map(({ _id, name, title }) => (
+          <AnimeItem
+            key={_id}
+            id={_id}
+            name={title[lang] || name}
+            onClick={handleItemClick}
+          />
         ))}
       </ScrollAreaViewport>
       <ScrollAreaScrollbar orientation="vertical">
@@ -266,7 +279,7 @@ const SearchBetaMessage = () => {
       <HoverCard.Root openDelay={300} closeDelay={100}>
         <HoverCardTrigger>Beta</HoverCardTrigger>
         <HoverCardContent>
-          <span>Searching from Ohys-Raws is now available!</span>{' '}
+          <span>Searching from Ohys-Raws is now in Beta!</span>{' '}
           <UnderLineText as="a" css={{ fontWeight: 'bold' }} href="">
             Learn More
           </UnderLineText>

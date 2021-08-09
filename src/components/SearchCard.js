@@ -59,8 +59,16 @@ const SubTitle = styled('div', {
   },
 })
 
-const SearchCard = ({ id, title, imageUrl, year, itemCount, ...props }) => {
-  const href = `/anime/${id}/${urlFilter(title)}`
+const SearchCard = ({
+  id,
+  title,
+  originalName = title,
+  imageUrl,
+  year,
+  itemCount,
+  ...props
+}) => {
+  const href = `/anime/${id}/${urlFilter(originalName)}`
 
   return (
     <Link href={href}>

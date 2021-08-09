@@ -8,7 +8,10 @@ import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
 import SearchCard from '../components/SearchCard'
 import NotFoundImage from '../assets/notfound.svg'
-import { LocaleMessageState } from '../states/preferredLanguage'
+import {
+  LocaleMessageState,
+  PreferredLanguageState,
+} from '../states/preferredLanguage'
 
 const Flex = styled('div', {
   display: 'flex',
@@ -42,7 +45,8 @@ const SearchPage = ({ q: initialKeyword }) => {
   const { data: res, isLoading } = useAnimeSearch(keyword)
   const data = res?.data || []
 
-  const lang = useRecoilValue(LocaleMessageState)
+  const lang = useRecoilValue(PreferredLanguageState)
+  const langMessage = useRecoilValue(LocaleMessageState)
 
   return (
     <>
@@ -56,7 +60,7 @@ const SearchPage = ({ q: initialKeyword }) => {
       />
       <Section>
         <SectionTitle size="1.5rem">
-          &lsquo;{keyword || ''}&rsquo; {lang.search.searchResult}
+          &lsquo;{keyword || ''}&rsquo; {langMessage.search.searchResult}
         </SectionTitle>
       </Section>
       <Section>
@@ -72,7 +76,8 @@ const SearchPage = ({ q: initialKeyword }) => {
             <SearchItem
               key={anime._id}
               id={anime._id}
-              title={anime.name}
+              originalName={anime.name}
+              title={anime.title[lang] || anime.name}
               imageUrl={anime.imageUrl}
               year={anime.released_year}
               itemCount={anime.items.length}
@@ -82,7 +87,7 @@ const SearchPage = ({ q: initialKeyword }) => {
         {!isLoading && data.length === 0 && (
           <NotFoundContainer>
             <NotFoundImage width="30%" height="100%" viewBox="0 0 1170 777" />
-            <NotFoundMessage>{lang.search.notfound}</NotFoundMessage>
+            <NotFoundMessage>{langMessage.search.notfound}</NotFoundMessage>
           </NotFoundContainer>
         )}
       </Section>
