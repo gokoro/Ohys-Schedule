@@ -25,6 +25,10 @@ export default {
     copyArticle: 'Files are provided by Ohys-Raws.',
     language: 'Language',
   },
+  search: {
+    searchResult: 'result',
+    notfound: 'Nothing Found.',
+  },
   // Component Section
   components: {
     header: {
@@ -51,6 +55,11 @@ export default {
     },
     animeTorrentOtherLink: {
       externalLinks: 'External Links',
+    },
+    search: {
+      search: 'Search...',
+      typeKeyword: 'Type keywords here to search.',
+      notFound: 'Nothing found.',
     },
   },
   // Common Section

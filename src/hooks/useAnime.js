@@ -1,5 +1,7 @@
+import debounce from 'lodash.debounce'
+import { useEffect, useState } from 'react'
 import useSWR, { cache } from 'swr'
-import { api } from '../lib/api'
+import { api, searchApi } from '../lib/api'
 
 const useAnime = (id, configs = {}) => {
   const baseUrl = `/anime`
@@ -40,7 +42,51 @@ const useAnimeName = (name, configs = {}) => {
     isError: error,
   }
 }
+
+const useAnimeSearch = (title) => {
+  const baseUrl = `/search`
+
+  const { data, error } = useSWR([baseUrl, title], searchFetcher)
+
+  return {
+    data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+const useAnimeSearchDebounced = (title) => {
+  const baseUrl = `/search`
+  const [keyword, setKeyword] = useState(title)
+  const debouncedSetKeyword = getDebounced(setKeyword, 500)
+
+  useEffect(() => {
+    debouncedSetKeyword(title)
+
+    return debouncedSetKeyword.cancel
+  }, [title])
+
+  const { data, error } = useSWR([baseUrl, keyword], searchFetcher)
+
+  return {
+    data,
+    isLoading: title !== keyword || (!error && !data),
+    isError: error,
+  }
+}
+
+const getDebounced = (callback, ms) => debounce(callback, ms)
+
 const fetcher = (url, params) =>
   api.get(url, { params }).then((res) => res.data)
 
-export { useAnime, useAnimeName }
+const searchFetcher = (url, title) =>
+  searchApi
+    .get(url, {
+      params: {
+        title,
+      },
+    })
+    .then((res) => res.data)
+
+export { useAnime, useAnimeName, useAnimeSearch, useAnimeSearchDebounced }

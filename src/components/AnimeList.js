@@ -4,44 +4,17 @@ import Link from 'next/link'
 import { urlFilter } from '../lib/urlFilter'
 
 import { useRecoilValue } from 'recoil'
-import { useSchedule } from '../hooks/useSchedule'
 
 import { PreferredLanguageState } from '../states/preferredLanguage'
 
-import Placeholder from './Placeholder'
 import AnimeTimeInfo from './AnimeTimeInfo'
 
-const AnimeList = (props) => {
+const AnimeList = ({ data }) => {
   const lang = useRecoilValue(PreferredLanguageState)
-
-  const schedule = useSchedule(props.day)
-  const data = schedule.data
-
-  if (schedule.isLoading) {
-    return (
-      <div className="AnimeList">
-        <AnimeListItem>
-          <LoadingWrapper />
-        </AnimeListItem>
-        <AnimeListItem>
-          <LoadingWrapper />
-        </AnimeListItem>
-        <AnimeListItem>
-          <LoadingWrapper />
-        </AnimeListItem>
-        <AnimeListItem>
-          <LoadingWrapper />
-        </AnimeListItem>
-        <AnimeListItem>
-          <LoadingWrapper />
-        </AnimeListItem>
-      </div>
-    )
-  }
 
   return (
     <div className="AnimeList">
-      {data.data.map((item) => (
+      {data.map((item) => (
         <AnimeListItem
           key={item._id}
           href={`/anime/${item._id}/${urlFilter(item.name)}`}
@@ -49,12 +22,13 @@ const AnimeList = (props) => {
           <InfoWrapper
             title={item.title[lang] || item.title.romaji}
             time={item.released_time}
-            broadcaster={item.release_broadcaster}
-            latestEpisode={item.items[item.items.length - 1]?.episode || 0}
+            broadcaster={item.release_broadcaster || item.items[0].broadcaster}
+            latestEpisode={`Ep. ${
+              item.items[item.items.length - 1]?.episode || 0
+            }`}
           />
         </AnimeListItem>
       ))}
-      <style jsx>{``}</style>
     </div>
   )
 }
@@ -94,14 +68,14 @@ const AnimeListItem = (props) => {
     </Link>
   )
 }
-const InfoWrapper = (props) => {
+const InfoWrapper = ({ title, ...props }) => {
+  const infos = Object.values(props).filter((text) => !!text)
+  const infoTexts = infos.join(' | ')
+
   return (
     <div className="infowrapper">
-      <AnimeTimeInfo
-        iconSrc={<BsClockFill />}
-        text={`${props.time} | ${props.broadcaster} | Ep. ${props.latestEpisode}`}
-      />
-      {props.title}
+      <AnimeTimeInfo iconSrc={<BsClockFill />} text={infoTexts} />
+      {title}
       <style jsx>{`
         .infowrapper :global(.AnimeTimeInfo) {
           margin-bottom: 0;
@@ -119,7 +93,5 @@ const InfoWrapper = (props) => {
     </div>
   )
 }
-const LoadingWrapper = () => {
-  return <Placeholder lineCountFor={2} />
-}
+
 export default AnimeList

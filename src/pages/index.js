@@ -35,9 +35,9 @@ export default function Main({ schedules }) {
   const initialData = schedules[day]
 
   const schedule = useSchedule(day, { initialData })
-  const res = schedule.data
+  const { data } = schedule.data
 
-  const animeTimeList = res.data.map((item) => item.released_time)
+  const animeTimeList = data.map((item) => item.released_time)
 
   useEffect(() => {
     for (let i = 0, l = animeTimeList.length; i < l; i++) {
@@ -62,7 +62,7 @@ export default function Main({ schedules }) {
 
       if (isCurrentNext && currentAnimeIndex !== i) {
         setCurrentAnimeIndex(i)
-        setCurrentAnime(res.data[i])
+        setCurrentAnime(data[i])
 
         return
       }
@@ -72,7 +72,7 @@ export default function Main({ schedules }) {
       const lastIndex = animeTimeList.length - 1
 
       setCurrentAnimeIndex(lastIndex)
-      setCurrentAnime(res.data[lastIndex])
+      setCurrentAnime(data[lastIndex])
 
       return
     }
@@ -111,8 +111,8 @@ export default function Main({ schedules }) {
         <div className="buttonSection">
           <ListTypeSwitcher />
         </div>
-        {listType === 'list' && <AnimeList day={day} />}
-        {listType === 'card' && <AnimeCardList day={day} />}
+        {listType === 'list' && <AnimeList data={data} day={day} />}
+        {listType === 'card' && <AnimeCardList data={data} day={day} />}
       </Section>
       <style jsx>{`
         .top-container {

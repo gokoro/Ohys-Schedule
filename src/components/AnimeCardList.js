@@ -1,42 +1,23 @@
 import * as React from 'react'
 import { urlFilter } from '../lib/urlFilter'
 
-import { AnimeCard, AnimeCardPlaceholder } from './AnimeCard'
+import { AnimeCard } from './AnimeCard'
 
 import { useRecoilValue } from 'recoil'
-import { useSchedule } from '../hooks/useSchedule'
 
 import { PreferredLanguageState } from '../states/preferredLanguage'
 
-const AnimeCardList = (props) => {
+const AnimeCardList = ({ data, day }) => {
   const lang = useRecoilValue(PreferredLanguageState)
-
-  const schedule = useSchedule(props.day)
-  const data = schedule.data
-
-  if (schedule.isLoading) {
-    return (
-      <Form>
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-        <AnimeCardPlaceholder />
-      </Form>
-    )
-  }
 
   return (
     <Form>
-      {data.data.map((item) => (
+      {data.map((item) => (
         <AnimeCard
           key={item._id}
           id={item._id}
           name={item.title[lang] || item.title.romaji}
-          day={props.day}
+          day={day}
           time={item.released_time}
           imageUrl={item.smallImageUrl}
           placeholderColor={item.color}

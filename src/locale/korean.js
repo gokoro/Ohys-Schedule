@@ -25,6 +25,11 @@ export default {
     copyArticle: 'Ohys-Raws에서 파일을 제공하였습니다.',
     language: '언어 설정',
   },
+  search: {
+    searchResult: '검색 결과',
+    notfound: '검색 결과가 없습니다.',
+  },
+
   // Component Section
   components: {
     header: {
@@ -51,6 +56,12 @@ export default {
     },
     animeTorrentOtherLink: {
       externalLinks: '외부 링크',
+    },
+
+    search: {
+      search: '검색...',
+      typeKeyword: '검색어를 입력하세요.',
+      notFound: '검색 결과가 없습니다.',
     },
   },
   // Common Section
