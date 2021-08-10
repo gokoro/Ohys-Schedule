@@ -277,7 +277,7 @@ const SearchBetaMessage = () => {
   return (
     <>
       <HoverCard.Root openDelay={300} closeDelay={100}>
-        <HoverCardTrigger>Beta</HoverCardTrigger>
+        <HoverCardTrigger>New</HoverCardTrigger>
         <HoverCardContent>
           <span>Searching from Ohys-Raws is now in Beta!</span>{' '}
           <UnderLineText as="a" css={{ fontWeight: 'bold' }} href="">
