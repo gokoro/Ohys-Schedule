@@ -33,7 +33,7 @@ const Form = ({ children }) => (
     <style jsx>{`
       .animecardlist {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         column-gap: 48px;
         row-gap: 36px;
       }
