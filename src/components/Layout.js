@@ -6,7 +6,6 @@ import { RefreshCurrentTimeComponent } from '../states/currentTime'
 import { SetPreferredLanguageComponent } from '../states/preferredLanguage'
 import Header from './Header'
 import Helmet from './Helmet'
-import Sidebar from './Sidebar'
 
 const Layout = (props) => {
   const { asPath } = useRouter()
@@ -38,9 +37,6 @@ const Layout = (props) => {
       <div className="wrapper">
         <div className="content">
           <div className="container">
-            <aside className="side-section">
-              <Sidebar />
-            </aside>
             <main className="main-section">
               <div className="main-wrapper">{props.children}</div>
             </main>
@@ -62,17 +58,9 @@ const Layout = (props) => {
         .container .main-section .main-wrapper {
           margin-top: 48px;
         }
-        .container .side-section {
-          width: 20%;
-          margin-right: 28px;
-          z-index: 0;
-        }
         @media screen and (max-width: 1080px) {
           .content {
             width: var(--mobile-wrapper-size);
-          }
-          .container .side-section {
-            display: none;
           }
         }
         @media screen and (max-width: 568px) {
