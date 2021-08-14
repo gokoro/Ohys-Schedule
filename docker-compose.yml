@@ -34,6 +34,7 @@ services:
       SONIC_AUTH: SecretPassword
       CURRENT_YEAR: 2021 # Edit this!
       CURRENT_SEASON: 3 # Edit this!
+      TMDB_API_KEY: ${TMDB_API_KEY}
 
   search:
     image: ghcr.io/gokoro/ohys-search:latest
