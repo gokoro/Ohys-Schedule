@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { IconContext } from 'react-icons'
 import { BsGearFill, BsSearch } from 'react-icons/bs'
 import { useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
@@ -36,6 +38,9 @@ const Header = () => {
   const [isSearchActive, setSearchActive] = useRecoilState(
     animeSearchActiveState
   )
+
+  const { pathname } = useRouter()
+  const TRANSPARENT_PATH = `/anime/[id]/[name]`
 
   const isHideExtra = isSearchActive && windowWidth <= 576
 
@@ -91,44 +96,50 @@ const Header = () => {
               </div>
             )}
             <div className="right-side">
-              <SearchContainer
-                css={{
-                  width: isSearchActive ? '100%' : 'initial',
-                  '@sm': {
-                    width: 'initial',
-                  },
+              <IconContext.Provider
+                value={{
+                  color: pathname === TRANSPARENT_PATH ? 'white' : '#000',
                 }}
-                ref={clickRef}
               >
-                {!isSearchActive && (
-                  <>
-                    <SearchBetaMessage />
-                    <RightSideButton
-                      css={{ paddingLeft: 2 }}
-                      onClick={handleSearchClick}
-                    >
-                      <BsSearch color="black" />
-                    </RightSideButton>
-                  </>
-                )}
-                {isSearchActive && (
-                  <InputContainer>
+                <SearchContainer
+                  css={{
+                    width: isSearchActive ? '100%' : 'initial',
+                    '@sm': {
+                      width: 'initial',
+                    },
+                  }}
+                  ref={clickRef}
+                >
+                  {!isSearchActive && (
                     <>
-                      <SearchInput />
-                      <SearchResult css={{ marginTop: 8 }} />
+                      <SearchBetaMessage />
+                      <RightSideButton
+                        css={{ paddingLeft: 2 }}
+                        onClick={handleSearchClick}
+                      >
+                        <BsSearch />
+                      </RightSideButton>
                     </>
-                  </InputContainer>
+                  )}
+                  {isSearchActive && (
+                    <InputContainer>
+                      <>
+                        <SearchInput />
+                        <SearchResult css={{ marginTop: 8 }} />
+                      </>
+                    </InputContainer>
+                  )}
+                </SearchContainer>
+                {!isHideExtra && (
+                  <div>
+                    <ClassNameLink activeClassName="actived" href="/setting">
+                      <RightSideLink>
+                        <BsGearFill />
+                      </RightSideLink>
+                    </ClassNameLink>
+                  </div>
                 )}
-              </SearchContainer>
-              {!isHideExtra && (
-                <div>
-                  <ClassNameLink activeClassName="actived" href="/setting">
-                    <RightSideLink>
-                      <BsGearFill color="black" />
-                    </RightSideLink>
-                  </ClassNameLink>
-                </div>
-              )}
+              </IconContext.Provider>
             </div>
           </div>
         </div>
@@ -141,7 +152,7 @@ const Header = () => {
       <style jsx>{`
         .b-default {
           background: #ffffff;
-          z-index: 5;
+          z-index: 3;
           user-select: none;
         }
         .wrapper {
@@ -149,12 +160,19 @@ const Header = () => {
           margin: 0 auto;
         }
         .dayLinks {
-          border-bottom: 1px solid #ecf0f1;
+          border-bottom: ${pathname === TRANSPARENT_PATH
+            ? 'none'
+            : '1px solid #ecf0f1'};
           box-shadow: none;
           transition: box-shadow 0.3s;
+          background: ${pathname === TRANSPARENT_PATH
+            ? 'rgba(0, 0, 0, 0)'
+            : '#FFF'};
         }
         .dayLinks.shadow {
-          box-shadow: var(--shadow-small);
+          box-shadow: ${pathname === TRANSPARENT_PATH
+            ? 'none'
+            : 'var(--shadow-small);'};
         }
         .header a {
           color: var(--sub-text-color);
@@ -169,11 +187,12 @@ const Header = () => {
           padding: 14px;
           width: 100%;
           height: fit-content;
+          z-index: 4;
         }
         .header .logo .link {
           display: flex;
           align-items: center;
-          color: #000000;
+          color: ${pathname === TRANSPARENT_PATH ? '#FFF' : '#000'};
           font-weight: bold;
           white-space: nowrap;
         }

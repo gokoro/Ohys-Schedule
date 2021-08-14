@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil'
 import { currentDayState } from '../states/currentTime'
 import { LocaleMessageState } from '../states/preferredLanguage'
 import ClassNameAsPathLink from './ClassNameAsPathLink'
+import { useRouter } from 'next/router'
 
 const HeaderLinks = () => {
   const {
@@ -38,6 +39,9 @@ const DayLink = (props) => {
 
   const isTodayActive = props.day === props.value
 
+  const { pathname } = useRouter()
+  const TRANSPARENT_PATH = `/anime/[id]/[name]`
+
   return (
     <>
       <ClassNameAsPathLink
@@ -67,7 +71,10 @@ const DayLink = (props) => {
           padding: 12px 0;
           height: fit-content;
           letter-spacing: 0;
-          color: var(--sub-text-color);
+          color: ${pathname === TRANSPARENT_PATH
+            ? '#FFF '
+            : 'var(--sub-text-color);'};
+
           border-bottom: 2px solid transparent;
         }
         .now {
@@ -82,16 +89,16 @@ const DayLink = (props) => {
           display: initial;
         }
         .nowActive {
-          color: #000000;
           font-weight: bold;
+          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#000000'};
         }
         .active {
           border-bottom: 2px solid #6c5ce7;
-          color: #6c5ce7;
+          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#6c5ce7'};
           font-weight: bold;
         }
         .active .nowActive {
-          color: #6c5ce7;
+          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#6c5ce7'};
         }
       `}</style>
     </>

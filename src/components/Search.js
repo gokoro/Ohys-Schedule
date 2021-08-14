@@ -117,7 +117,7 @@ const SearchInput = (props) => {
 
   return (
     <InputContainer css={{ alignItems: 'center' }}>
-      <BsSearch />
+      <BsSearch color="#FFF" />
       <Input
         {...props}
         defaultValue={keyword}

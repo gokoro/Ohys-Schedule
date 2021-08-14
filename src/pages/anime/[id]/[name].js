@@ -46,13 +46,7 @@ export default function name({ initialData }) {
           themeColor={animeData.data.color}
         />
       )}
-      <Section>
-        <AnimeDetails
-          animeId={id}
-          margin="8rem 0 24px"
-          mobileMargin="3rem 0 0 0"
-        />
-      </Section>
+      <AnimeDetails animeId={id} />
       <Section>
         <div className="bottom-section-container">
           <div className="torrent">
@@ -67,6 +61,7 @@ export default function name({ initialData }) {
       <style jsx>{`
         .bottom-section-container {
           display: flex;
+          margin-top: 90vh;
         }
         .bottom-section-container > .torrent {
           flex: 2 0 0;

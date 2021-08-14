@@ -1,24 +1,19 @@
 import * as React from 'react'
 
-const AnimeEpisodeListItem = (props) => {
+const AnimeEpisodeListItem = ({ episodeName, imageUrl, ...props }) => {
   return (
-    <div className="item">
+    <div className="item" {...props}>
       <div className="img item">
-        <img className="rounded" src={props.imageUrl} />
+        <img className="rounded" src={imageUrl} />
         <div className="text item">
           <div className="episode">
-            {props.episodeName.replace('Episode ', 'Ep.')}
+            {episodeName.replace('Episode ', 'Ep.')}
           </div>
         </div>
       </div>
       <style jsx>{`
-        .item {
-          margin-bottom: 16px;
-        }
         .item > .img.item {
           position: relative;
-          width: 90%;
-          margin: 0 auto;
         }
         .item > .img.item img {
           width: 100%;
