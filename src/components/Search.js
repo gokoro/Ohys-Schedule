@@ -86,6 +86,7 @@ const Flex = styled('div', {
 })
 
 const InputContainer = styled(Flex, {
+  background: '#FFF',
   padding: '0 8px',
   border: '1px solid #e9ecef',
   borderRadius: 5,
@@ -117,7 +118,7 @@ const SearchInput = (props) => {
 
   return (
     <InputContainer css={{ alignItems: 'center' }}>
-      <BsSearch color="#FFF" />
+      <BsSearch color="#000" />
       <Input
         {...props}
         defaultValue={keyword}
