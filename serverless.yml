@@ -1,0 +1,7 @@
+ohysScheduleApplication:
+  component: '@sls-next/serverless-component'
+  inputs:
+    build:
+      memory: 1024
+      env:
+        apiUrl: ${env.apiUrl}
