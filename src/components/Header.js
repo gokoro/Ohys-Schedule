@@ -28,6 +28,7 @@ const SearchContainer = styled('div', {
 const InputContainer = styled('div', {
   position: 'relative',
   minWidth: 300,
+  width: '100%',
 })
 
 const Header = () => {
