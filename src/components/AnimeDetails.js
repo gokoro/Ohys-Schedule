@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { motion } from 'framer-motion'
-import { styled, css } from '../lib/stitches'
-import Image from 'next/image'
+import { styled } from '../lib/stitches'
 import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 import Placeholder from './Placeholder'
 import { AnimeEpisodeListItem } from './AnimeEpisodeList'
@@ -41,7 +40,10 @@ const BannerImage = styled('img', {
   },
 })
 
-const PosterImage = css({
+const PosterImage = styled('img', {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
   borderRadius: 2,
 })
 
@@ -118,13 +120,7 @@ const AnimeDetails = ({ animeId, ...props }) => {
       <FlexContainer>
         <LeftItemContainer>
           <AspectRatio.Root ratio={2 / 3}>
-            <Image
-              src={data.imageUrl}
-              layout="fill"
-              objectFit="cover"
-              loading="eager"
-              className={PosterImage()}
-            />
+            <PosterImage src={data.imageUrl} />
           </AspectRatio.Root>
         </LeftItemContainer>
         <RightItemContainer>
@@ -148,7 +144,7 @@ const AnimeDetails = ({ animeId, ...props }) => {
           </EpisodeContainer>
         </RightItemContainer>
       </FlexContainer>
-      <BannerImage src={data.bannerImage || ''} />
+      <BannerImage src={data.bannerImage || data.imageUrl || ''} />
     </Container>
   )
 }
