@@ -70,7 +70,7 @@ const AnimeTorrentListItem = (props) => {
           href={`https://nyaa.si${props.torrentLink}`}
         >
           {props.name || props.romajiName} -{' '}
-          {props.episode === 0 && props.videoFormat === 'torrent'
+          {props.episode === 0 && !props.videoFormat
             ? 'All the episodes'
             : props.episode}
         </a>
