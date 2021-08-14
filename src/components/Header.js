@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { IconContext } from 'react-icons'
 import { BsGearFill, BsSearch } from 'react-icons/bs'
 import { useRecoilState } from 'recoil'
 import { styled } from '../lib/stitches'
@@ -37,6 +39,10 @@ const Header = () => {
     animeSearchActiveState
   )
 
+  const { pathname } = useRouter()
+  const [isIconWhite, setIconWhite] = useState(false)
+  const TRANSPARENT_PATH = `/anime/[id]/[name]`
+
   const isHideExtra = isSearchActive && windowWidth <= 576
 
   const handleScroll = () => {
@@ -69,9 +75,21 @@ const Header = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (pathname === TRANSPARENT_PATH) {
+      setIconWhite(true)
+    } else {
+      setIconWhite(false)
+    }
+  }, [pathname])
+
   return (
     <>
-      <div className="header b-default">
+      <div
+        className={`header b-default ${
+          pathname === TRANSPARENT_PATH && 'transparent'
+        }`}
+      >
         <div className="wrapper">
           <div className="container">
             {!isHideExtra && (
@@ -91,57 +109,69 @@ const Header = () => {
               </div>
             )}
             <div className="right-side">
-              <SearchContainer
-                css={{
-                  width: isSearchActive ? '100%' : 'initial',
-                  '@sm': {
-                    width: 'initial',
-                  },
+              <IconContext.Provider
+                value={{
+                  color: isIconWhite ? '#FFF' : '#000',
                 }}
-                ref={clickRef}
               >
-                {!isSearchActive && (
-                  <>
-                    <SearchBetaMessage />
-                    <RightSideButton
-                      css={{ paddingLeft: 2 }}
-                      onClick={handleSearchClick}
-                    >
-                      <BsSearch color="black" />
-                    </RightSideButton>
-                  </>
-                )}
-                {isSearchActive && (
-                  <InputContainer>
+                <SearchContainer
+                  css={{
+                    width: isSearchActive ? '100%' : 'initial',
+                    '@sm': {
+                      width: 'initial',
+                    },
+                  }}
+                  ref={clickRef}
+                >
+                  {!isSearchActive && (
                     <>
-                      <SearchInput />
-                      <SearchResult css={{ marginTop: 8 }} />
+                      <SearchBetaMessage />
+                      <RightSideButton
+                        css={{ paddingLeft: 2 }}
+                        onClick={handleSearchClick}
+                      >
+                        <BsSearch />
+                      </RightSideButton>
                     </>
-                  </InputContainer>
+                  )}
+                  {isSearchActive && (
+                    <InputContainer>
+                      <>
+                        <SearchInput />
+                        <SearchResult css={{ marginTop: 8 }} />
+                      </>
+                    </InputContainer>
+                  )}
+                </SearchContainer>
+                {!isHideExtra && (
+                  <div>
+                    <ClassNameLink activeClassName="actived" href="/setting">
+                      <RightSideLink>
+                        <BsGearFill />
+                      </RightSideLink>
+                    </ClassNameLink>
+                  </div>
                 )}
-              </SearchContainer>
-              {!isHideExtra && (
-                <div>
-                  <ClassNameLink activeClassName="actived" href="/setting">
-                    <RightSideLink>
-                      <BsGearFill color="black" />
-                    </RightSideLink>
-                  </ClassNameLink>
-                </div>
-              )}
+              </IconContext.Provider>
             </div>
           </div>
         </div>
       </div>
-      <div className={`dayLinks b-default ${isScrollDown ? 'shadow' : ''}`}>
+      <div
+        className={`dayLinks b-default ${isScrollDown ? 'shadow' : ''} ${
+          pathname === TRANSPARENT_PATH && 'transparent'
+        }`}
+      >
         <div className="wrapper">
-          <HeaderLinks />
+          <HeaderLinks
+            isDisplayColor={pathname !== TRANSPARENT_PATH || isScrollDown}
+          />
         </div>
       </div>
       <style jsx>{`
         .b-default {
           background: #ffffff;
-          z-index: 5;
+          z-index: 3;
           user-select: none;
         }
         .wrapper {
@@ -149,12 +179,20 @@ const Header = () => {
           margin: 0 auto;
         }
         .dayLinks {
-          border-bottom: 1px solid #ecf0f1;
+          border-bottom: 1px solid #ecf0f1
           box-shadow: none;
-          transition: box-shadow 0.3s;
+        }
+        .dayLinks.transparent {
+          border-bottom: none;
+          box-shadow: none;
+          transition: box-shadow 0.3s, background 0.1s;
+          background: rgba(0, 0, 0, 0);
         }
         .dayLinks.shadow {
           box-shadow: var(--shadow-small);
+        }
+        .dayLinks.transparent.shadow {
+          background: #fff;
         }
         .header a {
           color: var(--sub-text-color);
@@ -169,11 +207,12 @@ const Header = () => {
           padding: 14px;
           width: 100%;
           height: fit-content;
+          z-index: 4;
         }
         .header .logo .link {
           display: flex;
           align-items: center;
-          color: #000000;
+          color: ${pathname === TRANSPARENT_PATH ? '#FFF' : '#000'};
           font-weight: bold;
           white-space: nowrap;
         }

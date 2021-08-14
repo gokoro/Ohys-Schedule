@@ -1,24 +1,19 @@
 import * as React from 'react'
 
-const AnimeEpisodeListItem = (props) => {
+const AnimeEpisodeListItem = ({ episodeName, imageUrl, ...props }) => {
   return (
-    <div className="item">
+    <div className="item" {...props}>
       <div className="img item">
-        <img className="rounded" src={props.imageUrl} />
+        <img className="rounded" src={imageUrl} />
         <div className="text item">
           <div className="episode">
-            {props.episodeName.replace('Episode ', 'Ep.')}
+            {episodeName.replace('Episode ', 'Ep.')}
           </div>
         </div>
       </div>
       <style jsx>{`
-        .item {
-          margin-bottom: 16px;
-        }
         .item > .img.item {
           position: relative;
-          width: 90%;
-          margin: 0 auto;
         }
         .item > .img.item img {
           width: 100%;
@@ -32,10 +27,11 @@ const AnimeEpisodeListItem = (props) => {
           margin: 0;
           padding: 4px 10px;
           width: 100%;
-          min-height: 40px;
+          height: 30%;
           display: flex;
           align-items: center;
-          border-radius: 5px;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
         .item > .text.item .episode {
           font-size: 12px;
@@ -43,6 +39,11 @@ const AnimeEpisodeListItem = (props) => {
           color: #edf1f5e8;
           width: 100%;
           line-height: 120%;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         @media screen and (max-width: 568px) {
           .item > .text.item {
