@@ -6,7 +6,7 @@ import { LocaleMessageState } from '../states/preferredLanguage'
 import ClassNameAsPathLink from './ClassNameAsPathLink'
 import { useRouter } from 'next/router'
 
-const HeaderLinks = () => {
+const HeaderLinks = ({ isDisplayColor }) => {
   const {
     common: { day: dayLocaleSet },
   } = useRecoilValue(LocaleMessageState)
@@ -16,13 +16,48 @@ const HeaderLinks = () => {
 
   return (
     <div className="wrapper">
-      <DayLink day={currentDay} text={dayLocaleSet.sun} value="sun" />
-      <DayLink day={currentDay} text={dayLocaleSet.mon} value="mon" />
-      <DayLink day={currentDay} text={dayLocaleSet.tue} value="tue" />
-      <DayLink day={currentDay} text={dayLocaleSet.wed} value="wed" />
-      <DayLink day={currentDay} text={dayLocaleSet.thu} value="thu" />
-      <DayLink day={currentDay} text={dayLocaleSet.fri} value="fri" />
-      <DayLink day={currentDay} text={dayLocaleSet.sat} value="sat" />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.sun}
+        isDisplayColor={isDisplayColor}
+        value="sun"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.mon}
+        isDisplayColor={isDisplayColor}
+        value="mon"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.tue}
+        isDisplayColor={isDisplayColor}
+        value="tue"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.wed}
+        isDisplayColor={isDisplayColor}
+        value="wed"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.thu}
+        isDisplayColor={isDisplayColor}
+        value="thu"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.fri}
+        isDisplayColor={isDisplayColor}
+        value="fri"
+      />
+      <DayLink
+        day={currentDay}
+        text={dayLocaleSet.sat}
+        isDisplayColor={isDisplayColor}
+        value="sat"
+      />
       <style jsx>{`
         .wrapper {
           width: 100%;
@@ -71,10 +106,7 @@ const DayLink = (props) => {
           padding: 12px 0;
           height: fit-content;
           letter-spacing: 0;
-          color: ${pathname === TRANSPARENT_PATH
-            ? '#FFF '
-            : 'var(--sub-text-color);'};
-
+          color: ${!props.isDisplayColor ? '#FFF ' : 'var(--sub-text-color);'};
           border-bottom: 2px solid transparent;
         }
         .now {
@@ -90,15 +122,15 @@ const DayLink = (props) => {
         }
         .nowActive {
           font-weight: bold;
-          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#000000'};
+          color: ${!props.isDisplayColor ? '#FFF ' : '#000000'};
         }
         .active {
           border-bottom: 2px solid #6c5ce7;
-          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#6c5ce7'};
+          color: ${!props.isDisplayColor ? '#FFF ' : '#6c5ce7'};
           font-weight: bold;
         }
         .active .nowActive {
-          color: ${pathname === TRANSPARENT_PATH ? '#FFF ' : '#6c5ce7'};
+          color: ${!props.isDisplayColor ? '#FFF ' : '#6c5ce7'};
         }
       `}</style>
     </>

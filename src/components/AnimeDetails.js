@@ -33,9 +33,8 @@ const Container = styled('div', {
 const BannerImage = styled('img', {
   objectFit: 'cover',
   width: '100%',
-  minHeight: '100vh',
-  height: 'fit-content',
   maxWidth: '100%',
+  height: '100vh',
 })
 
 const PosterImage = styled('img', {
@@ -107,8 +106,9 @@ const AnimeDetails = ({ animeId, ...props }) => {
           </SubTitle>
           <Title>{data.title[lang] || data.name}</Title>
           <EpisodeContainer>
-            {data.episode_info.slice(0, 3).map(({ title, thumbnail }) => (
+            {data.episode_info.slice(0, 3).map(({ _id, title, thumbnail }) => (
               <AnimeEpisodeListItem
+                key={_id}
                 episodeName={title}
                 imageUrl={thumbnail}
                 style={{

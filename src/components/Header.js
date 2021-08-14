@@ -40,6 +40,7 @@ const Header = () => {
   )
 
   const { pathname } = useRouter()
+  const [isIconWhite, setIconWhite] = useState(false)
   const TRANSPARENT_PATH = `/anime/[id]/[name]`
 
   const isHideExtra = isSearchActive && windowWidth <= 576
@@ -74,9 +75,21 @@ const Header = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (pathname === TRANSPARENT_PATH) {
+      setIconWhite(true)
+    } else {
+      setIconWhite(false)
+    }
+  }, [pathname])
+
   return (
     <>
-      <div className="header b-default">
+      <div
+        className={`header b-default ${
+          pathname === TRANSPARENT_PATH && 'transparent'
+        }`}
+      >
         <div className="wrapper">
           <div className="container">
             {!isHideExtra && (
@@ -98,7 +111,7 @@ const Header = () => {
             <div className="right-side">
               <IconContext.Provider
                 value={{
-                  color: pathname === TRANSPARENT_PATH ? 'white' : '#000',
+                  color: isIconWhite ? '#FFF' : '#000',
                 }}
               >
                 <SearchContainer
@@ -144,9 +157,15 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className={`dayLinks b-default ${isScrollDown ? 'shadow' : ''}`}>
+      <div
+        className={`dayLinks b-default ${isScrollDown ? 'shadow' : ''} ${
+          pathname === TRANSPARENT_PATH && 'transparent'
+        }`}
+      >
         <div className="wrapper">
-          <HeaderLinks />
+          <HeaderLinks
+            isDisplayColor={pathname !== TRANSPARENT_PATH || isScrollDown}
+          />
         </div>
       </div>
       <style jsx>{`
@@ -160,19 +179,20 @@ const Header = () => {
           margin: 0 auto;
         }
         .dayLinks {
-          border-bottom: ${pathname === TRANSPARENT_PATH
-            ? 'none'
-            : '1px solid #ecf0f1'};
+          border-bottom: 1px solid #ecf0f1
           box-shadow: none;
-          transition: box-shadow 0.3s;
-          background: ${pathname === TRANSPARENT_PATH
-            ? 'rgba(0, 0, 0, 0)'
-            : '#FFF'};
+        }
+        .dayLinks.transparent {
+          border-bottom: none;
+          box-shadow: none;
+          transition: box-shadow 0.3s, background 0.1s;
+          background: rgba(0, 0, 0, 0);
         }
         .dayLinks.shadow {
-          box-shadow: ${pathname === TRANSPARENT_PATH
-            ? 'none'
-            : 'var(--shadow-small);'};
+          box-shadow: var(--shadow-small);
+        }
+        .dayLinks.transparent.shadow {
+          background: #fff;
         }
         .header a {
           color: var(--sub-text-color);
