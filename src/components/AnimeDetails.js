@@ -35,7 +35,10 @@ const BannerImage = styled('img', {
   objectFit: 'cover',
   width: '100%',
   maxWidth: '100%',
-  height: '100vh',
+  height: '80vh',
+  '@sm': {
+    height: '100vh',
+  },
 })
 
 const PosterImage = css({
@@ -48,13 +51,22 @@ const FlexContainer = styled('div', {
   position: 'absolute',
   width: '100%',
   height: '100%',
-  padding: '0em 8em',
+  padding: '0em 1em',
   color: '#FFF',
   gap: '1.4em',
+  '@md': {
+    padding: '0em 4em',
+  },
+  '@lg': {
+    padding: '0em 8em',
+  },
 })
 
 const LeftItemContainer = styled('div', {
-  flex: '0 0 250px',
+  flex: '0 0 30%',
+  '@md': {
+    flex: '0 0 250px',
+  },
 })
 const RightItemContainer = styled('div', {
   flex: '1',
@@ -63,20 +75,32 @@ const RightItemContainer = styled('div', {
 })
 
 const Title = styled('div', {
-  fontSize: '2.4rem',
+  fontSize: '1.4rem',
   fontWeight: 'bold',
-  lineHeight: '3rem',
+  lineHeight: '2rem',
   marginBottom: '2em',
+  '@sm': {
+    fontSize: '2.4rem',
+    lineHeight: '3rem',
+  },
 })
 
 const SubTitle = styled('div', {
+  fontSize: '0.8rem',
   color: '#adb5bd',
-  marginBottom: 8,
+  marginBottom: 0,
+  '@sm': {
+    fontSize: '1rem',
+    marginBottom: 8,
+  },
 })
 
 const EpisodeContainer = styled('div', {
-  display: 'flex',
   gap: '1em',
+  display: 'none',
+  '@sm': {
+    display: 'flex',
+  },
 })
 
 const AnimeDetails = ({ animeId, ...props }) => {
@@ -98,6 +122,7 @@ const AnimeDetails = ({ animeId, ...props }) => {
               src={data.imageUrl}
               layout="fill"
               objectFit="cover"
+              loading="eager"
               className={PosterImage()}
             />
           </AspectRatio.Root>
@@ -112,10 +137,11 @@ const AnimeDetails = ({ animeId, ...props }) => {
             {data.episode_info.slice(0, 3).map(({ _id, title, thumbnail }) => (
               <AnimeEpisodeListItem
                 key={_id}
-                episodeName={title}
+                episodeName={`${title}`}
                 imageUrl={thumbnail}
                 style={{
-                  width: '180px',
+                  maxWidth: '180px',
+                  flex: '1',
                 }}
               />
             ))}

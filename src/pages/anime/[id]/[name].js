@@ -75,9 +75,10 @@ export default function name({ initialData }) {
           :global(.anime-torrent-other-link) {
           margin-top: 24px;
         }
-        @media screen and (max-width: 568px) {
+        @media screen and (max-width: 576px) {
           .bottom-section-container {
             flex-direction: column;
+            margin-top: 70vh;
           }
           .bottom-section-container > .torrent {
             margin: 0 0 24px 0;

@@ -27,10 +27,11 @@ const AnimeEpisodeListItem = ({ episodeName, imageUrl, ...props }) => {
           margin: 0;
           padding: 4px 10px;
           width: 100%;
-          min-height: 40px;
+          height: 30%;
           display: flex;
           align-items: center;
-          border-radius: 5px;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
         .item > .text.item .episode {
           font-size: 12px;
@@ -38,6 +39,11 @@ const AnimeEpisodeListItem = ({ episodeName, imageUrl, ...props }) => {
           color: #edf1f5e8;
           width: 100%;
           line-height: 120%;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         @media screen and (max-width: 568px) {
           .item > .text.item {
