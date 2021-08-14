@@ -281,7 +281,12 @@ const SearchBetaMessage = () => {
         <HoverCardTrigger>New</HoverCardTrigger>
         <HoverCardContent>
           <span>Searching from Ohys-Raws is now in Beta!</span>{' '}
-          <UnderLineText as="a" css={{ fontWeight: 'bold' }} href="">
+          <UnderLineText
+            as="a"
+            css={{ fontWeight: 'bold' }}
+            href="https://github.com/gokoro/Ohys-Schedule/commit/595bbf1589ce2bebf205884e9e55454c30d86d97#commitcomment-54895175"
+            target="_black"
+          >
             Learn More
           </UnderLineText>
           <HoverCardArrow />
