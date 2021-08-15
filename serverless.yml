@@ -6,3 +6,4 @@ ohysScheduleApplication:
       env:
         apiUrl: ${env.apiUrl}
         apiSearchUrl: ${env.apiSearchUrl}
+        googleAnalyticsTag: ${env.googleAnalyticsTag}
