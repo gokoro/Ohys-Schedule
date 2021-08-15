@@ -1,8 +1,7 @@
 import * as React from 'react'
-import { motion } from 'framer-motion'
+import { DefaultLoader } from './ContentLoader'
 import { styled } from '../lib/stitches'
 import * as AspectRatio from '@radix-ui/react-aspect-ratio'
-import Placeholder from './Placeholder'
 import { AnimeEpisodeListItem } from './AnimeEpisodeList'
 
 import { PreferredLanguageState } from '../states/preferredLanguage'
@@ -105,46 +104,77 @@ const EpisodeContainer = styled('div', {
   },
 })
 
+const PosterPlaceholder = () => (
+  <DefaultLoader
+    width="100%"
+    height="100%"
+    backgroundColor="rgba(0,0,0,0.2)"
+    foregroundColor="rgba(0,0,0,0.1)"
+  >
+    <rect x="0" y="0" rx="2" ry="2" width="100%" height="100%" />
+  </DefaultLoader>
+)
+
+const TitlePlaceholder = () => (
+  <DefaultLoader
+    width="100%"
+    height="100%"
+    backgroundColor="rgba(0,0,0,0.2)"
+    foregroundColor="rgba(0,0,0,0.1)"
+  >
+    <rect x="0" y="30%" rx="0" ry="0" width="50" height="10" />
+    <rect x="0" y="40%" rx="0" ry="0" width="300" height="30" />
+  </DefaultLoader>
+)
+
 const AnimeDetails = ({ animeId, ...props }) => {
   const lang = useRecoilValue(PreferredLanguageState)
 
   const { data: res, isLoading } = useAnime(animeId)
   const data = res?.data
 
-  if (isLoading) {
-    return null
-  }
-
   return (
     <Container {...props}>
       <FlexContainer>
         <LeftItemContainer>
           <AspectRatio.Root ratio={2 / 3}>
-            <PosterImage src={data.imageUrl} />
+            {isLoading ? (
+              <PosterPlaceholder />
+            ) : (
+              <PosterImage src={data.imageUrl} />
+            )}
           </AspectRatio.Root>
         </LeftItemContainer>
         <RightItemContainer>
-          <SubTitle>
-            {data.released_year} / {data.items.length}{' '}
-            {data.items.length > 1 ? 'items' : 'item'}
-          </SubTitle>
-          <Title>{data.title[lang] || data.name}</Title>
-          <EpisodeContainer>
-            {data.episode_info.slice(0, 3).map(({ _id, title, thumbnail }) => (
-              <AnimeEpisodeListItem
-                key={_id}
-                episodeName={`${title}`}
-                imageUrl={thumbnail}
-                style={{
-                  maxWidth: '180px',
-                  flex: '1',
-                }}
-              />
-            ))}
-          </EpisodeContainer>
+          {isLoading ? (
+            <TitlePlaceholder />
+          ) : (
+            <>
+              <SubTitle>
+                {data.released_year} / {data.items.length}{' '}
+                {data.items.length > 1 ? 'items' : 'item'}
+              </SubTitle>
+              <Title>{data.title[lang] || data.name}</Title>
+              <EpisodeContainer>
+                {data.episode_info
+                  .slice(0, 3)
+                  .map(({ _id, title, thumbnail }) => (
+                    <AnimeEpisodeListItem
+                      key={_id}
+                      episodeName={`${title}`}
+                      imageUrl={thumbnail}
+                      style={{
+                        maxWidth: '180px',
+                        flex: '1',
+                      }}
+                    />
+                  ))}
+              </EpisodeContainer>
+            </>
+          )}
         </RightItemContainer>
       </FlexContainer>
-      <BannerImage src={data.bannerImage || data.imageUrl || ''} />
+      <BannerImage src={data?.bannerImage || data?.imageUrl || ''} />
     </Container>
   )
 }
