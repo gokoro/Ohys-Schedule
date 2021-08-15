@@ -5,3 +5,4 @@ ohysScheduleApplication:
       memory: 1024
       env:
         apiUrl: ${env.apiUrl}
+        apiSearchUrl: ${env.apiSearchUrl}
