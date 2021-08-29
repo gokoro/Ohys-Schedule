@@ -2,7 +2,6 @@ import * as React from 'react'
 import '../styles/globals.css'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress/nprogress'
-import PlausibleProvider from 'next-plausible'
 
 import * as gtag from '../lib/gtag'
 
