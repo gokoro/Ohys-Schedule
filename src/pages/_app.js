@@ -2,6 +2,7 @@ import * as React from 'react'
 import '../styles/globals.css'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress/nprogress'
+import PlausibleProvider from 'next-plausible'
 
 import * as gtag from '../lib/gtag'
 
@@ -20,11 +21,13 @@ NProgress.settings.showSpinner = false
 
 function MyApp({ Component, pageProps }) {
   return (
-    <RecoilRoot>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </RecoilRoot>
+    <PlausibleProvider domain="ohys.gokoro.me" selfHosted>
+      <RecoilRoot>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </RecoilRoot>
+    </PlausibleProvider>
   )
 }
 
