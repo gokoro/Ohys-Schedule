@@ -126,7 +126,7 @@ const Header = () => {
                 >
                   {!isSearchActive && (
                     <>
-                      <SearchBetaMessage />
+                      {/* <SearchBetaMessage /> */}
                       <RightSideButton
                         css={{ paddingLeft: 2 }}
                         onClick={handleSearchClick}
