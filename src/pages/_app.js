@@ -21,13 +21,11 @@ NProgress.settings.showSpinner = false
 
 function MyApp({ Component, pageProps }) {
   return (
-    <PlausibleProvider domain="ohys.gokoro.me" selfHosted>
-      <RecoilRoot>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </RecoilRoot>
-    </PlausibleProvider>
+    <RecoilRoot>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </RecoilRoot>
   )
 }
 

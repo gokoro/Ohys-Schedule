@@ -30,7 +30,7 @@ const Layout = (props) => {
             async
             defer
             data-domain="ohys.gokoro.me"
-            src="https://plausible.gokoro.me/js/plausible.js"
+            src="/js/plausible.js"
           />
         )}
       </Head>

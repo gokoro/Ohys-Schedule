@@ -1,5 +1,7 @@
 const { apiUrl, apiBuildUrl, apiSearchUrl, googleAnalyticsTag } = process.env
 
+const PLAUSIBLE_URL = process.env.PLAUSIBLE_URL || 'https://plausible.io'
+
 module.exports = {
   env: {
     apiUrl,
@@ -16,5 +18,18 @@ module.exports = {
       use: ['@svgr/webpack'],
     })
     return config
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/js/script.js',
+        destination: `${PLAUSIBLE_URL}/js/plausible.js`,
+      },
+      {
+        source: '/api/event',
+        destination: `${PLAUSIBLE_URL}/api/event`,
+      },
+    ]
   },
 }
