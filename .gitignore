@@ -2,8 +2,6 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
@@ -36,3 +34,13 @@ yarn-error.log*
 .vscode
 
 .env*
+
+# Yarn berry
+# If you're not using Zero-Installs:
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
