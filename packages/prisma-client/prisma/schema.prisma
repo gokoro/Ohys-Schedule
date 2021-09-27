@@ -1,0 +1,21 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../.generated/client"
+}
+
+model Anime {
+  id Int @id @default(autoincrement())
+}
+
+model AnimeTorrent {
+  id Int @id @default(autoincrement())
+}
+
+model AnimeInfo {
+  id Int @id @default(autoincrement())
+}

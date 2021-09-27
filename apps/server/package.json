@@ -1,0 +1,5 @@
+{
+  "name": "@ohys/server",
+  "private": true,
+  "packageManager": "yarn@3.0.2"
+}

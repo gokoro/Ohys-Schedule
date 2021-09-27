@@ -31,8 +31,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-.vscode
-
 .env*
 
 # Yarn berry

@@ -1,0 +1,1 @@
+# @ohys/prisma-client

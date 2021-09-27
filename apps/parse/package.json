@@ -1,0 +1,12 @@
+{
+  "name": "@ohys/parse",
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ohys/prisma-client": "workspace:*"
+  },
+  "packageManager": "yarn@3.0.2"
+}

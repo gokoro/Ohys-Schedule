@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_DATABASE: ohys
