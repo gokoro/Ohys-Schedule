@@ -23,7 +23,7 @@ const AnimeTorrentOtherLink = (props) => {
           <div className="links">
             <ExternalLinkItem
               text="Mirror"
-              href={`https://cryental.dev/services/anime/?search=${data.data.name}`}
+              href={`https://cryental.dev/services/anime/?s=${data.data.name}`}
             />
             <ExternalLinkItem
               text="Nyaa"
