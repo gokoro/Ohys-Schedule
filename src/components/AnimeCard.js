@@ -82,7 +82,6 @@ const AnimeCard = (props) => {
                 className="animeCardImg rounded"
                 src={props.imageUrl || '/'}
                 layout="fill"
-                priority={true}
               />
             </AspectRatio.Root>
           </motion.div>
