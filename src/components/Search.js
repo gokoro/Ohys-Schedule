@@ -151,7 +151,7 @@ const StyledAnimeLink = styled('a', {
   },
 })
 
-const AnimeItem = ({ id, name, ...props }) => {
+const AnimeItem = ({ id, name, title, ...props }) => {
   const href = `/search?q=${name}`
   const keyword = useRecoilValue(animeSearchKeywordState)
 
@@ -162,7 +162,7 @@ const AnimeItem = ({ id, name, ...props }) => {
           <Highlighter
             searchWords={[keyword]}
             autoEscape={true}
-            textToHighlight={name}
+            textToHighlight={title}
             highlightStyle={{
               color: '#4c6ef5',
               fontWeight: '700',
@@ -224,7 +224,8 @@ const SearchResult = (props) => {
           <AnimeItem
             key={_id}
             id={_id}
-            name={title[lang] || name}
+            name={name}
+            title={title[lang] || name}
             onClick={handleItemClick}
           />
         ))}
