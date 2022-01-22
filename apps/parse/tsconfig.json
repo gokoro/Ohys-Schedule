@@ -1,21 +1,16 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "es2018",
     "module": "commonjs",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "./dist"
-  ],
+  "include": ["./src/**/*.ts"],
+  "exclude": ["./dist"],
   "ts-node": {
     "transpileOnly": true,
     "transpiler": "ts-node/transpilers/swc-experimental"

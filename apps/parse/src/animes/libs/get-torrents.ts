@@ -1,0 +1,79 @@
+import got from 'got'
+import crypto from 'crypto'
+import * as cheerio from 'cheerio'
+import type { IAnimeTorrent, IRawsDTO } from '../interfaces'
+
+const OHYS_URL = 'https://ohys.nl/tt/'
+const NYAA_URL = 'https://nyaa.si'
+
+// The page number should be placed at the end of the string.
+const OHYS_POST_URL = 'https://ohys.nl/tt/json.php?dir=disk&q&p='
+const NYAA_POST_URL = 'https://nyaa.si/user/ohys?f=0&c=1_4&q=&p='
+
+const regex =
+  /(?:\[([^\r\n\]]*)\][\W]?)?(?:(?:([^\r\n]+?)(?: - ([\d.]+?)(?: END)?)?)[\W]?[(|[]([^\r\n(]+)? (\d+x\d+|\d+&\d+)? ([^\r\n]+)?[)\]][^.\r\n]*(?:\.([^\r\n.]*)(?:\.[\w]+)?)?)$/
+
+function createHash(str: string) {
+  return crypto.createHash('md5').update(str).digest('hex')
+}
+
+function sanitizeTitle(title: string) {
+  const [
+    ,
+    ,
+    fileName,
+    episode,
+    broadcaster,
+    resolution,
+    audioFormat,
+    videoFormat,
+  ] = title.split(regex)
+
+  return {
+    fileName: fileName ?? '',
+    episode: episode ? parseInt(episode) : -1,
+    broadcaster: broadcaster ?? '',
+    resolution: resolution ?? '',
+    audioFormat: audioFormat ?? '',
+    videoFormat: videoFormat ?? '',
+  }
+}
+
+export async function getRaws(page = 1): Promise<IAnimeTorrent[]> {
+  const getUrl = OHYS_POST_URL + (page - 1)
+
+  const data = await got.get(getUrl).text()
+  const torrents = JSON.parse(data.slice(1)) as IRawsDTO[]
+
+  return torrents.map(
+    ({ a, t }): IAnimeTorrent => ({
+      ...sanitizeTitle(t),
+      link: OHYS_URL + a,
+      hash: createHash(t + a),
+    })
+  )
+}
+
+export async function getNyaa(page = 1): Promise<IAnimeTorrent[]> {
+  const getUrl = NYAA_POST_URL + page
+
+  const pageData = await got.get(getUrl).text()
+  const $ = cheerio.load(pageData)
+
+  const torrents = $('table.torrent-list tbody tr')
+    .map((_i, element): IAnimeTorrent => {
+      const $ = cheerio.load(element)
+
+      const name = $('td[colspan="2"] a:not(.comments)').text()
+      const link = $('td.text-center a').attr('href') ?? ''
+
+      return {
+        ...sanitizeTitle(name),
+        link: NYAA_URL + link,
+        hash: createHash(name + link),
+      }
+    })
+    .toArray()
+
+  return torrents
+}

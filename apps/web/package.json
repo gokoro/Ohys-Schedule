@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@ohys/web",
   "private": true,
   "scripts": {
     "dev": "next dev",

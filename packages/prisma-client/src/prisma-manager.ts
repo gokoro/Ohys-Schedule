@@ -2,7 +2,7 @@ import { PrismaClient } from '../.generated/client'
 
 export class PrismaManager {
   private static Instance: PrismaClient
-  constructor() { }
+  constructor() {}
 
   static getInstance(createPrismaClient: () => PrismaClient) {
     PrismaManager.Instance = createPrismaClient()

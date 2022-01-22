@@ -5,7 +5,11 @@
     "apps/*",
     "packages/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "start:parse": "yarn workspace @ohys/parse run start",
+    "prisma:generate": "yarn workspace @ohys/prisma-client run prisma:generate",
+    "prisma:push": "yarn workspace @ohys/prisma-client run prisma:push"
+  },
   "devDependencies": {
     "@swc/core": "^1.2.91",
     "@types/node": "^16.10.1",
@@ -16,7 +20,7 @@
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.24.2",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
+    "typescript": "^4.5.4"
   },
-  "packageManager": "yarn@3.0.2"
+  "packageManager": "yarn@3.1.1"
 }

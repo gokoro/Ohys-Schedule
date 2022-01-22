@@ -9,13 +9,52 @@ generator client {
 }
 
 model Anime {
-  id Int @id @default(autoincrement())
+  id           Int                @id @default(autoincrement())
+  name         String             @unique
+  posterImage  String
+  bannerImage  String
+  season       Int
+  airTime      String?
+  titles       AnimeTitle[]
+  descriptions AnimeDescription[]
+  torrents     AnimeTorrent[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+}
+
+model AnimeTitle {
+  id       Int    @id @default(autoincrement())
+  title    String
+  language String
+  Anime    Anime  @relation(fields: [animeId], references: [id])
+  animeId  Int
+}
+
+model AnimeDescription {
+  id          Int    @id @default(autoincrement())
+  description String @db.VarChar(1000)
+  language    String
+  Anime       Anime  @relation(fields: [animeId], references: [id])
+  animeId     Int
 }
 
 model AnimeTorrent {
-  id Int @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
+  fileProvider String
+  episode      Int
+  link         String
+  broadcaster  String
+  resolution   String
+  audioFormat  String
+  videoFormat  String
+  fileName     String
+  hash         String   @unique
+  anime        Anime    @relation(fields: [animeId], references: [id])
+  animeId      Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
-model AnimeInfo {
+model AnimeMetadata {
   id Int @id @default(autoincrement())
 }

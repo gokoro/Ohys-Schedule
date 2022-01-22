@@ -3,8 +3,9 @@
   "main": "src/index.ts",
   "version": "0.0.1",
   "scripts": {
-    "prisma:migrate:dev": "yarn prisma migrate dev",
-    "prisma:generate": "yarn prisma generate"
+    "prisma:push": "yarn prisma db push",
+    "prisma:generate": "yarn prisma generate",
+    "prisma:studio": "yarn prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^3.1.1"
