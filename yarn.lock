@@ -1661,6 +1661,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     async-retry: ^1.3.3
+    blurhash: ^1.1.4
     cheerio: ^1.0.0-rc.10
     cron: ^1.8.2
     eslint: ^7.32.0
@@ -3101,6 +3102,13 @@ __metadata:
   version: 2.1.0
   resolution: "binary-extensions@npm:2.1.0"
   checksum: 16ef0ca9b8ebf1fa2376658d1fba6840b311ddfef81c507dbe0465ae3e9545899d9a5ae513e32907963259073e8f87247b0c43d43f13ed1c50ea1e29e9d1d19f
+  languageName: node
+  linkType: hard
+
+"blurhash@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "blurhash@npm:1.1.4"
+  checksum: 99a521ff35076f9182cd1c4d458a7aeac43cc101f13cc79f9cfdb8e6c97da6e33963496a1f5c950168b79001d0f17c97d0d57e75703363c3c4c31f97b28008f8
   languageName: node
   linkType: hard
 

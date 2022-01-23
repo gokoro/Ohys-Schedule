@@ -13,7 +13,7 @@ model Anime {
   name         String             @unique
   posterImage  String
   bannerImage  String
-  season       Int
+  blurHash     String
   airTime      String?
   titles       AnimeTitle[]
   descriptions AnimeDescription[]
