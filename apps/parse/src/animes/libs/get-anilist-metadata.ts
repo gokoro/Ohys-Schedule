@@ -10,7 +10,7 @@ function handleRetry<T>(fn: () => Promise<T>): Promise<T> {
 
 export const PosterImageQuery = gql`
   query ($name: String) {
-    Media(search: $name) {
+    Media(search: $name, type: ANIME) {
       coverImage {
         extraLarge
       }
@@ -19,11 +19,9 @@ export const PosterImageQuery = gql`
 `
 
 export interface IPostImage {
-  data: {
-    Media: {
-      coverImage: {
-        extraLarge: string
-      }
+  Media: {
+    coverImage: {
+      extraLarge: string
     }
   }
 }
@@ -40,7 +38,7 @@ export async function handledFetchPosterImage(
 
 export const DateQuery = gql`
   query ($name: String) {
-    Media(search: $name) {
+    Media(search: $name, type: ANIME) {
       startDate {
         year
         month
@@ -51,19 +49,17 @@ export const DateQuery = gql`
 `
 
 export interface IDate {
-  data: {
-    Media: {
-      startDate: {
-        year: number
-        month: number
-        day: number
-      }
+  Media: {
+    startDate: {
+      year: number
+      month: number
+      day: number
     }
   }
 }
 
-export async function fetchDate(name: string): Promise<IPostImage> {
-  return await client.request<IPostImage>(DateQuery, { name })
+export async function fetchDate(name: string): Promise<IDate> {
+  return await client.request<IDate>(DateQuery, { name })
 }
 
 export async function handledFetchdate(
