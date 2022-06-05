@@ -1,137 +1,58 @@
-import { prismaClient } from '../libs/prisma'
-import type {
-  Prisma,
-  Anime as DatabaseAnime,
-  AnimeTorrent as DatabaseAnimeTorrent,
-  AnimeTitle as DatabaseAnimeTitle,
-  AnimeDescription as DatabaseAnimeDescription,
-} from '@ohys/prisma-client'
+import { prisma } from '../libs/prisma'
+import type { Prisma, Anime as DatabaseAnime } from '@ohys/prisma-client'
 import type {
   IAnimeTitle,
   IAnimeDescription,
+  IAnimePosterImage,
+  IAnimeBannerImage,
   IAnimeRetrieveMetadata,
+  IUpdateTorrentProps,
+  ITorrentHashCache,
 } from './interfaces'
 import * as tmdb from './libs/get-tmdb-metadata'
+import * as anilist from './libs/get-anilist-metadata'
+import { getRetried } from './libs/retry'
+import { encodeImageToBlurhash } from '../libs/blurhash'
 
-type BatchPayload = Prisma.BatchPayload
+const TMDB_IMAGE_BASE_URL = 'https://www.themoviedb.org/t/p/original'
 
-export async function create(
+export async function createSeries(
   data: Prisma.AnimeCreateInput
 ): Promise<DatabaseAnime> {
-  return await prismaClient.anime.create({ data })
+  return await prisma.anime.create({ data })
 }
 
-export async function createMany(
-  data: Prisma.AnimeCreateManyInput
-): Promise<BatchPayload> {
-  return await prismaClient.anime.createMany({ data, skipDuplicates: true })
-}
+export async function getProperSeasonNumber(
+  name: string,
+  tmdbID: number
+): Promise<number | undefined> {
+  const { seasons: rawTMDBSeasons } = await tmdb.getTVShow(tmdbID)
 
-export async function createTorrent(
-  data: Prisma.AnimeTorrentCreateInput
-): Promise<DatabaseAnimeTorrent> {
-  return await prismaClient.animeTorrent.create({
-    data,
+  const tmdbSeasons = rawTMDBSeasons.map((season) => {
+    const [year, month] = (season.air_date || '').split('-')
+
+    return {
+      number: season.season_number,
+      airDate: {
+        year: parseInt(year),
+        month: parseInt(month),
+      },
+    }
   })
-}
 
-export async function createManyTorrent(
-  data: Prisma.AnimeTorrentCreateManyInput[]
-): Promise<BatchPayload> {
-  return await prismaClient.animeTorrent.createMany({
-    data,
-    skipDuplicates: true,
-  })
-}
+  const anilistData = await anilist.handledFetchdate(name)
 
-// export async function createTitle(
-//   data: Prisma.AnimeTitleCreateInput | Prisma.AnimeTitleCreateManyInput
-// ): Promise<DatabaseAnimeTitle | BatchPayload> {
-//   return Array.isArray(data)
-//     ? await prismaClient.animeTitle.createMany({ data, skipDuplicates: true })
-//     : await prismaClient.animeTitle.create({
-//         data,
-//       })
-// }
-
-type TitleOrTitleArray<
-  T extends Prisma.AnimeTitleCreateInput | Prisma.AnimeTitleCreateManyInput[]
-> = T extends Prisma.AnimeTitleCreateInput
-  ? Promise<DatabaseAnimeTitle>
-  : Promise<BatchPayload>
-
-export async function createTitle<
-  T extends Prisma.AnimeTitleCreateInput | Prisma.AnimeTitleCreateManyInput[]
->(data: T): Promise<TitleOrTitleArray<T>> {
-  return Array.isArray(data)
-    ? await prismaClient.animeTitle.createMany({ data, skipDuplicates: true })
-    : await prismaClient.animeTitle.create({
-        data,
-      })
-}
-
-export async function createDescription(
-  data:
-    | Prisma.AnimeDescriptionCreateInput
-    | Prisma.AnimeDescriptionCreateManyInput
-): Promise<DatabaseAnimeDescription | BatchPayload> {
-  return Array.isArray(data)
-    ? await prismaClient.animeDescription.createMany({
-        data,
-        skipDuplicates: true,
-      })
-    : await prismaClient.animeDescription.create({
-        data,
-      })
-}
-
-export async function getUnique(
-  options: Prisma.AnimeFindUniqueArgs
-): Promise<DatabaseAnime | null> {
-  return await prismaClient.anime.findUnique(options)
-}
-
-export async function getFirst(
-  options: Prisma.AnimeFindFirstArgs
-): Promise<DatabaseAnime | null> {
-  return await prismaClient.anime.findFirst(options)
-}
-
-export async function getTorrentUnique(
-  options: Prisma.AnimeTorrentFindUniqueArgs
-): Promise<DatabaseAnimeTorrent | null> {
-  return await prismaClient.animeTorrent.findUnique(options)
-}
-
-export async function getTorrentFisrt(
-  options: Prisma.AnimeTorrentFindFirstArgs
-): Promise<DatabaseAnimeTorrent | null> {
-  return await prismaClient.animeTorrent.findFirst(options)
-}
-
-export function inferSearsonNumber(
-  title: string,
-  counter = 1,
-  initialNumbers?: RegExpMatchArray
-): number {
-  const numbers = initialNumbers ?? title.match(/\d/g)
-
-  if (numbers === null) {
-    return 1
+  if (!anilistData) {
+    return
   }
 
-  if (numbers.length < counter) {
-    return 1
-  }
+  const { year: ALYear, month: ALMonth } = anilistData.Media.startDate
 
-  const currentNumber = numbers[numbers.length - counter]
+  const currentSeason = tmdbSeasons.find(
+    ({ airDate }) => airDate.year === ALYear && airDate.month === ALMonth
+  )
 
-  // If It's considered that It's not a season number but something else like year.
-  if (currentNumber.toString().length >= 2) {
-    return inferSearsonNumber(title, counter + 1, numbers)
-  }
-
-  return parseInt(currentNumber)
+  return currentSeason?.number
 }
 
 export async function retrieveMetadata(
@@ -141,8 +62,14 @@ export async function retrieveMetadata(
 
   const titles: IAnimeTitle[] = []
   const descriptions: IAnimeDescription[] = []
+  const posterImages: IAnimePosterImage[] = []
+  const bannerImages: IAnimeBannerImage[] = []
 
-  const searchedItem = await tmdb.searchTVShow(name)
+  const searchedItem = await getRetried(
+    name,
+    tmdb.searchTVShow,
+    (data) => data.length > 0
+  )
   const { id: seriesId } = searchedItem[0]
 
   const [details, translation] = await Promise.allSettled([
@@ -155,8 +82,8 @@ export async function retrieveMetadata(
   }
 
   const {
-    backdrop_path: bannerImage,
-    poster_path: initPosterImage,
+    backdrop_path: tmdbBannerImage,
+    poster_path: initTmdbPosterImage,
     seasons,
   } = details.value
   const { translations: rawTranslations } = translation.value
@@ -165,18 +92,53 @@ export async function retrieveMetadata(
     Get poster image by extracting season number from the title.
   */
 
-  const inferredSeasons = inferSearsonNumber(name)
+  const inferredSeasons = await getProperSeasonNumber(name, seriesId)
 
-  let posterImage = initPosterImage
+  let tmdbPosterImage = initTmdbPosterImage
 
-  if (inferredSeasons !== 1) {
-    seasons.some(({ season_number, poster_path }) => {
-      if (season_number === inferredSeasons) {
-        season = inferredSeasons
-        posterImage = poster_path
-        return true
-      }
-    })
+  seasons.some(({ season_number, poster_path }) => {
+    if (season_number === inferredSeasons) {
+      season = inferredSeasons
+      tmdbPosterImage = poster_path
+      return true
+    }
+  })
+
+  posterImages.push({
+    provider: 'tmdb',
+    path: TMDB_IMAGE_BASE_URL + tmdbPosterImage,
+    blurHash: await encodeImageToBlurhash(
+      TMDB_IMAGE_BASE_URL + tmdbPosterImage
+    ),
+  })
+  bannerImages.push({
+    provider: 'tmdb',
+    path: TMDB_IMAGE_BASE_URL + tmdbBannerImage,
+  })
+
+  /*
+    Get images from Anilist
+  */
+
+  const anilistImageData = await anilist.handledFetchImage(name)
+
+  if (anilistImageData) {
+    const {
+      coverImage: { extraLarge: coverImage },
+      bannerImage,
+    } = anilistImageData.Media
+
+    if (coverImage) {
+      posterImages.push({
+        provider: 'anilist',
+        path: coverImage,
+        blurHash: await encodeImageToBlurhash(coverImage),
+      })
+    }
+
+    if (bannerImage) {
+      bannerImages.push({ provider: 'anilist', path: bannerImage })
+    }
   }
 
   /*
@@ -194,7 +156,172 @@ export async function retrieveMetadata(
     titles,
     descriptions,
     season,
-    posterImage,
-    bannerImage,
+    posterImages,
+    bannerImages,
   }
+}
+
+export class LatestTorrentCache {
+  private providerhash: ITorrentHashCache
+
+  constructor() {
+    this.providerhash = {}
+  }
+
+  getHash(provider: string): string {
+    return this.providerhash[provider]
+  }
+
+  setHash({
+    provider,
+    hash,
+  }: {
+    provider: string
+    hash: string
+  }): ITorrentHashCache {
+    this.providerhash[provider] = hash
+    return this.providerhash
+  }
+}
+
+export async function filterUnparsedItem(
+  hashList: string[]
+): Promise<[number, number]> {
+  for (let i = 0; i < hashList.length; i++) {
+    const existingItem = await prisma.animeTorrent.findUnique({
+      where: { hash: hashList[i] },
+    })
+    const isExist = existingItem !== null
+
+    // If the first item matches with the hash.
+    if (isExist && i === 0) {
+      return [-1, -1]
+    }
+
+    // If the first or later item doesn't exist.
+    if (!isExist && i >= 0) {
+      continue
+    }
+
+    // If the second or later one exists.
+    if (isExist && i > 0) {
+      return [0, i - 1]
+    }
+  }
+
+  return [0, hashList.length - 1]
+}
+
+export async function updateTorrent({
+  provider,
+  fetcher,
+  cache,
+}: IUpdateTorrentProps): Promise<void> {
+  /* 
+    Generate hash if there's not.
+  */
+
+  if (cache && !cache.getHash(provider)) {
+    // if (cache && cache.getHash(provider)) {
+    const checkingItem = await prisma.animeTorrent.findFirst({
+      where: { fileProvider: provider },
+    })
+
+    if (checkingItem === null) {
+      throw new Error(
+        'No torrent file detected. You should run the initializing script first.'
+      )
+    }
+
+    const { hash } = checkingItem
+
+    cache.setHash({ provider, hash })
+  }
+
+  /*
+    Get torrents from the sources.
+  */
+
+  const fetchedTorrent = await fetcher()
+  const [firstItem] = fetchedTorrent
+
+  /*
+    Return if there's a matching item with the existing item.
+  */
+
+  if (cache && cache.getHash(provider) === firstItem.hash) {
+    return
+  }
+
+  const [firstRange, lastRange] = await filterUnparsedItem(
+    fetchedTorrent.map(({ hash }) => hash)
+  )
+
+  if (firstRange === lastRange) {
+    return
+  }
+
+  const data: Prisma.AnimeTorrentCreateManyInput[] = []
+
+  for (let i = lastRange; i >= firstRange; i--) {
+    let seriesId: number
+
+    /*
+      Check if there's a series that matches with a new item.
+    */
+
+    const item = fetchedTorrent[i]
+    console.log('~ item.fileName', item.fileName)
+    const existingSeries = await prisma.anime.findUnique({
+      where: { name: item.fileName },
+    })
+
+    if (existingSeries === null) {
+      const { titles, descriptions, season, posterImages, bannerImages } =
+        await retrieveMetadata(item.fileName)
+
+      const { id: createdId } = await prisma.anime.create({
+        data: {
+          name: item.fileName,
+          titles: {
+            createMany: {
+              data: titles,
+            },
+          },
+          descriptions: {
+            createMany: {
+              data: descriptions,
+            },
+          },
+          posterimages: {
+            createMany: {
+              data: posterImages,
+            },
+          },
+          bannerimages: {
+            createMany: {
+              data: bannerImages,
+            },
+          },
+          season,
+        },
+      })
+
+      seriesId = createdId
+    } else {
+      seriesId = existingSeries.id
+    }
+
+    /*
+      Loop for each torrent from the end.
+    */
+
+    data.push({
+      fileProvider: provider,
+      ...fetchedTorrent[i],
+      animeId: seriesId,
+    })
+  }
+
+  await prisma.animeTorrent.createMany({ data })
 }

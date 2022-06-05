@@ -9,17 +9,18 @@ generator client {
 }
 
 model Anime {
-  id           Int                @id @default(autoincrement())
-  name         String             @unique
-  posterImage  String
-  bannerImage  String
-  blurHash     String
-  airTime      String?
-  titles       AnimeTitle[]
-  descriptions AnimeDescription[]
-  torrents     AnimeTorrent[]
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+  id              Int                @id @default(autoincrement())
+  name            String             @unique
+  alternativeName String?
+  season          Int
+  airTime         String?
+  titles          AnimeTitle[]
+  descriptions    AnimeDescription[]
+  posterimages    AnimePosterImage[]
+  bannerimages    AnimeBannerImage[]
+  torrents        AnimeTorrent[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
 }
 
 model AnimeTitle {
@@ -38,23 +39,38 @@ model AnimeDescription {
   animeId     Int
 }
 
-model AnimeTorrent {
-  id           Int      @id @default(autoincrement())
-  fileProvider String
-  episode      Int
-  link         String
-  broadcaster  String
-  resolution   String
-  audioFormat  String
-  videoFormat  String
-  fileName     String
-  hash         String   @unique
-  anime        Anime    @relation(fields: [animeId], references: [id])
-  animeId      Int
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model AnimePosterImage {
+  id       Int     @id @default(autoincrement())
+  provider String
+  path     String  @db.VarChar(500)
+  blurHash String?
+  anime    Anime   @relation(fields: [animeId], references: [id])
+  animeId  Int
 }
 
-model AnimeMetadata {
-  id Int @id @default(autoincrement())
+model AnimeBannerImage {
+  id       Int     @id @default(autoincrement())
+  provider String
+  path     String  @db.VarChar(500)
+  blurHash String?
+  anime    Anime   @relation(fields: [animeId], references: [id])
+  animeId  Int
+}
+
+model AnimeTorrent {
+  id               Int      @id @default(autoincrement())
+  fileProvider     String
+  episode          Int
+  link             String
+  broadcaster      String
+  resolution       String
+  audioFormat      String
+  videoFormat      String
+  fileName         String
+  originalFileName String
+  hash             String   @unique
+  anime            Anime    @relation(fields: [animeId], references: [id])
+  animeId          Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

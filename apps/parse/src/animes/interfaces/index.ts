@@ -1,3 +1,5 @@
+import { LatestTorrentCache } from '..'
+
 export interface IRawsDTO {
   a: string
   t: string
@@ -11,6 +13,7 @@ export interface IAnimeTorrent {
   resolution: string
   audioFormat: string
   videoFormat: string
+  originalFileName: string
   hash: string
 }
 
@@ -24,12 +27,24 @@ export interface IAnimeDescription {
   description: string
 }
 
+export interface IAnimePosterImage {
+  provider: 'tmdb' | 'anilist'
+  path: string
+  blurHash?: string
+}
+
+export interface IAnimeBannerImage {
+  provider: 'tmdb' | 'anilist'
+  path: string
+  blurHash?: string
+}
+
 export interface IAnimeRetrieveMetadata {
   titles: IAnimeTitle[]
   descriptions: IAnimeDescription[]
   season: number
-  posterImage: string
-  bannerImage: string
+  posterImages: IAnimePosterImage[]
+  bannerImages: IAnimeBannerImage[]
 }
 
 // export interface IAnimeMetadata {}
@@ -221,4 +236,34 @@ export interface ITMDBTVShowTranslationTranslation {
 export interface ITMDBTVShowTranslationResponse {
   id: number
   translations: ITMDBTVShowTranslationTranslation[]
+}
+
+export interface ITMDBTVShowSeasonTranslationResponse {
+  id: number
+  translations: ITMDBTVShowSeasonTranslationTranslation[]
+}
+
+export interface ITMDBTVShowSeasonTranslationTranslation {
+  iso_3166_1: string
+  iso_639_1: string
+  name: string
+  english_name: string
+  data: ITMDBTVShowSeasonTranslationData
+}
+
+export interface ITMDBTVShowSeasonTranslationData {
+  name: string
+  overview: string
+}
+
+export type TorrentFetcher = () => Promise<IAnimeTorrent[]>
+
+export interface IUpdateTorrentProps {
+  provider: string
+  fetcher: TorrentFetcher
+  cache?: LatestTorrentCache
+}
+
+export interface ITorrentHashCache {
+  [provider: string]: string
 }

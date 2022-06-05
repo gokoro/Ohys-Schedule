@@ -8,4 +8,4 @@ export function getPrismaClient(): PrismaClient {
   return prismaClient
 }
 
-export const prismaClient = getPrismaClient()
+export const prisma = getPrismaClient()

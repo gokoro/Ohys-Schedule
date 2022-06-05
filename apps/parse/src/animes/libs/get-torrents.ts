@@ -11,7 +11,7 @@ const OHYS_POST_URL = 'https://ohys.nl/tt/json.php?dir=disk&q&p='
 const NYAA_POST_URL = 'https://nyaa.si/user/ohys?f=0&c=1_4&q=&p='
 
 const regex =
-  /(?:\[([^\r\n\]]*)\][\W]?)?(?:(?:([^\r\n]+?)(?: - ([\d.]+?)(?: END)?)?)[\W]?[(|[]([^\r\n(]+)? (\d+x\d+|\d+&\d+)? ([^\r\n]+)?[)\]][^.\r\n]*(?:\.([^\r\n.]*)(?:\.[\w]+)?)?)$/
+  /(?:\[([^\r\n]*)\][\W]?)?(?:(?:([^\r\n]+?)(?: - ([0-9\-.]+?(?: END)?|SP))?)[\W]?[(|[]([^\r\n(]+)? (\d+x\d+|\d{3,}[^\r\n ]*)? ([^\r\n]+)?[)\]][^.\r\n]*(?:\.([^\r\n.]*)(?:\.[\w]+)?)?)$/
 
 function createHash(str: string) {
   return crypto.createHash('md5').update(str).digest('hex')
@@ -49,6 +49,7 @@ export async function getRaws(page = 1): Promise<IAnimeTorrent[]> {
     ({ a, t }): IAnimeTorrent => ({
       ...sanitizeTitle(t),
       link: OHYS_URL + a,
+      originalFileName: t,
       hash: createHash(t + a),
     })
   )
@@ -70,6 +71,7 @@ export async function getNyaa(page = 1): Promise<IAnimeTorrent[]> {
       return {
         ...sanitizeTitle(name),
         link: NYAA_URL + link,
+        originalFileName: name,
         hash: createHash(name + link),
       }
     })

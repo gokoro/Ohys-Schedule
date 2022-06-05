@@ -6,6 +6,7 @@ import type {
   ITMDBTVShowResponse,
   ITMDBTVShowImageResponse,
   ITMDBTVShowTranslationResponse,
+  ITMDBTVShowSeasonTranslationResponse,
 } from '../interfaces'
 
 const client = got.extend({
@@ -48,6 +49,17 @@ export async function getTVShowTranslation(
   const data = await client
     .get(`tv/${id}/translations`)
     .json<ITMDBTVShowTranslationResponse>()
+
+  return data
+}
+
+export async function getTVShowSeasonTranslation(
+  id: number,
+  season: number
+): Promise<ITMDBTVShowSeasonTranslationResponse> {
+  const data = await client
+    .get(`tv/${id}/season/${season}/translations`)
+    .json<ITMDBTVShowSeasonTranslationResponse>()
 
   return data
 }
