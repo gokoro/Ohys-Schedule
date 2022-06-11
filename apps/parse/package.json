@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "start": "node -r @swc-node/register src/main.ts",
-    "build": "swc ./src --out-dir ./dist",
     "initialize": "node -r @swc-node/register scripts/get-all-torrent.ts"
   },
   "dependencies": {

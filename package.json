@@ -19,7 +19,6 @@
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
     "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-plugin-import": "^2.24.2",
     "ts-node": "^10.8.1",

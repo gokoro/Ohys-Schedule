@@ -10,8 +10,5 @@
     "skipLibCheck": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["./dist"],
-  "ts-node": {
-    "swc": true
-  }
+  "exclude": ["./dist"]
 }
