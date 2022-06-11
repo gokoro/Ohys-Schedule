@@ -1,5 +1,5 @@
 import { prisma } from '../libs/prisma'
-import type { Prisma, Anime as DatabaseAnime } from '@ohys/prisma-client'
+import { Prisma, Anime } from '@ohys/prisma-client'
 import type {
   IAnimeTitle,
   IAnimeDescription,
@@ -8,6 +8,7 @@ import type {
   IAnimeRetrieveMetadata,
   IUpdateTorrentProps,
   ITorrentHashCache,
+  IAnimeCreateSeries,
 } from './interfaces'
 import * as tmdb from './libs/get-tmdb-metadata'
 import * as anilist from './libs/get-anilist-metadata'
@@ -15,12 +16,6 @@ import { getRetried } from './libs/retry'
 import { encodeImageToBlurhash } from '../libs/blurhash'
 
 const TMDB_IMAGE_BASE_URL = 'https://www.themoviedb.org/t/p/original'
-
-export async function createSeries(
-  data: Prisma.AnimeCreateInput
-): Promise<DatabaseAnime> {
-  return await prisma.anime.create({ data })
-}
 
 export async function getProperSeasonNumber(
   name: string,
@@ -58,7 +53,7 @@ export async function getProperSeasonNumber(
 export async function retrieveMetadata(
   name: string
 ): Promise<IAnimeRetrieveMetadata> {
-  let season = 1
+  let season: number | undefined
 
   const titles: IAnimeTitle[] = []
   const descriptions: IAnimeDescription[] = []
@@ -70,6 +65,18 @@ export async function retrieveMetadata(
     tmdb.searchTVShow,
     (data) => data.length > 0
   )
+
+  if (!searchedItem) {
+    return {
+      titles,
+      descriptions,
+      season,
+      posterImages,
+      bannerImages,
+      isManualNeeded: true,
+    }
+  }
+
   const { id: seriesId } = searchedItem[0]
 
   const [details, translation] = await Promise.allSettled([
@@ -94,6 +101,17 @@ export async function retrieveMetadata(
 
   const inferredSeasons = await getProperSeasonNumber(name, seriesId)
 
+  if (!inferredSeasons) {
+    return {
+      titles,
+      descriptions,
+      season,
+      posterImages,
+      bannerImages,
+      isManualNeeded: true,
+    }
+  }
+
   let tmdbPosterImage = initTmdbPosterImage
 
   seasons.some(({ season_number, poster_path }) => {
@@ -104,17 +122,22 @@ export async function retrieveMetadata(
     }
   })
 
-  posterImages.push({
-    provider: 'tmdb',
-    path: TMDB_IMAGE_BASE_URL + tmdbPosterImage,
-    blurHash: await encodeImageToBlurhash(
-      TMDB_IMAGE_BASE_URL + tmdbPosterImage
-    ),
-  })
-  bannerImages.push({
-    provider: 'tmdb',
-    path: TMDB_IMAGE_BASE_URL + tmdbBannerImage,
-  })
+  if (tmdbPosterImage) {
+    posterImages.push({
+      provider: 'tmdb',
+      path: TMDB_IMAGE_BASE_URL + tmdbPosterImage,
+      blurHash: await encodeImageToBlurhash(
+        TMDB_IMAGE_BASE_URL + tmdbPosterImage
+      ),
+    })
+  }
+
+  if (tmdbBannerImage) {
+    bannerImages.push({
+      provider: 'tmdb',
+      path: TMDB_IMAGE_BASE_URL + tmdbBannerImage,
+    })
+  }
 
   /*
     Get images from Anilist
@@ -212,32 +235,49 @@ export async function filterUnparsedItem(
   return [0, hashList.length - 1]
 }
 
+export async function createSeries({
+  name,
+  titles,
+  descriptions,
+  posterImages,
+  bannerImages,
+  season,
+  isManualNeeded,
+}: IAnimeCreateSeries): Promise<Anime> {
+  return await prisma.anime.create({
+    data: {
+      name,
+      titles: {
+        createMany: {
+          data: titles,
+        },
+      },
+      descriptions: {
+        createMany: {
+          data: descriptions,
+        },
+      },
+      posterImages: {
+        createMany: {
+          data: posterImages,
+        },
+      },
+      bannerImages: {
+        createMany: {
+          data: bannerImages,
+        },
+      },
+      season,
+      isManualNeeded,
+    },
+  })
+}
+
 export async function updateTorrent({
   provider,
   fetcher,
   cache,
 }: IUpdateTorrentProps): Promise<void> {
-  /* 
-    Generate hash if there's not.
-  */
-
-  if (cache && !cache.getHash(provider)) {
-    // if (cache && cache.getHash(provider)) {
-    const checkingItem = await prisma.animeTorrent.findFirst({
-      where: { fileProvider: provider },
-    })
-
-    if (checkingItem === null) {
-      throw new Error(
-        'No torrent file detected. You should run the initializing script first.'
-      )
-    }
-
-    const { hash } = checkingItem
-
-    cache.setHash({ provider, hash })
-  }
-
   /*
     Get torrents from the sources.
   */
@@ -271,40 +311,16 @@ export async function updateTorrent({
     */
 
     const item = fetchedTorrent[i]
-    console.log('~ item.fileName', item.fileName)
     const existingSeries = await prisma.anime.findUnique({
       where: { name: item.fileName },
     })
 
     if (existingSeries === null) {
-      const { titles, descriptions, season, posterImages, bannerImages } =
-        await retrieveMetadata(item.fileName)
+      const metadata = await retrieveMetadata(item.fileName)
 
-      const { id: createdId } = await prisma.anime.create({
-        data: {
-          name: item.fileName,
-          titles: {
-            createMany: {
-              data: titles,
-            },
-          },
-          descriptions: {
-            createMany: {
-              data: descriptions,
-            },
-          },
-          posterimages: {
-            createMany: {
-              data: posterImages,
-            },
-          },
-          bannerimages: {
-            createMany: {
-              data: bannerImages,
-            },
-          },
-          season,
-        },
+      const { id: createdId } = await createSeries({
+        name: item.fileName,
+        ...metadata,
       })
 
       seriesId = createdId

@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "start:parse": "yarn workspace @ohys/parse start",
+    "initialize:parse": "yarn workspace @ohys/parse initialize",
     "prisma:generate": "yarn workspace @ohys/prisma-client run prisma:generate",
     "prisma:push": "yarn workspace @ohys/prisma-client run prisma:push",
     "prisma:studio": "yarn workspace @ohys/prisma-client run prisma:studio"

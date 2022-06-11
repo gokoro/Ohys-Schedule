@@ -22,16 +22,22 @@ function sanitizeTitle(title: string) {
     ,
     ,
     fileName,
-    episode,
+    rawEpisode,
     broadcaster,
     resolution,
     audioFormat,
     videoFormat,
   ] = title.split(regex)
 
+  let episode = rawEpisode ? parseInt(rawEpisode) : -1
+
+  if (isNaN(episode)) {
+    episode = -2
+  }
+
   return {
     fileName: fileName ?? '',
-    episode: episode ? parseInt(episode) : -1,
+    episode,
     broadcaster: broadcaster ?? '',
     resolution: resolution ?? '',
     audioFormat: audioFormat ?? '',
@@ -39,20 +45,39 @@ function sanitizeTitle(title: string) {
   }
 }
 
-export async function getRaws(page = 1): Promise<IAnimeTorrent[]> {
+export const formatRawsJson = (text: string): IRawsDTO[] =>
+  JSON.parse(text.slice(1))
+
+export async function getRawsData(page: number): Promise<IRawsDTO[]> {
   const getUrl = OHYS_POST_URL + (page - 1)
 
   const data = await got.get(getUrl).text()
-  const torrents = JSON.parse(data.slice(1)) as IRawsDTO[]
+  return formatRawsJson(data)
+}
 
-  return torrents.map(
-    ({ a, t }): IAnimeTorrent => ({
-      ...sanitizeTitle(t),
-      link: OHYS_URL + a,
-      originalFileName: t,
-      hash: createHash(t + a),
-    })
-  )
+export const isFalseTitle = (title: string): boolean => !title.trim()
+
+export async function getRaws(page = 1): Promise<IAnimeTorrent[]> {
+  const torrents = await getRawsData(page)
+
+  return torrents
+    .map(
+      ({ a, t }): IAnimeTorrent => ({
+        ...sanitizeTitle(t),
+        link: OHYS_URL + a,
+        originalFileName: t,
+        hash: createHash(t + a),
+      })
+    )
+    .filter(({ fileName }) => !isFalseTitle(fileName))
+}
+
+export async function getRawsEndPage(initialPage = 1): Promise<number> {
+  const data = await getRawsData(initialPage)
+
+  return data.length > 0
+    ? await getRawsEndPage(initialPage + 1)
+    : initialPage - 1
 }
 
 export async function getNyaa(page = 1): Promise<IAnimeTorrent[]> {
@@ -76,6 +101,7 @@ export async function getNyaa(page = 1): Promise<IAnimeTorrent[]> {
       }
     })
     .toArray()
+    .filter(({ fileName }) => !isFalseTitle(fileName))
 
   return torrents
 }

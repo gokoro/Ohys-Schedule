@@ -5,11 +5,16 @@ export async function getRetried<T>(
   name: string,
   fetchFunc: (name: string) => Promise<T>,
   judgeFunc: (items: T) => boolean
-): Promise<T> {
+): Promise<T | undefined> {
   const data = await fetchFunc(name)
 
   if (!judgeFunc(data)) {
     const fixedName = getShortened(name)
+
+    if (!fixedName) {
+      return undefined
+    }
+
     return getRetried(fixedName, fetchFunc, judgeFunc)
   }
 

@@ -42,12 +42,21 @@ export interface IAnimeBannerImage {
 export interface IAnimeRetrieveMetadata {
   titles: IAnimeTitle[]
   descriptions: IAnimeDescription[]
-  season: number
+  season?: number
   posterImages: IAnimePosterImage[]
   bannerImages: IAnimeBannerImage[]
+  isManualNeeded?: boolean
 }
 
-// export interface IAnimeMetadata {}
+export interface IAnimeCreateSeries {
+  name: string
+  titles: IAnimeTitle[]
+  descriptions: IAnimeDescription[]
+  season?: number
+  posterImages: IAnimePosterImage[]
+  bannerImages: IAnimeBannerImage[]
+  isManualNeeded?: boolean
+}
 
 export interface ITMDBSearchDataResponse {
   page: number
@@ -259,7 +268,7 @@ export interface ITMDBTVShowSeasonTranslationData {
 export type TorrentFetcher = () => Promise<IAnimeTorrent[]>
 
 export interface IUpdateTorrentProps {
-  provider: string
+  provider: 'raws' | 'nyaa'
   fetcher: TorrentFetcher
   cache?: LatestTorrentCache
 }

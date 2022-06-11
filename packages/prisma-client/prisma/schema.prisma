@@ -12,12 +12,13 @@ model Anime {
   id              Int                @id @default(autoincrement())
   name            String             @unique
   alternativeName String?
-  season          Int
+  season          Int?
   airTime         String?
+  isManualNeeded  Boolean            @default(false)
   titles          AnimeTitle[]
   descriptions    AnimeDescription[]
-  posterimages    AnimePosterImage[]
-  bannerimages    AnimeBannerImage[]
+  posterImages    AnimePosterImage[]
+  bannerImages    AnimeBannerImage[]
   torrents        AnimeTorrent[]
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
@@ -33,7 +34,7 @@ model AnimeTitle {
 
 model AnimeDescription {
   id          Int    @id @default(autoincrement())
-  description String @db.VarChar(1000)
+  description String @db.VarChar(10000)
   language    String
   Anime       Anime  @relation(fields: [animeId], references: [id])
   animeId     Int
@@ -61,7 +62,7 @@ model AnimeTorrent {
   id               Int      @id @default(autoincrement())
   fileProvider     String
   episode          Int
-  link             String
+  link             String   @db.VarChar(500)
   broadcaster      String
   resolution       String
   audioFormat      String

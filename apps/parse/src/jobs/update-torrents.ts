@@ -1,4 +1,5 @@
 import { CronJob } from 'cron'
+import { prisma } from '../libs/prisma'
 import { torrentCron } from '../configs'
 import * as anime from '../animes'
 import { getRaws, getNyaa } from '../animes/libs/get-torrents'
@@ -32,8 +33,30 @@ export async function executeFetching(
   ]
 
   for (const options of fetcherList) {
-    if (FetchingStatus.get(options.provider)) {
+    const { provider } = options
+
+    if (FetchingStatus.get(provider)) {
       return
+    }
+
+    /* 
+      Generate hash if there's not.
+    */
+
+    if (cache && cache.getHash(provider)) {
+      const checkingItem = await prisma.animeTorrent.findFirst({
+        where: { fileProvider: provider },
+      })
+
+      if (checkingItem === null) {
+        throw new Error(
+          'No torrent file detected. You should run the initializing script first.'
+        )
+      }
+
+      const { hash } = checkingItem
+
+      cache.setHash({ provider, hash })
     }
 
     FetchingStatus.change(options.provider)
