@@ -28,7 +28,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Install serverless
-        run: yarn add -D serverless
+        run: yarn add -D @serverless/cli
 
       - name: Download `.serverless` state from S3
         run: aws s3 sync s3://${{secrets.S3_BUCKET}}/ohys-schedule/prod/.serverless .serverless --delete

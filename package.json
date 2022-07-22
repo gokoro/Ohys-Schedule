@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
-    "deploy": "serverless"
+    "deploy": "components-v1"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^0.0.14",
