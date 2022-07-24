@@ -17,7 +17,7 @@
     "dayjs": "^1.10.4",
     "framer-motion": "^2.4.3-beta.2",
     "lodash.debounce": "^4.0.8",
-    "next": "^11.1.0",
+    "next": "^12.2.3",
     "nprogress": "^0.2.0",
     "react": "^17.0.2",
     "react-content-loader": "^6.0.3",
