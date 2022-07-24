@@ -21,6 +21,7 @@ const AnimeInfoSection = (props) => {
           margin: ${props.margin || '0'};
         }
         .AnimeInfoSection .title {
+          font-size: 24px;
           display: flex;
           align-items: center;
         }
