@@ -80,6 +80,7 @@ const AnimeCard = (props) => {
             <AspectRatio.Root ratio={4 / 5}>
               <Image
                 className="animeCardImg rounded"
+                loading="eager"
                 src={props.imageUrl || '/'}
                 layout="fill"
               />
