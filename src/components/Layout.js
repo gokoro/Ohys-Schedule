@@ -25,14 +25,14 @@ const Layout = (props) => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="Ohys-Schedule" />
         <link rel="dns-prefetch" href={process.env.apiUrl} />
-        {process.env.NODE_ENV === 'production' && (
+        {/* {process.env.NODE_ENV === 'production' && (
           <script
             async
             defer
             data-domain="ohys.gokoro.me"
             src="/js/script.js"
           />
-        )}
+        )} */}
       </Head>
       <Helmet
         title="Ohys-Schedule"

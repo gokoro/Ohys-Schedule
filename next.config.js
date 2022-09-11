@@ -20,16 +20,16 @@ module.exports = {
     return config
   },
 
-  async rewrites() {
-    return [
-      {
-        source: '/js/script.js',
-        destination: `${PLAUSIBLE_URL}/js/plausible.js`,
-      },
-      {
-        source: '/api/event',
-        destination: `${PLAUSIBLE_URL}/api/event`,
-      },
-    ]
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/js/script.js',
+  //       destination: `${PLAUSIBLE_URL}/js/plausible.js`,
+  //     },
+  //     {
+  //       source: '/api/event',
+  //       destination: `${PLAUSIBLE_URL}/api/event`,
+  //     },
+  //   ]
+  // },
 }
