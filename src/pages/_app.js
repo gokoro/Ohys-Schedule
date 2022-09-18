@@ -3,6 +3,8 @@ import '../styles/globals.css'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress/nprogress'
 import Script from 'next/script'
+import Head from 'next/head'
+import { Partytown } from '@builder.io/partytown/react'
 
 import Router from 'next/router'
 import { RecoilRoot } from 'recoil'
@@ -18,10 +20,21 @@ NProgress.settings.showSpinner = false
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Script
-        strategy="worker"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.googleAnalyticsTag}`}
-      />
+      <Head>
+        <Script
+          strategy="worker"
+          crossOrigin="anonymous"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.googleAnalyticsTag}`}
+        />
+        <Partytown
+          debug={true}
+          lib="/_next/static/~partytown/"
+          forward={['gtag']}
+          resolveUrl={(url, location, type) =>
+            type === 'script' ? 'js/script.js' : url
+          }
+        />
+      </Head>
       <script
         type="text/partytown"
         dangerouslySetInnerHTML={{
