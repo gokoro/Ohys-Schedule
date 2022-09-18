@@ -12,6 +12,10 @@ module.exports = {
 
   images: { domains: ['s4.anilist.co'] },
 
+  experimental: {
+    nextScriptWorkers: true,
+  },
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
