@@ -2,6 +2,7 @@ import * as React from 'react'
 import '../styles/globals.css'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress/nprogress'
+import Script from 'next/script'
 
 import Router from 'next/router'
 import { RecoilRoot } from 'recoil'
@@ -16,11 +17,32 @@ NProgress.settings.showSpinner = false
 
 function MyApp({ Component, pageProps }) {
   return (
-    <RecoilRoot>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </RecoilRoot>
+    <>
+      <Script
+        strategy="worker"
+        // src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=UA-80175291-6`}
+      />
+      <script
+        type="text/partytown"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${'UA-80175291-6'}', { 
+                page_path: window.location.pathname,
+            });
+        `,
+        }}
+      />
+      <RecoilRoot>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </RecoilRoot>
+    </>
   )
 }
 
