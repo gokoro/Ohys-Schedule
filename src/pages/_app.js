@@ -21,34 +21,34 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <Script
-          strategy="worker"
-          crossOrigin="anonymous"
+        <script
+          type="text/partytown"
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.googleAnalyticsTag}`}
         />
-        <Partytown
-          debug={true}
-          lib="/_next/static/~partytown/"
-          forward={['gtag']}
-          resolveUrl={(url, location, type) =>
-            type === 'script' ? 'js/script.js' : url
-          }
+        <script
+          data-partytown-config
+          dangerouslySetInnerHTML={{
+            __html: `
+              partytown = {
+                lib: "/_next/static/~partytown/",
+                forward: ['dataLayer.push'],
+                debug: true
+              };
+            `,
+          }}
+        />
+        <script
+          type="text/partytown"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.googleAnalyticsTag}');
+            `,
+          }}
         />
       </Head>
-      <script
-        type="text/partytown"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = function gtag(){window.dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', '${process.env.googleAnalyticsTag}', { 
-                page_path: window.location.pathname,
-            });
-        `,
-        }}
-      />
       <RecoilRoot>
         <Layout>
           <Component {...pageProps} />

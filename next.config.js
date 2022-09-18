@@ -24,14 +24,6 @@ module.exports = {
     return config
   },
 
-  async rewrites() {
-    return [
-      {
-        source: '/js/script.js',
-        destination: `https://www.google-analytics.com/analytics.js`,
-      },
-    ]
-  },
   // async rewrites() {
   //   return [
   //     {
