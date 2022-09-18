@@ -42,6 +42,9 @@ const AnimeCardForm = (props) => {
             transition: box-shadow 0.15s;
             cursor: pointer;
           }
+          :global(.animecard) .top :global(.imgContainer) {
+            transition: box-shadow 0.15s;
+          }
           :global(.animecard:hover) .top :global(.imgContainer) {
             box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.16);
           }
