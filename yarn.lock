@@ -1966,6 +1966,11 @@ is-symbol@^1.0.2, is-symbol@^1.0.3:
   dependencies:
     has-symbols "^1.0.2"
 
+isbot@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/isbot/-/isbot-3.5.4.tgz#6aeee9fae357e6f766dc5236bba15c0a5d898437"
+  integrity sha512-3frSf4rchMimsc8MGwcARqsycEp3abECficImpmCtPz5f6tNHnjKp+n4QstI326CF4NmVkB+yFh0tMeX5eb0NQ==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
