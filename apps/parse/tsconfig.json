@@ -2,7 +2,7 @@
   "compilerOptions": {
     "composite": true,
     "target": "es2018",
-    "module": "commonjs",
+    "module": "esnext",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,

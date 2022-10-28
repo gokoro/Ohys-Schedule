@@ -1,19 +1,19 @@
+import { Anime, Prisma } from '@ohys/prisma-client'
+import { encodeImageToBlurhash } from '../libs/blurhash'
 import { prisma } from '../libs/prisma'
-import { Prisma, Anime } from '@ohys/prisma-client'
 import type {
-  IAnimeTitle,
+  IAnimeBannerImage,
+  IAnimeCreateSeries,
   IAnimeDescription,
   IAnimePosterImage,
-  IAnimeBannerImage,
   IAnimeRetrieveMetadata,
-  IUpdateTorrentProps,
+  IAnimeTitle,
   ITorrentHashCache,
-  IAnimeCreateSeries,
+  IUpdateTorrentProps,
 } from './interfaces'
-import * as tmdb from './libs/get-tmdb-metadata'
 import * as anilist from './libs/get-anilist-metadata'
+import * as tmdb from './libs/get-tmdb-metadata'
 import { getRetried } from './libs/retry'
-import { encodeImageToBlurhash } from '../libs/blurhash'
 
 const TMDB_IMAGE_BASE_URL = 'https://www.themoviedb.org/t/p/original'
 

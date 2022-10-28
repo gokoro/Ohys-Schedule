@@ -1,6 +1,6 @@
-import got from 'got'
-import crypto from 'crypto'
 import * as cheerio from 'cheerio'
+import crypto from 'crypto'
+import got from 'got'
 import type { IAnimeTorrent, IRawsDTO } from '../interfaces'
 
 const OHYS_URL = 'https://ohys.nl/tt/'

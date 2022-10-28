@@ -1,12 +1,12 @@
 import got from 'got'
-import { tmdbUrl, tmdbApiKey } from '../../configs'
+import { tmdbApiKey, tmdbUrl } from '../../configs'
 import type {
   ITMDBSearchData,
   ITMDBSearchDataResponse,
-  ITMDBTVShowResponse,
   ITMDBTVShowImageResponse,
-  ITMDBTVShowTranslationResponse,
+  ITMDBTVShowResponse,
   ITMDBTVShowSeasonTranslationResponse,
+  ITMDBTVShowTranslationResponse,
 } from '../interfaces'
 
 const client = got.extend({

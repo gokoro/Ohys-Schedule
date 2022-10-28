@@ -1,5 +1,5 @@
-import { createCron as createTorrentCron } from './update-torrents'
 import { CronJob } from 'cron'
+import { createCron as createTorrentCron } from './update-torrents'
 
 export const tasks: CronJob[] = [createTorrentCron()]
 

@@ -1,7 +1,7 @@
-import { GraphQLClient, gql, ClientError } from 'graphql-request'
+import retry from 'async-retry'
+import { ClientError, gql, GraphQLClient } from 'graphql-request'
 import { anilistUrl } from '../../configs'
 import { getShortened } from './retry'
-import retry from 'async-retry'
 
 const client = new GraphQLClient(anilistUrl)
 

@@ -1,9 +1,9 @@
 import { CronJob } from 'cron'
-import { prisma } from '../libs/prisma'
-import { torrentCron } from '../configs'
 import * as anime from '../animes'
-import { getRaws, getNyaa } from '../animes/libs/get-torrents'
 import type { IUpdateTorrentProps } from '../animes/interfaces'
+import { getNyaa, getRaws } from '../animes/libs/get-torrents'
+import { torrentCron } from '../configs'
+import { prisma } from '../libs/prisma'
 
 interface IFetchingStatus {
   [provider: string]: boolean
