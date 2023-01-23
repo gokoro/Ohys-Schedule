@@ -34,7 +34,7 @@ const Form = ({ children }) => (
       .animecardlist {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        column-gap: 48px;
+        column-gap: 30px;
         row-gap: 36px;
       }
       @media screen and (max-width: 768px) {

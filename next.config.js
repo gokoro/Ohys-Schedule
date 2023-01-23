@@ -29,13 +29,12 @@ module.exports = {
 
   async rewrites() {
     return {
-      afterFiles: [
-        {
-          source: '/404',
-          destination: '/api/404',
-        },
-      ],
-
+      // afterFiles: [
+      //   {
+      //     source: '/404',
+      //     destination: '/api/404',
+      //   },
+      // ],
       //     {
       //       source: '/js/script.js',
       //       destination: `${PLAUSIBLE_URL}/js/plausible.js`,
@@ -46,14 +45,14 @@ module.exports = {
       //     },
     }
   },
-  async redirects() {
-    return [
-      {
-        source: '/file/anilistcdn/media/anime/cover/medium/:slug',
-        destination:
-          'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/:slug',
-        permanent: false,
-      },
-    ]
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: '/file/anilistcdn/media/anime/cover/medium/:slug',
+  //       destination:
+  //         'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/:slug',
+  //       permanent: false,
+  //     },
+  //   ]
+  // },
 }

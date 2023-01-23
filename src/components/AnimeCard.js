@@ -1,12 +1,11 @@
 import * as React from 'react'
 
-import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'framer-motion'
-import * as AspectRatio from '@radix-ui/react-aspect-ratio'
+import Link from 'next/link'
 
 import Placeholder from './Placeholder'
 
+import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 import { useRecoilValue } from 'recoil'
 
 import { LocaleMessageState } from '../states/preferredLanguage'
@@ -81,21 +80,18 @@ const AnimeCard = (props) => {
             }}
           >
             <AspectRatio.Root ratio={4 / 5}>
-              <Image
+              <img
                 className="animeCardImg rounded"
-                loading="eager"
                 src={props.imageUrl || '/'}
-                layout="fill"
               />
             </AspectRatio.Root>
           </motion.div>
           <style jsx>{`
-            :global(.animeCardImg) {
+            .animeCardImg {
               object-fit: cover;
-            }
-            :global(.imgContainer) {
-              box-shadow: var(--shadow-small);
-              transition: box-shadow 0.3s;
+              width: 100%;
+              height: 100%;
+              position: relative;
             }
           `}</style>
         </>
