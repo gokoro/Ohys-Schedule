@@ -1,5 +1,5 @@
-import * as React from 'react'
 import Link from 'next/link'
+import * as React from 'react'
 import { useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import AnimeCardList from '../components/AnimeCardList'
@@ -41,6 +41,10 @@ export default function Main({ schedules }) {
 
   useEffect(() => {
     for (let i = 0, l = animeTimeList.length; i < l; i++) {
+      if (!animeTimeList[i]) {
+        continue
+      }
+
       const [hours, minutes] = animeTimeList[i].split(':')
       const releaseTime = dayjs
         .duration({

@@ -24,6 +24,7 @@ const AnimeInfoSection = (props) => {
           font-size: 24px;
           display: flex;
           align-items: center;
+          line-height: 120%;
         }
         .AnimeInfoSection .title:after {
           content: '';

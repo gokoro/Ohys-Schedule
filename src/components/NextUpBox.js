@@ -1,5 +1,5 @@
-import * as React from 'react'
 import Link from 'next/link'
+import * as React from 'react'
 import { BsArrowRight } from 'react-icons/bs'
 import { useRecoilValue } from 'recoil'
 import { useTimeDistance } from '../hooks/useTimeDistance'
@@ -31,9 +31,9 @@ const NextUpBox = (props) => {
             <div className="right item">
               <AnimeInfoSection
                 day={props.dayOfWeek}
-                time={nextUpAnime.released_time}
-                broadcaster={nextUpAnime.release_broadcaster}
-                title={nextUpAnime.title[lang]}
+                time={nextUpAnime?.released_time || ''}
+                broadcaster={nextUpAnime?.release_broadcaster || ''}
+                title={nextUpAnime.title[lang] || nextUpAnime.romaji}
                 isOnAir={isOnAir}
                 margin="22px 0"
               />
