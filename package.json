@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@builder.io/partytown": "^0.7.0",
+    "@cloudflare/next-on-pages": "^0.5.0",
     "@svgr/webpack": "^5.5.0"
   }
 }
