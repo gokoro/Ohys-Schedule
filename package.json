@@ -7,7 +7,7 @@
     "start": "next start",
     "export": "next build && next export",
     "deploy": "components-v1",
-    "deploy:pages": "next-on-pages --experimental-minify"
+    "deploy:pages": "next-on-pages"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^0.0.14",
