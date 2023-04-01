@@ -1,16 +1,20 @@
-import * as React from 'react'
-import { buildApi } from '../../../lib/api'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import * as React from 'react'
+import { useEffect } from 'react'
 import { useAnime } from '../../../hooks/useAnime'
+import { buildApi } from '../../../lib/api'
 import { urlFilter } from '../../../lib/urlFilter'
 
-import Helmet from '../../../components/Helmet'
-import Section from '../../../components/Section'
+import AnimeDescriptionSection from '../../../components/AnimeDescriptionSection'
 import AnimeDetails from '../../../components/AnimeDetails'
 import AnimeTorrentList from '../../../components/AnimeTorrentList'
-import AnimeDescriptionSection from '../../../components/AnimeDescriptionSection'
 import AnimeTorrentOtherLink from '../../../components/AnimeTorrentOtherLink'
+import Helmet from '../../../components/Helmet'
+import Section from '../../../components/Section'
+
+export const config = {
+  runtime: 'experimental-edge',
+}
 
 export default function name({ initialData }) {
   const router = useRouter()
