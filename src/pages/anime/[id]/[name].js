@@ -121,7 +121,7 @@ name.getInitialProps = async (ctx) => {
   // const res = await buildApi.get(`/anime`, { params: { id } })
 
   const res = await fetch(`${process.env.apiUrl}/anime?id=${id}`)
-  const data = await res.data()
+  const data = await res.json()
   const initialData = data
 
   return {
