@@ -1,8 +1,8 @@
-import { styled, css } from '../lib/stitches'
+import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 import Image from 'next/image'
 import Link from 'next/link'
+import { css, styled } from '../lib/stitches'
 import { urlFilter } from '../lib/urlFilter'
-import * as AspectRatio from '@radix-ui/react-aspect-ratio'
 
 const Container = styled('div', {
   color: '#000',
@@ -71,7 +71,7 @@ const SearchCard = ({
   const href = `/anime/${id}/${urlFilter(originalName)}`
 
   return (
-    <Link href={href}>
+    <Link legacyBehavior href={href}>
       <a>
         <Container {...props}>
           <LeftSide>

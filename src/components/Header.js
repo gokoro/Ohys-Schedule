@@ -1,16 +1,16 @@
-import * as React from 'react'
-import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { IconContext } from 'react-icons'
 import { BsGearFill, BsSearch } from 'react-icons/bs'
 import { useRecoilState } from 'recoil'
-import { styled } from '../lib/stitches'
-import { SearchInput, SearchResult, SearchBetaMessage } from './Search'
-import { animeSearchActiveState } from '../states/animeSearch'
-import HeaderLinks from './HeaderLinks'
-import ClassNameLink from './ClassNameLink'
 import useWindowSize from '../hooks/useWindowSize'
+import { styled } from '../lib/stitches'
+import { animeSearchActiveState } from '../states/animeSearch'
+import ClassNameLink from './ClassNameLink'
+import HeaderLinks from './HeaderLinks'
+import { SearchInput, SearchResult } from './Search'
 
 const RightSideButton = styled('button', { all: 'unset', cursor: 'pointer' })
 const RightSideLink = styled('a', {
@@ -95,7 +95,7 @@ const Header = () => {
           <div className="container">
             {!isHideExtra && (
               <div className="logo">
-                <Link href="/">
+                <Link legacyBehavior href="/">
                   <a className="link">
                     <>
                       <img

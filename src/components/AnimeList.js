@@ -1,6 +1,6 @@
+import Link from 'next/link'
 import * as React from 'react'
 import { BsClockFill } from 'react-icons/bs'
-import Link from 'next/link'
 import { urlFilter } from '../lib/urlFilter'
 
 import { useRecoilValue } from 'recoil'
@@ -35,7 +35,7 @@ const AnimeList = ({ data }) => {
 
 const AnimeListItem = (props) => {
   return (
-    <Link href={props.href}>
+    <Link legacyBehavior href={props.href}>
       <a className="AnimeListItem">
         <div className="wrapper">{props.children}</div>
         <style jsx>{`

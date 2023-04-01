@@ -1,16 +1,16 @@
-import { useRef, useEffect, useState } from 'react'
-import Link from 'next/link'
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil'
-import { styled } from '../lib/stitches'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useRef, useState } from 'react'
 import Highlighter from 'react-highlight-words'
 import { BsSearch } from 'react-icons/bs'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useAnimeSearchDebounced } from '../hooks/useAnime'
+import { styled } from '../lib/stitches'
 import {
-  animeSearchKeywordState,
   animeSearchActiveState,
+  animeSearchKeywordState,
 } from '../states/animeSearch'
-import { useRouter } from 'next/router'
 import {
   LocaleMessageState,
   PreferredLanguageState,
@@ -156,7 +156,7 @@ const AnimeItem = ({ id, name, title, ...props }) => {
   const keyword = useRecoilValue(animeSearchKeywordState)
 
   return (
-    <Link href={href} passHref>
+    <Link legacyBehavior href={href} passHref>
       <StyledAnimeLink {...props}>
         <StyledAnimeContainer>
           <Highlighter

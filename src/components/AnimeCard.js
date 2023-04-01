@@ -22,7 +22,7 @@ const AnimeCardForm = (props) => {
     },
   }
   return (
-    <Link href={props.href}>
+    <Link legacyBehavior href={props.href}>
       <motion.a
         href={props.href}
         className="animecard"
