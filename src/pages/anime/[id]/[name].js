@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect } from 'react'
 import { useAnime } from '../../../hooks/useAnime'
-import { buildApi } from '../../../lib/api'
 import { urlFilter } from '../../../lib/urlFilter'
 
 import AnimeDescriptionSection from '../../../components/AnimeDescriptionSection'
@@ -119,8 +118,11 @@ name.getInitialProps = async (ctx) => {
     }
   }
 
-  const res = await buildApi.get(`/anime`, { params: { id } })
-  const initialData = res.data
+  // const res = await buildApi.get(`/anime`, { params: { id } })
+
+  const res = await fetch(`${process.env.apiUrl}/anime?id=${id}`)
+  const data = await res.data()
+  const initialData = data
 
   return {
     initialData,
