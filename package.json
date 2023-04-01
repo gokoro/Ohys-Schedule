@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
-    "deploy": "components-v1"
+    "deploy": "components-v1",
+    "deploy:pages": "next-on-pages --experimental-minify"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^0.0.14",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@builder.io/partytown": "^0.7.0",
     "@cloudflare/next-on-pages": "^0.5.0",
-    "@svgr/webpack": "^5.5.0"
+    "@svgr/webpack": "^5.5.0",
+    "vercel": "^28.18.3"
   }
 }
