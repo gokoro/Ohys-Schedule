@@ -13,8 +13,6 @@ module.exports = {
     googleAnalyticsTag,
   },
 
-  images: { domains: ['s4.anilist.co'] },
-
   experimental: {
     nextScriptWorkers: true,
   },
@@ -26,33 +24,4 @@ module.exports = {
     })
     return config
   },
-
-  async rewrites() {
-    return {
-      // afterFiles: [
-      //   {
-      //     source: '/404',
-      //     destination: '/api/404',
-      //   },
-      // ],
-      //     {
-      //       source: '/js/script.js',
-      //       destination: `${PLAUSIBLE_URL}/js/plausible.js`,
-      //     },
-      //     {
-      //       source: '/api/event',
-      //       destination: `${PLAUSIBLE_URL}/api/event`,
-      //     },
-    }
-  },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/file/anilistcdn/media/anime/cover/medium/:slug',
-  //       destination:
-  //         'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/:slug',
-  //       permanent: false,
-  //     },
-  //   ]
-  // },
 }
