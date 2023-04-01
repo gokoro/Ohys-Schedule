@@ -93,7 +93,7 @@ export default function name({ initialData }) {
   )
 }
 
-name.getInitialProps = async (ctx) => {
+export async function getServerSideProps(ctx) {
   const { id } = ctx.query
 
   if (!ctx.req) {
@@ -106,6 +106,23 @@ name.getInitialProps = async (ctx) => {
   const initialData = res.data
 
   return {
-    initialData,
+    props: { initialData },
   }
 }
+
+// name.getInitialProps = async (ctx) => {
+//   const { id } = ctx.query
+
+//   if (!ctx.req) {
+//     return {
+//       initialData: false,
+//     }
+//   }
+
+//   const res = await buildApi.get(`/anime`, { params: { id } })
+//   const initialData = res.data
+
+//   return {
+//     initialData,
+//   }
+// }
