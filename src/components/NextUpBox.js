@@ -22,7 +22,10 @@ const NextUpBox = (props) => {
 
   return (
     <>
-      <Link href={`/anime/${nextUpAnime._id}/${urlFilter(nextUpAnime.name)}`}>
+      <Link
+        legacyBehavior
+        href={`/anime/${nextUpAnime._id}/${urlFilter(nextUpAnime.name)}`}
+      >
         <a className="link">
           <div className="container">
             <div className="left item">

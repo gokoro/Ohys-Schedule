@@ -108,7 +108,7 @@ export default function Main({ schedules }) {
           as={`/${day}`}
           linkText={`> ${locale.main.seeDetails}`}
         >
-          <Link href="/[day]" as={`/${day}`}>
+          <Link legacyBehavior href="/[day]" as={`/${day}`}>
             <a style={{ color: '#000000' }}>{locale.main.todayUp}</a>
           </Link>
         </SectionTitle>
@@ -175,6 +175,6 @@ export async function getStaticProps() {
 
   return {
     props: { schedules },
-    revalidate: 60 * 60 * 24,
+    // revalidate: 60 * 60 * 24,
   }
 }

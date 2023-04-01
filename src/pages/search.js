@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router'
-import { useRecoilValue } from 'recoil'
-import { useAnimeSearch } from '../hooks/useAnime'
-import { styled } from '../lib/stitches'
 import LoadingIndicator from 'react-spinners/BeatLoader'
+import { useRecoilValue } from 'recoil'
+import NotFoundImage from '../assets/notfound.svg'
 import Helmet from '../components/Helmet'
+import SearchCard from '../components/SearchCard'
 import Section from '../components/Section'
 import SectionTitle from '../components/SectionTitle'
-import SearchCard from '../components/SearchCard'
-import NotFoundImage from '../assets/notfound.svg'
+import { useAnimeSearch } from '../hooks/useAnime'
+import { styled } from '../lib/stitches'
 import {
   LocaleMessageState,
   PreferredLanguageState,
@@ -95,6 +95,6 @@ const SearchPage = ({ q: initialKeyword }) => {
   )
 }
 
-SearchPage.getInitialProps = (ctx) => ctx.query
+// SearchPage.getInitialProps = (ctx) => ctx.query
 
 export default SearchPage

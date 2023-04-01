@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { withRouter } from 'next/router'
 import Link from 'next/link'
+import { withRouter } from 'next/router'
+import * as React from 'react'
 import { Children } from 'react'
 
 const ActiveLink = ({ router, children, ...props }) => {
@@ -16,7 +16,11 @@ const ActiveLink = ({ router, children, ...props }) => {
 
   delete props.activeClassName
 
-  return <Link {...props}>{React.cloneElement(child, { className })}</Link>
+  return (
+    <Link legacyBehavior {...props}>
+      {React.cloneElement(child, { className })}
+    </Link>
+  )
 }
 
 export default withRouter(ActiveLink)
