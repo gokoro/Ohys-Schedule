@@ -175,6 +175,6 @@ export async function getStaticProps() {
 
   return {
     props: { schedules },
-    revalidate: 60 * 60 * 24,
+    // revalidate: 60 * 60 * 24,
   }
 }
